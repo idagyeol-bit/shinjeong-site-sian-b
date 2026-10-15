@@ -1536,7 +1536,8 @@ body.reel-dark[data-page="home"] .hdr .hdr__cta:hover { background: #fff; border
 .heroB__slide { position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity 1.1s ease, visibility 0s linear 1.1s; }
 .heroB__slide.is-on { opacity: 1; visibility: visible; transition: opacity 1.1s ease; }
 .heroB__ph { position: absolute; inset: 0; overflow: hidden; }
-.heroB__ph img { width: 100%; height: 100%; object-fit: cover; transform: scale(1); }
+.heroB__ph img { width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); transform: scale(1); }
+@media (orientation: portrait) { .heroB__ph img { object-position: var(--pos-m, var(--pos, 50% 50%)); } }
 .heroB__slide.is-on .heroB__ph img { animation: heroB-kb 9s ease-out forwards; }
 .heroB__scrim { position: absolute; inset: 0; background: linear-gradient(to top, #050c16d1 0%, #050c1659 38%, #050c161f 60%, #050c1640 100%); }
 .heroB__txt { position: absolute; left: var(--gutter); right: var(--gutter); bottom: 150px; max-width: 900px; word-break: keep-all; }

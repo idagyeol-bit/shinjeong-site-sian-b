@@ -118,6 +118,9 @@ const PHOTOS = {
   /* U 사진(50차, 이다결 님 제공): 클라이언트 ZIP·소개서 PDF 에서 온 사진이 아니다('사진은 ZIP에서만' 규칙의 예외 — 이다결 님 결정, 시안 A 첫 화면 배경에만).
      원본은 tools/photo-src/U01-original.png(1672x941, 그대로 보관), 웹용은 축소만(확대 없음). 출처는 tools/photo-plan.json */
   U01: { id: 'U01', w: 1672, h: 941, sizes: [800, 1200, 1672], alt: '푸른 하늘 아래 흰색 원통형 저장 탱크들', cap: '푸른 하늘과 흰색 저장 탱크' },
+  /* U02(시안 B, 2026-10-16 이다결 님 제공): '맑은 하늘 아래 정유 설비' 그림. U01 과 같은 예외 — 클라이언트 ZIP·소개서 PDF 사진이 아니다.
+     시안 B 첫 화면 2장면(안전) 배경에만 쓰고, 신정개발의 설비·실적처럼 설명하지 않는다. 원본은 tools/photo-src/U02-original.png(1672x941, 그대로 보관), 웹용은 축소만. 출처는 tools/photo-plan.json */
+  U02: { id: 'U02', w: 1672, h: 941, sizes: [800, 1200, 1672], alt: '맑은 푸른 하늘 아래 증류탑과 배관이 늘어선 석유화학 설비', cap: '푸른 하늘과 석유화학 설비' },
   /* AI 사진(시안B 1차, 이다결 님 제공): 이다결 님이 Meshy 로 만든 로봇 3D 그림. 클라이언트 ZIP·소개서 PDF 사진이 아니다('사진은 ZIP에서만' 규칙의 예외 — 이다결 님 결정).
      시안 B 첫 화면 5장면(발전)에만 쓰고, 실제 장비처럼 설명하지 않는다(장면에 'AI로 만든 3D 예시 그림' 표시). 파일은 받은 그대로 */
   AI01: { id: 'AI01', w: 1536, h: 1024, sizes: [1536], alt: '차세대 로봇 3D 그림' },
@@ -1160,7 +1163,9 @@ function heroSlides() {
   const img = (sc, i) => {
     const p = P(sc.photo);
     const srcset = p.sizes.map((w) => `assets/photos/${p.id}-${w}.jpg ${w}w`).join(', ');
-    return `<img src="assets/photos/${p.id}-${p.sizes[p.sizes.length - 1]}.jpg" srcset="${srcset}" sizes="100vw" width="${p.w}" height="${p.h}" alt="${esc(sc.alt || p.alt)}" decoding="async"${i ? '' : ' fetchpriority="high"'}>`;
+    /* pos·posM = PC·휴대폰(세로 화면)에서 사진의 어느 부분을 보일지(가로% 세로%). 적지 않으면 가운데 */
+    const pos = sc.pos || sc.posM ? ` style="--pos: ${sc.pos || '50% 50%'}; --pos-m: ${sc.posM || sc.pos || '50% 50%'}"` : '';
+    return `<img src="assets/photos/${p.id}-${p.sizes[p.sizes.length - 1]}.jpg" srcset="${srcset}" sizes="100vw" width="${p.w}" height="${p.h}" alt="${esc(sc.alt || p.alt)}" decoding="async"${i ? '' : ' fetchpriority="high"'}${pos}>`;
   };
   return `  <!-- ===== 히어로: 구호·가치 5장면 자동 전환 (큰 틀 'slides', 시안 B) ===== -->
   <section class="heroB" id="heroB" aria-roledescription="carousel" aria-label="신정개발이 중요하게 생각하는 것">
