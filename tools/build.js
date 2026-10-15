@@ -666,7 +666,8 @@ function header(page, activeSvc, file) {
   return frame('header')(page, activeSvc, file);
 }
 
-/* 큰 틀 'base'의 머리말 — 40차 전의 머리말 그대로. 시안 페이지에는 언어 선택(KOR/ENG)을 넣지 않는다(41차, 시안은 한국어만) */
+/* 큰 틀 'base'의 머리말 — 40차 전의 머리말 그대로. 시안 페이지에는 언어 선택(KOR/ENG)을 넣지 않는다(41차, 시안은 한국어만).
+   시안 갈래도 설정 sian.lang 이 false 이면 넣지 않는다(시안 B, 2026-10-16 — 영어판이 시안 B 모양이 아니라서) */
 function headerBase(page, activeSvc, file) {
   const cur = (id) => (id === activeSvc ? ' class="is-current"' : '');
   const self = file || 'index.html';
@@ -704,7 +705,7 @@ ${SERVICES.map((s) => `              <li><a href="${s.file}"${cur(s.id)}><b>${es
 ${nav}
   </nav>
   <div class="hdr__act">
-${VARIANT ? '' : `    ${lang}\n`}    <a class="hdr__cta" href="contact.html"${page === 'contact' ? ' aria-current="page"' : ''}>${CFG.common.headerCta} ${arrow(14)}</a>
+${VARIANT || (CFG.sian && CFG.sian.lang === false) ? '' : `    ${lang}\n`}    <a class="hdr__cta" href="contact.html"${page === 'contact' ? ' aria-current="page"' : ''}>${CFG.common.headerCta} ${arrow(14)}</a>
     <button class="burger" type="button" aria-expanded="false" aria-controls="drawer" aria-label="메뉴 열기"><i></i><i></i><i></i></button>
   </div>
 </header>

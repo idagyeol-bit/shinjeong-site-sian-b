@@ -217,6 +217,7 @@ module.exports = {
     name: '시안 B',  // 시안 이름 (예: '시안 A')
     direction: '',   // 한 문장 방향 (예: '밝고 대담한 글자'). 비어 있으면 이름만 보인다
     color: '#c2410c', // 띠 색 (예: '#c2410c')
+    lang: false,      // false = 머리말의 언어 선택(KOR/ENG)을 숨긴다 (시안 B 는 한국어만, 2026-10-16 이다결 님 요청). 적지 않으면 보인다
     url: 'https://idagyeol-bit.github.io/shinjeong-site-sian-b/'   // 이 시안이 올라가는 주소 (시안 B 전용 저장소 shinjeong-site-sian-b, 2026-10-16 시안 A 를 그대로 복사해 시작). 비어 있으면 원본 주소
   }
 };
