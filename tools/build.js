@@ -1239,6 +1239,35 @@ ${svcCta()}
 `;
   },
 
+  /* 사업분야 — 층층이 덮이는 색판 5장 (시안 B, 시안B 2차). 'what'(카드 5장 격자) 대신 home.sections 에 'whatB' 를 두면 쓰인다.
+     판 하나 = 업무 하나: 영문 알약 라벨 → 큰 제목(업무 페이지 링크) → 한 줄 설명 → 대상 설비 칩 → 자세히 보기, 오른쪽 사진.
+     제목·설명·칩은 사업분야 데이터(SERVICES·CARD_CHIPS, 사실) 그대로, 라벨·사진·사진 설명은 CFG.home.copy.what.boards.
+     PC: 판이 머리말 아래에 붙어(sticky) 다음 판이 아래에서 위로 덮고, 덮이는 판의 내용은 js/biz-stack.js 가 조금 작게·옅게·위로 민다.
+     휴대폰·움직임 줄이기: 세로로 쌓이기만 한다. class 는 모두 bizB- 로 시작한다(기존 .scard 규칙과 섞이지 않게) */
+  whatB: (bg) => {
+    const c = CFG.home.copy.what;
+    return `  <!-- ===== 사업분야 (층층 색판, 시안 B) ===== -->
+  <section class="bizB" id="what" aria-labelledby="bizB-title">
+${c.boards.map((b, i) => {
+    const s = svc(b.svc);
+    return `    <article class="bizB__panel bizB__panel--${i + 1}">
+${i ? '' : `      <h2 class="bizB__sec" id="bizB-title">${c.title}</h2>\n`}      <div class="bizB__in">
+        <div class="bizB__txt">
+          <span class="bizB__pill" lang="en">${esc(b.label)}</span>
+          <h3 class="bizB__title"><a href="${s.file}">${esc(s.title)}</a></h3>
+          <p>${esc(s.card)}</p>
+          <ul class="bizB__chips" aria-label="${esc(s.title)} 대상 설비">${CARD_CHIPS[s.id].map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
+          <a class="bizB__go" href="${s.file}" aria-label="${esc(s.title)} 자세히 보기">자세히 보기 ${arrow(14)}</a>
+        </div>
+        <figure class="bizB__shot">${photo({ ...P(b.photo), alt: b.alt || P(b.photo).alt }, '(max-width:960px) 92vw, 400px')}</figure>
+      </div>
+    </article>`;
+  }).join('\n')}
+    <div class="bizB__end"><a class="btn btn--line btn--sm" href="contact.html">${c.button} ${arrow(18)}</a></div>
+  </section>
+`;
+  },
+
   /* 주요 수행 이력 — 보여 줄 이력(FEATURED)과 전체 건수는 사실 데이터 */
   projects: (bg) => {
     const c = CFG.home.copy.projects;
@@ -1372,7 +1401,7 @@ pages['index.html'] = () => {
   }) + header('home', null, 'index.html') + `
 <main id="main">
 
-` + frame('hero')() + '\n' + CFG.home.sections.map((s) => S[s.id](s.bg)).join('\n') + '\n' + cta({ home: true }) + MAIN_END + footer() + foot(CFG.frame.hero === 'reel' ? ['reel.js'] : CFG.frame.hero === 'slides' ? ['hero-slides.js'] : []);
+` + frame('hero')() + '\n' + CFG.home.sections.map((s) => S[s.id](s.bg)).join('\n') + '\n' + cta({ home: true }) + MAIN_END + footer() + foot((CFG.frame.hero === 'reel' ? ['reel.js'] : CFG.frame.hero === 'slides' ? ['hero-slides.js'] : []).concat(CFG.home.sections.some((s) => s.id === 'whatB') ? ['biz-stack.js'] : []));
 };
 
 /* ---------- 2. 사업분야 ---------- */
@@ -2084,6 +2113,16 @@ function checkConfig() {
     if (m.type === 'video' && !m.src) configError(`첫 화면 영상 주소(src)가 없습니다 (설정 hero.media.${k})`);
     if (m.type !== 'photo' && m.type !== 'video') configError(`첫 화면 사진 종류는 'photo' 또는 'video' 입니다 (설정 hero.media.${k})`);
   });
+  /* 사업분야 색판 'whatB' (시안 B) */
+  if (CFG.home.sections.some((s) => s.id === 'whatB')) {
+    const bs = CFG.home.copy.what.boards;
+    if (!Array.isArray(bs) || !bs.length) configError(`사업분야 색판('whatB')에는 판 목록이 있어야 합니다 (설정 home.copy.what.boards)`);
+    bs.forEach((b, i) => {
+      if (!svc(b.svc)) configError(`사업분야 색판 ${i + 1}번째의 업무 번호 '${b.svc}'이 없습니다 (설정 home.copy.what.boards)`);
+      if (!b.label) configError(`사업분야 색판 ${i + 1}번째의 라벨(label)이 없습니다 (설정 home.copy.what.boards)`);
+      if (!PHOTOS[b.photo]) configError(`사업분야 색판 ${i + 1}번째의 사진 번호 '${b.photo}'이 사진 목록에 없습니다 (설정 home.copy.what.boards)`);
+    });
+  }
   /* 큰 틀 'slides'의 장면 (시안 B) */
   if (CFG.frame.hero === 'slides') {
     if (!Array.isArray(CFG.hero.scenes) || !CFG.hero.scenes.length) configError(`큰 틀 'slides'에는 장면 목록이 있어야 합니다 (설정 hero.scenes)`);

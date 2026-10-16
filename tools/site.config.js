@@ -132,7 +132,7 @@ module.exports = {
        (주의: 'process' 구역의 버튼은 남색 바탕에 맞춘 흰 테두리 버튼이라, 다른 바탕에서는 잘 안 보일 수 있다) */
     sections: [
       { id: 'trust', bg: 'white' },    // 숫자 띠 (200회 · 170여 건 · 특허 · 면허, 주요 현장)
-      { id: 'what', bg: 'white' },     // 사업분야 (업무 카드 다섯 장)
+      { id: 'whatB', bg: 'white' },    // 사업분야 — 시안 B: 층층이 덮이는 색판 다섯 장(시안B 2차). 'what' 으로 바꾸면 업무 카드 다섯 장 격자. 바탕색은 판마다 css 에서 정한다
       { id: 'projects', bg: 'soft' },  // 주요 수행 이력
       { id: 'process', bg: 'navy' },   // 현장 진행 방식
       { id: 'scenes', bg: 'soft' },    // 현장의 장면 (사진 카드 세 장)
@@ -147,7 +147,15 @@ module.exports = {
       },
       what: {                               // 사업분야
         title: '사업분야',                                    // 구역 제목
-        button: '어느 업무인지 모르겠다면 문의하기'              // 카드 아래 버튼 문구 (문의 페이지로 간다)
+        button: '어느 업무인지 모르겠다면 문의하기',             // 카드 아래 버튼 문구 (문의 페이지로 간다)
+        boards: [                                             // 시안 B 색판(whatB) — 위에서부터 이 순서로 쌓인다. 제목·설명·칩은 사업분야 데이터 그대로
+          // svc = 업무 번호(바꾸지 않는다) · label = 판 위 영문 알약 라벨 · photo = 사진 번호 · alt = 사진 설명(사진에 보이는 것만)
+          { svc: 'S01', label: 'Cleaning', photo: 'P01', alt: '탱크 내부 고압 세척 작업' },
+          { svc: 'S02', label: 'Catalyst', photo: 'P03', alt: '반응기 내부의 촉매 흡입 로봇' },
+          { svc: 'S03', label: 'Chemical', photo: 'W09', alt: '플랜트에서 작업 중인 진공흡입차' },   // 화학세정 작업 사진은 아직 없음(고객 사진 오면 교체, 남은 일 19번)
+          { svc: 'S04', label: 'Dredging', photo: 'W10', alt: '맨홀 호스 준설 작업' },
+          { svc: 'S05', label: 'Pipeline', photo: 'W04' }                                      // alt 없음 = 사진 목록의 설명(도로 위 맨홀 공사 현장) — 사진에 '관로 조사'는 보이지 않아서
+        ]
       },
       projects: {                           // 주요 수행 이력
         title: '주요 수행 이력',                                       // 구역 제목

@@ -1598,3 +1598,67 @@ body[data-hero="slides"][data-page="home"] .hdr.is-scrolled .hdr__cta:hover { ba
   .heroB__slide.is-on .heroB__sub, .heroB__slide.is-on .heroB__note, .heroB__bar i { animation: none !important; opacity: 1; transform: none; }
 }
 @media print { .heroB { height: auto; min-height: 0; } .heroB__slide:not(:first-child), .heroB__ctrl, .heroB__tabs { display: none !important; } .heroB__slide { position: relative; opacity: 1; visibility: visible; } }
+
+/* ========== 시안 B — 메인 사업분야 층층 색판 5장 (home.sections 'whatB', tools/build.js HOME_SECTIONS.whatB · js/biz-stack.js, 시안B 2차) ==========
+   업무 하나당 색판 한 장. PC: 판이 머리말 아래에 붙고(sticky) 다음 판이 아래에서 위로 덮는다. 판 높이 약 74vh, 윗모서리 24px, 옅은 그림자.
+   덮이는 판의 내용은 js/biz-stack.js 가 살짝 작게(0.955)·옅게(0.45)·위로(-48px). 휴대폰·움직임 줄이기는 세로로 쌓이기만.
+   기존 .scard(카드 격자) 규칙은 그대로 둔다(사업분야 페이지·다른 갈래가 쓴다) */
+.bizB { position: relative; }
+.bizB__panel {
+  position: sticky; top: var(--header-h); min-height: 74vh;
+  display: flex; align-items: center;
+  padding: 84px var(--gutter) 48px;
+  border-radius: 24px 24px 0 0; box-shadow: 0 -14px 38px #0a101c26;
+  background: #fff; color: #141a33;
+}
+.bizB__sec { position: absolute; top: 36px; left: 0; right: 0; width: min(1080px, 100% - var(--gutter) * 2); margin: 0 auto; padding: 0 8px; font-size: 19px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.4; color: inherit; }
+.bizB__in { display: flex; align-items: center; gap: 48px; width: 100%; max-width: 1080px; margin: 0 auto; transform-origin: center top; will-change: transform, opacity; }
+.bizB__txt { flex: 1 1 55%; max-width: 560px; word-break: keep-all; }
+.bizB__pill { display: inline-block; margin-bottom: 20px; padding: 7px 15px; border-radius: 999px; font-size: 13px; font-weight: 600; line-height: 1.3; }
+.bizB__title { margin: 0; max-width: none; font-size: clamp(34px, 3.6vw, 52px); font-weight: 900; letter-spacing: -0.03em; line-height: 1.14; color: inherit; }
+.bizB__title a { color: inherit; text-decoration: none; text-underline-offset: 0.12em; text-decoration-thickness: 0.05em; }
+.bizB__title a:hover, .bizB__title a:focus-visible { text-decoration: underline; }
+.bizB__txt p { margin: 20px 0 0; max-width: none; font-size: 16px; line-height: 1.7; }
+.bizB__chips { display: flex; flex-wrap: wrap; gap: 7px; margin: 18px 0 0; padding: 0; list-style: none; }
+.bizB__chips li { padding: 5px 12px; border-radius: 999px; font-size: 12.5px; line-height: 1.5; }
+.bizB__go { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; min-height: 44px; font-size: 15px; font-weight: 700; }
+.bizB__go:hover { text-decoration: underline; text-underline-offset: 3px; }
+.bizB__shot { flex: 0 1 400px; margin: 0; }
+.bizB__shot img { display: block; width: 100%; height: 280px; object-fit: cover; border-radius: 10px; }
+.bizB__end { position: relative; z-index: 1; padding: 66px var(--gutter); background: #fff; text-align: center; }
+/* 판 색 — 흰색 → 연회색 → 남색 → 짙은 남색 → 연초록 */
+.bizB__panel--1 { background: #ffffff; color: #141a33; }
+.bizB__panel--1 .bizB__pill { background: #eef1f5; color: #3c4254; }
+.bizB__panel--1 .bizB__chips li { background: #f1f2f5; color: #5a6071; }
+.bizB__panel--1 .bizB__go { color: #29398A; }
+.bizB__panel--2 { background: #eef1f5; color: #141a33; }
+.bizB__panel--2 .bizB__pill, .bizB__panel--2 .bizB__chips li { background: #ffffff; }
+.bizB__panel--2 .bizB__pill { color: #3c4254; }
+.bizB__panel--2 .bizB__chips li { color: #5a6071; }
+.bizB__panel--2 .bizB__go { color: #29398A; }
+.bizB__panel--3 { background: #0e2e4a; color: #ffffff; }
+.bizB__panel--3 .bizB__pill { background: #ffffff24; color: #dbe6f2; }
+.bizB__panel--3 .bizB__chips li { background: #ffffff1f; color: #c7d2e4; }
+.bizB__panel--4 { background: #0c1420; color: #ffffff; }
+.bizB__panel--4 .bizB__pill { background: #ffffff1f; color: #dbe6f2; }
+.bizB__panel--4 .bizB__chips li { background: #ffffff1a; color: #c7d2e4; }
+.bizB__panel--3 .bizB__txt p, .bizB__panel--4 .bizB__txt p { color: #c7d2e4; }
+.bizB__panel--3 .bizB__go, .bizB__panel--4 .bizB__go { color: #8fe492; }
+.bizB__panel--3 :focus-visible, .bizB__panel--4 :focus-visible { outline-color: #fff; }
+.bizB__panel--5 { background: #eef6ee; color: #15301b; }
+.bizB__panel--5 .bizB__pill { background: #ffffff; color: #2f7d33; }
+.bizB__panel--5 .bizB__txt p { color: #33503a; }
+.bizB__panel--5 .bizB__chips li { background: #ffffff; color: #3f6a46; }
+.bizB__panel--5 .bizB__go { color: #2f7d33; }
+
+@media (max-width: 960px) {   /* 휴대폰·좁은 화면: 붙지 않고 세로로 쌓인다 */
+  .bizB__panel { position: static; min-height: 0; padding: 72px var(--gutter) 48px; border-radius: 0; box-shadow: none; }
+  .bizB__panel--1 { padding-top: 92px; }   /* 구역 제목(사업분야)과 첫 라벨 사이를 띄운다 */
+  .bizB__sec { left: var(--gutter); right: var(--gutter); width: auto; padding: 0; }
+  .bizB__in { flex-direction: column; align-items: stretch; gap: 28px; will-change: auto; }
+  .bizB__txt { max-width: none; }
+  .bizB__shot { flex: none; }
+  .bizB__shot img { height: 240px; }
+}
+@media (prefers-reduced-motion: reduce) { .bizB__in { transform: none !important; opacity: 1 !important; will-change: auto; } }
+@media print { .bizB__panel { position: static; min-height: 0; box-shadow: none; } }
