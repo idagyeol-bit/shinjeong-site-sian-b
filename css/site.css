@@ -1684,3 +1684,13 @@ body[data-hero="slides"][data-page="home"] .hdr.is-scrolled .hdr__cta:hover { ba
 .procB-use > .procB-fold--use > summary { margin-top: -6px; }
 @media (max-width: 960px) { .procB-use > .procB-fold--use > summary { margin-top: 0; } }
 .procB-fold--dw { margin-top: 0; }
+
+/* ========== 시안 B — 회사 소개 다이어트판 + 메인 남색 구역 한 문장 (설정 diet.company · home.copy.process.summary, 시안B 5차) ==========
+   3차의 접기(.fold.tecB-fold)를 그대로 쓴다. 여기서는 요약 줄과 줄 목록(.co-rows__row) 안에서의 자리만 정한다 */
+.comB-sum { margin: -8px 0 clamp(24px, 2.6vw, 36px); font-weight: 600; color: var(--ink); }
+.comB-row { align-items: start; }
+.comB-row > .comB-fold { margin-top: 0; min-width: 0; }
+.comB-row > .comB-fold > summary { margin-top: -6px; }
+@media (max-width: 960px) { .comB-row > .comB-fold > summary { margin-top: 0; } }
+.comB-qline { margin: 0 0 16px; font-size: var(--fs-body); line-height: 1.6; color: var(--text); }
+.comB-steps, .section--navy .comB-steps { margin: 0; color: #fff; font-weight: 600; }   /* 남색 구역: 예전 단계 목록 자리의 한 문장 */

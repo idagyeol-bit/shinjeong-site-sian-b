@@ -452,6 +452,12 @@ const EQ_ANCHOR = (svcId) => (EQUIP_GROUPS.find((g) => g.svc === svcId) || {}).i
 /* 시안B 3차: 장비·로봇 다이어트판을 쓰는지(설정 diet.technology). 표는 지우지 않고 눌러서 펼치는 접기(<details class="fold">, 현장 진행 방식의 효율성 비교와 같은 단추)에 넣는다 */
 const techDiet = () => !!(CFG.diet && CFG.diet.technology);   // CFG 는 시안마다 바뀌므로 그때그때 읽는다
 const procDiet = () => !!(CFG.diet && CFG.diet.process);      // 시안B 4차: 현장 진행 방식 다이어트판(같은 접기 장치를 쓴다)
+const compDiet = () => !!(CFG.diet && CFG.diet.company);      // 시안B 5차: 회사 소개 다이어트판(같은 접기 장치를 쓴다)
+/* 회사 소개 줄 목록 한 칸: 다이어트판이면 오른쪽 내용을 '<목록 이름> 펼쳐 보기' 접기에 넣는다(이름 h3 은 늘 보임) */
+const coRow = (title, body) => `        <div class="co-rows__row${compDiet() ? ' comB-row' : ''}" data-reveal>
+          <h3>${esc(title)}</h3>
+          ${compDiet() ? tecFold(`${title} 펼쳐 보기`, body, 'comB-fold') : body}
+        </div>`;
 /* extra: 덧붙일 class · hash: 주소가 #hash 로 들어오면 js/tech-fold.js 가 이 접기를 연다 */
 const tecFold = (label, body, extra, hash) => `<details class="fold tecB-fold${extra ? ' ' + extra : ''}"${hash ? ` data-open-hash="${hash}"` : ''}>
           <summary>${esc(label)}</summary>
@@ -1320,9 +1326,9 @@ ${feat.map((p) => recRow(p)).join('\n')}
           <figcaption class="split__cap split__cap--strong">${c.caption}</figcaption>
         </figure>
         <div>
-          <ol class="numlist numlist--tight">
+${c.summary ? `          <p class="lead comB-steps">${esc(c.summary)}</p>   <!-- 시안B 5차: 단계 이름은 현장 진행 방식 페이지가 맡는다 -->` : `          <ol class="numlist numlist--tight">
 ${PROCESS.steps.map((st, i) => `            <li><em>${String(i + 1).padStart(2, '0')}</em><b>${esc(st.t)}</b></li>`).join('\n')}
-          </ol>
+          </ol>`}
           <div class="mt-24"><a class="btn btn--ghost btn--sm" href="process.html">${c.button} ${arrow(18)}</a></div>
         </div>
       </div>
@@ -1846,31 +1852,20 @@ pages['company.html'] = () => head({
   <section class="section section--soft" id="credentials">
     <div class="wrap">
       <div class="head head--solo" data-reveal><div><h2>면허·인증·수상</h2></div></div>
-      <div class="co-rows">
-        <div class="co-rows__row" data-reveal>
-          <h3>면허·허가·등록</h3>
-          <ul class="co-rows__list">${CREDS.licenses.concat(CREDS.permits).map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
-        </div>
-        <div class="co-rows__row" data-reveal>
-          <h3>경영시스템·기업 인증</h3>
-          <div>
+${compDiet() ? `      <p class="lead comB-sum" data-reveal>면허·허가·등록 ${CREDS.licenses.length + CREDS.permits.length}종 · ${esc(CREDS.patentCount.replace(/^등록 /, '등록 특허 '))}</p>   <!-- 시안B 5차: 요약 한 줄(숫자는 CREDS 에서 센다) -->
+` : ''}      <div class="co-rows">
+${coRow('면허·허가·등록', `<ul class="co-rows__list">${CREDS.licenses.concat(CREDS.permits).map((x) => `<li>${esc(x)}</li>`).join('')}</ul>`)}
+${coRow('경영시스템·기업 인증', `<div>
             <ul class="co-rows__list">${CREDS.certs.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
             <p class="note mt-14">회사소개서(2024) 수록 기준</p>
-          </div>
-        </div>
-        <div class="co-rows__row" data-reveal>
-          <h3>수상</h3>
-          <ul class="co-rows__years">${CREDS.awards.map((x) => { const m = x.match(/^(.*) \((\d{4})\)$/); return `<li><em>${m[2]}</em><span>${esc(m[1])}</span></li>`; }).join('')}</ul>
-        </div>
-        <div class="co-rows__row" data-reveal>
-          <h3>특허</h3>
-          <div>
+          </div>`)}
+${coRow('수상', `<ul class="co-rows__years">${CREDS.awards.map((x) => { const m = x.match(/^(.*) \((\d{4})\)$/); return `<li><em>${m[2]}</em><span>${esc(m[1])}</span></li>`; }).join('')}</ul>`)}
+${coRow('특허', `<div>
             <p class="co-rows__sum">${esc(CREDS.patentCount)} <span class="note">회사소개서(2024) 수록 기준</span></p>
             <p class="co-rows__label">대표 특허</p>
             <ul class="co-rows__years">${PROCESS.patents.map(([name, year]) => `<li><em>${year}</em><span>${esc(name)}</span></li>`).join('')}</ul>
             <div class="mt-14"><a class="tlink" href="technology.html#research">등록 특허 표 보기 ${arrow(14)}</a></div>
-          </div>
-        </div>
+          </div>`)}
       </div>
     </div>
   </section>
@@ -1890,9 +1885,14 @@ pages['company.html'] = () => head({
         </div>
         <div data-reveal data-delay="80">
           <h3 class="mb-16">보유 기술자격</h3>
-          <dl class="dtable dtable--tight">
+${(() => {
+  const dl = `<dl class="dtable dtable--tight">
 ${CREDS.quals.map((q, i) => `            <div><dt>${esc(CREDS.qualFields[i])}</dt><dd>${esc(q)}</dd></div>`).join('\n')}
-          </dl>
+          </dl>`;
+  /* 시안B 5차: 한 줄(분야 수는 CREDS 에서 센다) + 표는 '기술자격 펼쳐 보기' 접기에 */
+  return compDiet() ? `          <p class="comB-qline">기술 분야 ${CREDS.qualFields.length}개의 자격을 보유하고 있습니다</p>
+          ${tecFold('기술자격 펼쳐 보기', dl, 'comB-fold comB-fold--qual')}` : `          ${dl}`;
+})()}
         </div>
       </div>
     </div>
