@@ -1694,3 +1694,23 @@ body[data-hero="slides"][data-page="home"] .hdr.is-scrolled .hdr__cta:hover { ba
 @media (max-width: 960px) { .comB-row > .comB-fold > summary { margin-top: 0; } }
 .comB-qline { margin: 0 0 16px; font-size: var(--fs-body); line-height: 1.6; color: var(--text); }
 .comB-steps, .section--navy .comB-steps { margin: 0; color: #fff; font-weight: 600; }   /* 남색 구역: 예전 단계 목록 자리의 한 문장 */
+
+/* ========== 시안 B — 현장 진행 방식: 일곱 단계 가로 스트립 (설정 look.process, 시안B 7차) ==========
+   PC: 한 줄 7칸. 칸마다 원 안의 선 아이콘 → 단계 번호 → 이름 → 작은 설명. 원과 원 사이를 가는 선으로 이어 흐름을 보인다.
+   휴대폰·좁은 화면(960px 이하): 세로로 쌓이고, 왼쪽 원들을 세로선으로 잇는다. 기존 .proc(카드 격자) 규칙은 그대로 둔다 */
+.procB-strip { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0 clamp(10px, 1.2vw, 20px); margin: 0; padding: 0; list-style: none; }
+.procB-step { position: relative; min-width: 0; word-break: keep-all; }
+.procB-step::before { content: ""; position: absolute; top: 28px; left: 64px; right: calc(-1 * clamp(10px, 1.2vw, 20px)); height: 1px; background: var(--line); }
+.procB-step:last-child::before { display: none; }
+.procB-step__ico { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; border: 1px solid var(--line); border-radius: 50%; background: var(--white); color: var(--brand); }
+.procB-step__body { margin-top: 18px; }
+.procB-step em { display: block; margin-bottom: 6px; font-style: normal; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--brand); }
+.procB-step h3 { font-size: var(--fs-h4); line-height: 1.4; }
+.procB-step p { margin-top: 8px; font-size: var(--fs-xs); line-height: 1.7; color: var(--muted); }
+@media (max-width: 960px) {
+  .procB-strip { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .procB-step { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 0 18px; padding-bottom: 26px; }
+  .procB-step::before { top: 56px; bottom: 0; left: 28px; right: auto; width: 1px; height: auto; }
+  .procB-step__body { margin-top: 4px; }
+  .procB-step p { font-size: var(--fs-sm); }
+}

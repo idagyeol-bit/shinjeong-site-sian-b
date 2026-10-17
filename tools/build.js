@@ -612,7 +612,10 @@ const ICONS = {
   mail: '<rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/>',
   pin: '<path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/>',
   doc: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.5h4.5"/>',
-  shield: '<path d="M12 3 5 6v5.5c0 4.3 2.9 8 7 9.5 4.1-1.5 7-5.2 7-9.5V6z"/><path d="m9 12 2.2 2.2L15.2 10"/>'
+  shield: '<path d="M12 3 5 6v5.5c0 4.3 2.9 8 7 9.5 4.1-1.5 7-5.2 7-9.5V6z"/><path d="m9 12 2.2 2.2L15.2 10"/>',
+  /* 시안B 7차: 현장 진행 일곱 단계 가로 스트립용 (같은 선 굵기·모서리 결) */
+  checklist: '<rect x="5" y="4.5" width="14" height="16.5" rx="2"/><path d="M9 3h6v3H9z"/><path d="m8.3 11.2 1.4 1.4 2.6-2.6M8.3 16.2l1.4 1.4 2.6-2.6"/><path d="M14 11.6h2.2M14 16.6h2.2"/>',
+  worker: '<path d="M6.5 11a5.5 5.5 0 0 1 11 0"/><path d="M5 11h14"/><path d="M12 5.5V8"/><path d="M8 13.5a4 4 0 0 0 8 0"/><path d="M5.5 21a6.5 6.5 0 0 1 13 0"/>'
 };
 const icon = (n, size = 24, cls = '') =>
   `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"${cls ? ` class="${cls}"` : ''}>${ICONS[n] || ''}</svg>`;
@@ -1641,8 +1644,30 @@ pages['process.html'] = () => head({
   h1: '현장 진행 방식',
   keepLead: '작업은 현장 검토에서 시작해 회수물 처리로 끝납니다. 위험한 구간에는 로봇이 먼저 들어가고, 작업자는 위험 물질이 줄어든 뒤에 투입됩니다.',
   crumbs: [{ label: '현장 진행 방식' }]
-}) + `
-  <!-- 01 진행 순서 -->
+}) + (() => {
+  /* 시안B 7차(설정 look.process): 3D 배치를 첫 구역으로 올리고, 일곱 단계는 아이콘 가로 스트립(PC 7칸, 휴대폰 세로).
+     글자(단계 번호·이름·설명, 구역 제목·설명)는 그대로이고 자리와 모양만 바뀐다. 바탕은 흰색·연회색이 번갈아 오게 서로 바꾼다 */
+  const vis = !!(CFG.look && CFG.look.process);
+  const STEP_ICONS = ['checklist', 'truck', 'suction', 'robot', 'monitor', 'worker', 'filter'];   // 단계를 알아보게 하는 선 아이콘(장식 아님)
+  const steps = vis ? `  <!-- 02 진행 순서 (시안B 7차: 아이콘 가로 스트립) -->
+  <section class="section section--soft">
+    <div class="wrap">
+      <div class="head">
+        <div data-reveal><h2>작업 진행 일곱 단계</h2></div>
+      </div>
+      <ol class="procB-strip" data-reveal>
+${PROCESS.steps.map((st, i) => `        <li class="procB-step">
+          <span class="procB-step__ico">${icon(STEP_ICONS[i] || st.icon || 'robot', 30)}</span>
+          <div class="procB-step__body">
+            <em>${esc(st.k)}</em>
+            <h3>${esc(st.t)}</h3>
+            <p>${esc(st.d)}</p>
+          </div>
+        </li>`).join('\n')}
+      </ol>
+    </div>
+  </section>
+` : `  <!-- 01 진행 순서 -->
   <section class="section">
     <div class="wrap">
       <div class="head">
@@ -1660,9 +1685,9 @@ ${PROCESS.steps.map((st, i) => `        <article data-reveal${i ? ` data-delay="
       </div>
     </div>
   </section>
-
-  <!-- 02 현장 배치 -->
-  <section class="section section--soft">
+`;
+  const site = `  <!-- ${vis ? '01' : '02'} 현장 배치 -->
+  <section class="section${vis ? '' : ' section--soft'}">
     <div class="wrap">
       <div class="head">
         <div data-reveal><h2>현장 배치와 작업 순서</h2><p class="lead">위험한 작업은 로봇이 먼저 하고, 작업자는 설비 밖에서 조종합니다.</p></div>
@@ -1677,6 +1702,9 @@ ${pcards(['R07', 'R25', 'R27'], null, null, null, [
       </div>
     </div>
   </section>
+`;
+  return '\n' + (vis ? site + '\n' + steps : steps + '\n' + site);
+})() + `
 
   <!-- 03 왜 로봇인가 -->
   <section class="section">
