@@ -578,7 +578,7 @@ const PROJECT_SUMMARY = {
 /* 시안B 14차: 수행 이력 비주얼판(설정 look.projects)의 숫자 띠 3칸 — 숫자·표현은 모두 소개 문장(keepLead)과 위 PROJECT_SUMMARY 에서 꺼낸 것(새 숫자 0).
    사진 카드 4칸의 글자는 PROJECT_SUMMARY.sectors 그대로, 사진은 설정 look.projects.photos */
 const PROJECT_STATS_B = [
-  { n: PROJECT_SUMMARY.n, unit: PROJECT_SUMMARY.unit, l: '2020~2023년 수행 실적' },      // 170여 건
+  { n: PROJECT_SUMMARY.n, unit: PROJECT_SUMMARY.unit, l: PROJECT_SUMMARY.l },            // 170여 건 · 작은 줄은 옛 띠 그대로(출처 표기 포함 — 14차 소수정으로 복원)
   { n: 4, unit: '곳', l: '4년 연속 단가계약 발주처' },                                     // 소개 문장 "4개 발주처와는 4년 연속 단가계약"
   { n: PROJECT_SUMMARY.sectors.length, unit: '개 분야', l: '플랜트 · 발전 · 공공 · 건설' }  // sectors 4개의 줄임 이름표(전체 이름은 바로 아래 사진 카드에)
 ];
