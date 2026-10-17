@@ -1470,27 +1470,59 @@ SERVICES.forEach((s, idx) => {
     const links = [];
     /* 21차: 장비 링크는 표의 '주요 장비' 줄 안(.glance__more)으로 옮겼다. 표 아래에는 준설의 탈수 과정 링크만 남는다 */
     if (s.recovery) links.push(`<a class="tlink" href="process.html#dewater">탈수 과정 자세히 보기 ${arrow(14)}</a>`); // 준설: '회수 이후의 과정' 섹션 대신
-    sections.push(`  <section class="section">
-    <div class="wrap">
-      <div class="head head--solo" data-reveal><div><h2>${esc(s.short)}</h2></div></div>
-      <div class="split split--top glance">
-        <figure class="split__media" data-reveal>
-          <div class="split__fig">${photo(s.photo, '(max-width:960px) 92vw, 620px')}</div>
-          <figcaption class="split__cap">${esc(s.photo.cap)}</figcaption>
-        </figure>
-        <div data-reveal data-delay="90">
-          <dl class="glance__tbl">
+    const tbl = `<dl class="glance__tbl">
             <div><dt>작업 범위</dt><dd>${s.targets.map(esc).join(' · ')}</dd></div>
             <div><dt>주요 장비</dt><dd>${s.equip.map(esc).join(' · ')}<a class="glance__more" href="technology.html#${EQ_ANCHOR(s.id)}">장비 보기 ${arrow(14)}</a></dd></div>
 ${s.worktime ? `            <div><dt>작업 시기</dt><dd>${esc(s.worktime)}</dd></div>\n` : ''}            <div><dt>관련 이력</dt><dd>${rel.length ? rel.map((p) => `${esc(p.title)} (${esc(p.period)})`).join(' · ') : '이 홈페이지의 수행 이력에는 이 업무로 분류된 항목이 없습니다.'}</dd></div>
             <div><dt>문의 시 필요한 정보</dt><dd>${s.inquiryHint.map(esc).join(' · ')}</dd></div>
-          </dl>
-${links.length ? `          <p class="glance__links mt-18">${links.join('')}</p>\n` : ''}          <div class="mt-24"><a class="btn btn--fill" href="contact.html?service=${s.id}">이 업무로 문의하기 ${arrow(18)}</a></div>
+          </dl>`;
+    const glanceFig = `<figure class="split__media" data-reveal>
+          <div class="split__fig">${photo(s.photo, '(max-width:960px) 92vw, 620px')}</div>
+          <figcaption class="split__cap">${esc(s.photo.cap)}</figcaption>
+        </figure>`;
+    const inquiryBtn = `<div class="mt-24"><a class="btn btn--fill" href="contact.html?service=${s.id}">이 업무로 문의하기 ${arrow(18)}</a></div>`;
+    /* 시안B 8차(설정 look.services[업무 번호]): 맨 위 큰 비주얼 → 소개 문장 → 핵심 3칸(표의 작업 범위·주요 장비·작업 시기 글자 그대로) → '작업 정보 펼쳐 보기' 접기(대표 사진·설명과 한눈에 보기 표 전체) → 문의 단추.
+       큰 사진이 원본보다 넓은 자리에 놓이면 흐려지므로, 같은 사진을 흐리게 깐 배경 위에 원본 크기 이하로 가운데 얹는다(휴대폰은 화면 폭 그대로) */
+    const vis = CFG.look && CFG.look.services && CFG.look.services[s.id];
+    if (vis) {
+      const hp = P(vis.photo);
+      const big = hp.sizes[hp.sizes.length - 1];
+      const key = [['작업 범위', s.targets.map(esc).join(' · ')], ['주요 장비', s.equip.map(esc).join(' · ')]].concat(s.worktime ? [['작업 시기', esc(s.worktime)]] : []);
+      sections.push(`  <section class="section svcB">
+    <figure class="svcB-hero" style="--svcB-w: ${big}px; --svcB-ratio: ${hp.w} / ${hp.h}">
+      <img class="svcB-hero__bg" src="assets/photos/${hp.id}-${hp.sizes[0]}.jpg" alt="" aria-hidden="true" decoding="async">
+      ${photo(hp, `(max-width:960px) 100vw, ${big}px`, true).replace('<img ', '<img class="svcB-hero__img" ')}
+    </figure>
+    <div class="wrap">
+      <div class="head head--solo" data-reveal><div><h2>${esc(s.short)}</h2></div></div>
+      <dl class="svcB-key" data-reveal>
+${key.map(([k, v]) => `        <div><dt>${k}</dt><dd>${v}</dd></div>`).join('\n')}
+      </dl>
+      ${tecFold('작업 정보 펼쳐 보기', `<div class="split split--top glance">
+        ${glanceFig}
+        <div>
+          ${tbl}
+${links.length ? `          <p class="glance__links mt-18">${links.join('')}</p>\n` : ''}        </div>
+      </div>`, 'svcB-fold')}
+      ${inquiryBtn}
+    </div>
+  </section>
+`);
+    } else {
+    sections.push(`  <section class="section">
+    <div class="wrap">
+      <div class="head head--solo" data-reveal><div><h2>${esc(s.short)}</h2></div></div>
+      <div class="split split--top glance">
+        ${glanceFig}
+        <div data-reveal data-delay="90">
+          ${tbl}
+${links.length ? `          <p class="glance__links mt-18">${links.join('')}</p>\n` : ''}          ${inquiryBtn}
         </div>
       </div>
     </div>
   </section>
 `);
+    }
 
     /* 장비·현장 사진 묶음 (사진 ZIP에서 고른 3장) */
     if (s.gallery) {
