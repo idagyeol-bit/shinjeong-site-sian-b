@@ -449,7 +449,15 @@ const EQUIP_GROUPS = [
 /* 분야 페이지 '장비 보기'의 도착지 */
 const EQ_ANCHOR = (svcId) => (EQUIP_GROUPS.find((g) => g.svc === svcId) || {}).id || 'equipment';
 
-/* 보유 장비 묶음 하나: 소제목(+이 업무 보기) → 설명 → 표 → (사진). 24차: 보유 칸·설명·업무 링크 추가 */
+/* 시안B 3차: 장비·로봇 다이어트판을 쓰는지(설정 diet.technology). 표는 지우지 않고 눌러서 펼치는 접기(<details class="fold">, 현장 진행 방식의 효율성 비교와 같은 단추)에 넣는다 */
+const techDiet = () => !!(CFG.diet && CFG.diet.technology);   // CFG 는 시안마다 바뀌므로 그때그때 읽는다
+const tecFold = (label, body, extra) => `<details class="fold tecB-fold${extra ? ' ' + extra : ''}">
+          <summary>${esc(label)}</summary>
+          ${body}
+        </details>`;
+
+/* 보유 장비 묶음 하나: 소제목(+이 업무 보기) → 설명 → 표 → (사진). 24차: 보유 칸·설명·업무 링크 추가.
+   다이어트판(시안B 3차): 표만 '장비 목록 펼쳐 보기' 접기에 넣는다(소제목·설명·업무 링크·사진은 그대로 보임) */
 function eqGroup(g) {
   const sv = g.svc ? svc(g.svc) : null;
   const table = `<table class="eqtbl">
@@ -465,7 +473,7 @@ ${g.rows.map(([name, spec, use, qty, rnd]) => `            <tr><td class="eqtbl_
         <p class="eqgroup__desc">${esc(g.desc)}</p>
         <div class="eqgroup__body">
         <div class="eqgroup__main">
-        ${table}${sv ? `
+        ${techDiet() ? tecFold('장비 목록 펼쳐 보기', table, 'tecB-fold--eq') : table}${sv ? `
         <a class="glance__more" href="${sv.file}">${esc(sv.title)} 소개 보기 ${arrow(14)}</a>` : ''}
         </div>
 ${g.photos.length ? `        <div class="eqgroup__photos">
@@ -486,11 +494,12 @@ ${rows.map((r) => `            <tr>${r.map((v, i) => `<td${i ? ` data-label="${e
           </tbody>
         </table>`;
 }
-/* 무인 로봇 시스템 구역의 묶음 하나: 소제목 → 설명 → 표 (24차 .eqgroup 틀) */
-const rndGroup = (title, desc, table) => `      <div class="eqgroup" data-reveal>
+/* 무인 로봇 시스템 구역의 묶음 하나: 소제목 → 설명 → 표 (24차 .eqgroup 틀).
+   fold: 다이어트판(시안B 3차)에서 표를 넣을 접기 단추 글자. 없으면 늘 펼침 */
+const rndGroup = (title, desc, table, fold) => `      <div class="eqgroup" data-reveal>
         <div class="eqgroup__head"><h3>${esc(title)}</h3></div>
         <p class="eqgroup__desc">${esc(desc)}</p>
-        ${table}
+        ${fold && techDiet() ? tecFold(fold, table) : table}
       </div>`;
 
 const FAQ = [
@@ -1529,7 +1538,18 @@ pages['technology.html'] = () => head({
   h1: '장비·로봇',
   keepLead: '신정개발이 보유한 장비를 업무별로 정리했습니다. 위험한 설비 내부 작업에는 기업부설연구소에서 자체 개발한 무인 로봇을 투입합니다.',
   crumbs: [{ label: '장비·로봇' }]
-}) + `
+}) + (techDiet() ? `
+  <!-- 핵심 숫자 띠 (시안B 3차) — 세 숫자 모두 이 페이지의 데이터에서 센다: 세대별 비교의 마지막 세대 · 등록 특허 수 · 보유 장비 묶음 수 -->
+  <section class="section section--sm tecB-key" aria-label="숫자로 보는 장비·로봇">
+    <div class="wrap">
+      <div class="stats stats--flush" data-reveal>
+        <div class="stat"><b><span data-count="${PROCESS.generations.length}">${PROCESS.generations.length}</span><i>세대</i></b><span>자체 개발 무인 로봇</span></div>
+        <div class="stat"><b><span data-count="${PROCESS.patents.length}">${PROCESS.patents.length}</span><i>건</i></b><span>로봇·준설 관련 등록 특허</span></div>
+        <div class="stat"><b><span data-count="${EQUIP_GROUPS.length}">${EQUIP_GROUPS.length}</span><i>개 분야</i></b><span>보유 장비</span></div>
+      </div>
+    </div>
+  </section>
+` : '') + `
   <!-- 01 보유 장비 (23차: 업무별 표 6묶음 + 사진) -->
   <section class="section" id="equipment">
     <div class="wrap">
@@ -1547,9 +1567,9 @@ ${EQUIP_GROUPS.map(eqGroup).join('\n')}
       <div class="head">
         <div data-reveal><h2>자체 개발 무인 로봇</h2><p class="lead">기업부설연구소에서 개발해, 신정개발이 맡은 현장 작업에 직접 투입하는 장비입니다.</p></div>
       </div>
-${rndGroup('무인 흡입 로봇(Vacuum) 세대별 비교', '탱크·Pond용 무인 흡입 로봇은 1세대부터 5세대까지 개발했습니다.', robotTable('무인 흡입 로봇(Vacuum) 세대별 비교', ['세대', '방식', '적용 대상', '수중 작업', '구동', '비고'], PROCESS.generations))}
+${rndGroup('무인 흡입 로봇(Vacuum) 세대별 비교', '탱크·Pond용 무인 흡입 로봇은 1세대부터 5세대까지 개발했습니다.', robotTable('무인 흡입 로봇(Vacuum) 세대별 비교', ['세대', '방식', '적용 대상', '수중 작업', '구동', '비고'], PROCESS.generations), '세대별 비교 펼쳐 보기')}
 ${rndGroup('5세대 무인 클리닝 로봇 주요 사양', '5세대 무인 클리닝 로봇의 사양입니다.', robotTable('5세대 무인 클리닝 로봇 주요 사양', ['항목', '내용'], PROCESS.gen5, ['9.5em', '']))}
-${rndGroup('기타 클리닝 로봇', '흡입 로봇 외에 토사·슬러지 작업과 고압 세척에 쓰는 로봇입니다.', robotTable('기타 클리닝 로봇', ['로봇', '대상', '조종', '구동', '수중 작업'], PROCESS.others))}
+${rndGroup('기타 클리닝 로봇', '흡입 로봇 외에 토사·슬러지 작업과 고압 세척에 쓰는 로봇입니다.', robotTable('기타 클리닝 로봇', ['로봇', '대상', '조종', '구동', '수중 작업'], PROCESS.others), '기타 로봇 펼쳐 보기')}
     </div>
   </section>
 
@@ -1583,9 +1603,15 @@ ${TECH.conditions.map((c, i) => `          <li><em>0${i + 1}</em><b>${esc(c.labe
         <div class="stat"><b><span data-count="${PROCESS.projects.length}">${PROCESS.projects.length}</span><i>건</i></b><span>연구개발 과제</span></div>
         <div class="stat"><b><span data-count="${PROCESS.protos.length}">${PROCESS.protos.length}</span><i>종</i></b><span>로봇 시제품</span></div>
       </div>
-${rndGroup('연구개발 과제', '기업부설연구소가 수행한 과제와 과제별 성능 지표입니다.', robotTable('연구개발 과제', ['과제', '활용', '주요 성능 지표', '구동'], PROCESS.projects, ['25%', '25%', '41.67%', '8.33%']))}
-${rndGroup('로봇 시제품 사양', '기업부설연구소에서 제작한 시제품의 사양입니다. 벽면/천장 부착형은 공인시험기관(KCL) 입회 성능시험을 거쳤습니다.', robotTable('로봇 시제품 사양', ['로봇', '크기 (폭×길이×높이)', '무게', '구동', '조종'], PROCESS.protos))}
-${rndGroup('등록 특허', '로봇과 준설 관련 등록 특허입니다.', robotTable('등록 특허', ['특허 명칭', '등록 연도'], PROCESS.patents, ['', '8em']))}
+${(() => {
+  /* 다이어트판(시안B 3차): 숫자 요약 4칸은 펼친 채, 과제·시제품·특허 표 3개는 '증빙 자료 펼쳐 보기' 접기 하나에 넣는다 */
+  const rd = [
+    rndGroup('연구개발 과제', '기업부설연구소가 수행한 과제와 과제별 성능 지표입니다.', robotTable('연구개발 과제', ['과제', '활용', '주요 성능 지표', '구동'], PROCESS.projects, ['25%', '25%', '41.67%', '8.33%'])),
+    rndGroup('로봇 시제품 사양', '기업부설연구소에서 제작한 시제품의 사양입니다. 벽면/천장 부착형은 공인시험기관(KCL) 입회 성능시험을 거쳤습니다.', robotTable('로봇 시제품 사양', ['로봇', '크기 (폭×길이×높이)', '무게', '구동', '조종'], PROCESS.protos)),
+    rndGroup('등록 특허', '로봇과 준설 관련 등록 특허입니다.', robotTable('등록 특허', ['특허 명칭', '등록 연도'], PROCESS.patents, ['', '8em']))
+  ].join('\n');
+  return techDiet() ? `      ${tecFold('증빙 자료 펼쳐 보기', '\n' + rd + '\n', 'tecB-fold--rnd')}` : rd;
+})()}
       <p class="doc-link" data-reveal><a class="tlink" href="${DOC_TECH}" target="_blank" rel="noopener">기술소개서 (2025) 보기 ${arrow(14)}</a><span class="doc-meta">PDF · 54쪽 · 9.1MB · 홈페이지 공개용</span></p>
 ${SRC_LINE}    </div>
   </section>
@@ -1593,7 +1619,7 @@ ${SRC_LINE}    </div>
 ` + cta({
   h2: '우리 현장에도 적용할 수 있는지<br>물어보세요',
   p: '출입구와 내부 구조, 잔류물 특성 등 알고 계신 정보를 보내 주세요.'
-}) + MAIN_END + footer() + foot();
+}) + MAIN_END + footer() + foot(techDiet() ? ['tech-fold.js'] : []);
 
 
 /* ---------- 4-B. 현장 진행 방식 ---------- */

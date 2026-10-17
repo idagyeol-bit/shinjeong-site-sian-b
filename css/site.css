@@ -1662,3 +1662,17 @@ body[data-hero="slides"][data-page="home"] .hdr.is-scrolled .hdr__cta:hover { ba
 }
 @media (prefers-reduced-motion: reduce) { .bizB__in { transform: none !important; opacity: 1 !important; will-change: auto; } }
 @media print { .bizB__panel { position: static; min-height: 0; box-shadow: none; } }
+
+/* ========== 시안 B — 장비·로봇 다이어트판 (설정 diet.technology, tools/build.js tecFold · js/tech-fold.js, 시안B 3차) ==========
+   맨 위 핵심 숫자 띠 3칸(메인 숫자 띠와 같은 .stats 모양) + 표를 눌러서 펼치는 접기(.fold, 현장 진행 방식의 효율성 비교와 같은 단추).
+   기존 .eqgroup · .eqtbl · .fold 규칙은 그대로 두고, 여기서는 자리·간격만 정한다 */
+.tecB-key { border-bottom: 1px solid var(--line); }
+.tecB-key .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.tecB-fold { margin-top: 4px; }
+.tecB-fold > summary { margin-bottom: 0; }
+.tecB-fold[open] > summary { margin-bottom: 18px; }
+.tecB-fold [data-reveal] { opacity: 1; transform: none; }   /* 접기 안의 묶음은 펼칠 때 바로 보이게(나타나기 움직임 없음) */
+.tecB-fold--rnd { margin-top: 28px; }
+.tecB-fold--rnd[open] > summary { margin-bottom: 8px; }
+.eqgroup__main > .tecB-fold--eq + .glance__more { margin-top: 14px; }
+@media (max-width: 720px) { .tecB-key .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

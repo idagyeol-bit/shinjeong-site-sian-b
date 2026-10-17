@@ -105,6 +105,17 @@
     </div>
   </nav>
 
+  <!-- 핵심 숫자 띠 (시안B 3차) — 세 숫자 모두 이 페이지의 데이터에서 센다: 세대별 비교의 마지막 세대 · 등록 특허 수 · 보유 장비 묶음 수 -->
+  <section class="section section--sm tecB-key" aria-label="숫자로 보는 장비·로봇">
+    <div class="wrap">
+      <div class="stats stats--flush" data-reveal>
+        <div class="stat"><b><span data-count="5">5</span><i>세대</i></b><span>자체 개발 무인 로봇</span></div>
+        <div class="stat"><b><span data-count="5">5</span><i>건</i></b><span>로봇·준설 관련 등록 특허</span></div>
+        <div class="stat"><b><span data-count="6">6</span><i>개 분야</i></b><span>보유 장비</span></div>
+      </div>
+    </div>
+  </section>
+
   <!-- 01 보유 장비 (23차: 업무별 표 6묶음 + 사진) -->
   <section class="section" id="equipment">
     <div class="wrap">
@@ -116,7 +127,9 @@
         <p class="eqgroup__desc">진공흡입차로 잔류물을 흡입하고 고압 JET-CLEANER로 세척합니다. 위험한 내부 작업에는 흡입 로봇을 먼저 투입하고, 작업자는 설비 밖 제어 차량에서 조종합니다.</p>
         <div class="eqgroup__body">
         <div class="eqgroup__main">
-        <table class="eqtbl">
+        <details class="fold tecB-fold tecB-fold--eq">
+          <summary>장비 목록 펼쳐 보기</summary>
+          <table class="eqtbl">
           <caption class="sr-only">설비 클리닝 보유 장비</caption>
           <colgroup><col class="eqtbl__c1"><col class="eqtbl__c2"><col class="eqtbl__c3"><col class="eqtbl__c4"></colgroup>
           <thead><tr><th scope="col">장비명</th><th scope="col">규격</th><th scope="col">용도</th><th scope="col">보유</th></tr></thead>
@@ -130,6 +143,7 @@
             <tr><td class="eqtbl__name">흡입 로봇 · 제어 차량</td><td class="eqtbl__spec eqtbl__spec--none">—</td><td class="eqtbl__use">설비 내부 작업과 설비 밖 원격 조종<a class="glance__more" href="#rnd">무인 로봇 보기 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5L13 17.5"/></svg></a></td><td class="eqtbl__qty eqtbl__qty--none">—</td></tr>
           </tbody>
         </table>
+        </details>
         <a class="glance__more" href="service-equipment-cleaning.html">설비 클리닝 소개 보기 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5L13 17.5"/></svg></a>
         </div>
         <div class="eqgroup__photos">
@@ -145,7 +159,9 @@
         <p class="eqgroup__desc">건식 진공흡입차, AUTO SEPARATOR, 선별기로 촉매를 회수·선별하고, 집진기로 분진을 회수합니다. 반응기 내부 작업에는 흡입 로봇을 투입합니다.</p>
         <div class="eqgroup__body">
         <div class="eqgroup__main">
-        <table class="eqtbl">
+        <details class="fold tecB-fold tecB-fold--eq">
+          <summary>장비 목록 펼쳐 보기</summary>
+          <table class="eqtbl">
           <caption class="sr-only">촉매·충진물 작업 보유 장비</caption>
           <colgroup><col class="eqtbl__c1"><col class="eqtbl__c2"><col class="eqtbl__c3"><col class="eqtbl__c4"></colgroup>
           <thead><tr><th scope="col">장비명</th><th scope="col">규격</th><th scope="col">용도</th><th scope="col">보유</th></tr></thead>
@@ -159,6 +175,7 @@
             <tr><td class="eqtbl__name">흡입 로봇 · 제어 차량 · 분리장치</td><td class="eqtbl__spec eqtbl__spec--none">—</td><td class="eqtbl__use">반응기 내부 작업과 설비 밖 원격 조종<a class="glance__more" href="#rnd">무인 로봇 보기 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5L13 17.5"/></svg></a></td><td class="eqtbl__qty eqtbl__qty--none">—</td></tr>
           </tbody>
         </table>
+        </details>
         <a class="glance__more" href="service-catalyst-media.html">촉매·충진물 작업 소개 보기 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5L13 17.5"/></svg></a>
         </div>
         <div class="eqgroup__photos">
@@ -178,7 +195,9 @@
         <p class="eqgroup__desc">배관·열교환기·보일러 튜브 계통의 세관 작업에 내산장비를 씁니다.</p>
         <div class="eqgroup__body">
         <div class="eqgroup__main">
-        <table class="eqtbl">
+        <details class="fold tecB-fold tecB-fold--eq">
+          <summary>장비 목록 펼쳐 보기</summary>
+          <table class="eqtbl">
           <caption class="sr-only">화학세정 보유 장비</caption>
           <colgroup><col class="eqtbl__c1"><col class="eqtbl__c2"><col class="eqtbl__c3"><col class="eqtbl__c4"></colgroup>
           <thead><tr><th scope="col">장비명</th><th scope="col">규격</th><th scope="col">용도</th><th scope="col">보유</th></tr></thead>
@@ -186,6 +205,7 @@
             <tr><td class="eqtbl__name">화학세정용 내산장비</td><td class="eqtbl__spec">50HP / 20HP</td><td class="eqtbl__use">세관</td><td class="eqtbl__qty">2대</td></tr>
           </tbody>
         </table>
+        </details>
         <a class="glance__more" href="service-chemical-cleaning.html">화학세정 소개 보기 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5L13 17.5"/></svg></a>
         </div>
         </div>
@@ -195,7 +215,9 @@
         <p class="eqgroup__desc">무인준설로봇과 무인로더를 원격으로 조종해 퇴적물을 준설하고, 회수한 슬러지는 데칸타로 탈수합니다.</p>
         <div class="eqgroup__body">
         <div class="eqgroup__main">
-        <table class="eqtbl">
+        <details class="fold tecB-fold tecB-fold--eq">
+          <summary>장비 목록 펼쳐 보기</summary>
+          <table class="eqtbl">
           <caption class="sr-only">준설·슬러지 회수 보유 장비</caption>
           <colgroup><col class="eqtbl__c1"><col class="eqtbl__c2"><col class="eqtbl__c3"><col class="eqtbl__c4"></colgroup>
           <thead><tr><th scope="col">장비명</th><th scope="col">규격</th><th scope="col">용도</th><th scope="col">보유</th></tr></thead>
@@ -213,6 +235,7 @@
             <tr><td class="eqtbl__name">오수 배수 펌프</td><td class="eqtbl__spec">220LPM</td><td class="eqtbl__use">준설</td><td class="eqtbl__qty">2대</td></tr>
           </tbody>
         </table>
+        </details>
         <a class="glance__more" href="service-dredging-sludge.html">준설·슬러지 회수 소개 보기 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5L13 17.5"/></svg></a>
         </div>
         <div class="eqgroup__photos">
@@ -228,7 +251,9 @@
         <p class="eqgroup__desc">CCTV 조사차량과 관로 CCTV 로봇으로 관로 내부를 조사합니다. 맨홀 보수에는 스키드 로더를 씁니다.</p>
         <div class="eqgroup__body">
         <div class="eqgroup__main">
-        <table class="eqtbl">
+        <details class="fold tecB-fold tecB-fold--eq">
+          <summary>장비 목록 펼쳐 보기</summary>
+          <table class="eqtbl">
           <caption class="sr-only">관로·지하 조사 및 보수 보유 장비</caption>
           <colgroup><col class="eqtbl__c1"><col class="eqtbl__c2"><col class="eqtbl__c3"><col class="eqtbl__c4"></colgroup>
           <thead><tr><th scope="col">장비명</th><th scope="col">규격</th><th scope="col">용도</th><th scope="col">보유</th></tr></thead>
@@ -239,6 +264,7 @@
             <tr><td class="eqtbl__name">스키드 로더</td><td class="eqtbl__spec eqtbl__spec--none">—</td><td class="eqtbl__use">맨홀 보수 작업</td><td class="eqtbl__qty">1대</td></tr>
           </tbody>
         </table>
+        </details>
         <a class="glance__more" href="service-inspection-repair.html">관로·지하 조사 및 보수 소개 보기 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5L13 17.5"/></svg></a>
         </div>
         <div class="eqgroup__photos">
@@ -258,7 +284,9 @@
         <p class="eqgroup__desc">자재 운반과 현장 지원에 쓰는 장비입니다.</p>
         <div class="eqgroup__body">
         <div class="eqgroup__main">
-        <table class="eqtbl">
+        <details class="fold tecB-fold tecB-fold--eq">
+          <summary>장비 목록 펼쳐 보기</summary>
+          <table class="eqtbl">
           <caption class="sr-only">공통 (운반·지원) 보유 장비</caption>
           <colgroup><col class="eqtbl__c1"><col class="eqtbl__c2"><col class="eqtbl__c3"><col class="eqtbl__c4"></colgroup>
           <thead><tr><th scope="col">장비명</th><th scope="col">규격</th><th scope="col">용도</th><th scope="col">보유</th></tr></thead>
@@ -269,6 +297,7 @@
             <tr><td class="eqtbl__name">HYDRONIC PUMP</td><td class="eqtbl__spec eqtbl__spec--none">—</td><td class="eqtbl__use">자재 운반</td><td class="eqtbl__qty">1SET</td></tr>
           </tbody>
         </table>
+        </details>
         </div>
         </div>
       </div>
@@ -285,7 +314,9 @@
       <div class="eqgroup" data-reveal>
         <div class="eqgroup__head"><h3>무인 흡입 로봇(Vacuum) 세대별 비교</h3></div>
         <p class="eqgroup__desc">탱크·Pond용 무인 흡입 로봇은 1세대부터 5세대까지 개발했습니다.</p>
-        <table class="eqtbl eqtbl--robot">
+        <details class="fold tecB-fold">
+          <summary>세대별 비교 펼쳐 보기</summary>
+          <table class="eqtbl eqtbl--robot">
           <caption class="sr-only">무인 흡입 로봇(Vacuum) 세대별 비교</caption>
           <thead><tr><th scope="col">세대</th><th scope="col">방식</th><th scope="col">적용 대상</th><th scope="col">수중 작업</th><th scope="col">구동</th><th scope="col">비고</th></tr></thead>
           <tbody>
@@ -296,6 +327,7 @@
             <tr><td class="eqtbl__name">5세대</td><td data-label="방식">파쇄형</td><td data-label="적용 대상">Pond, Reactor</td><td data-label="수중 작업">가능</td><td data-label="구동">유압</td><td data-label="비고">소형화</td></tr>
           </tbody>
         </table>
+        </details>
       </div>
       <div class="eqgroup" data-reveal>
         <div class="eqgroup__head"><h3>5세대 무인 클리닝 로봇 주요 사양</h3></div>
@@ -316,7 +348,9 @@
       <div class="eqgroup" data-reveal>
         <div class="eqgroup__head"><h3>기타 클리닝 로봇</h3></div>
         <p class="eqgroup__desc">흡입 로봇 외에 토사·슬러지 작업과 고압 세척에 쓰는 로봇입니다.</p>
-        <table class="eqtbl eqtbl--robot">
+        <details class="fold tecB-fold">
+          <summary>기타 로봇 펼쳐 보기</summary>
+          <table class="eqtbl eqtbl--robot">
           <caption class="sr-only">기타 클리닝 로봇</caption>
           <thead><tr><th scope="col">로봇</th><th scope="col">대상</th><th scope="col">조종</th><th scope="col">구동</th><th scope="col">수중 작업</th></tr></thead>
           <tbody>
@@ -325,6 +359,7 @@
             <tr><td class="eqtbl__name">무인 Jet Cleaner</td><td data-label="대상">설비 고압 세척 (8+ Nozzle)</td><td data-label="조종">원격 조종</td><td data-label="구동">전기</td><td data-label="수중 작업">구동부 가능</td></tr>
           </tbody>
         </table>
+        </details>
       </div>
     </div>
   </section>
@@ -377,6 +412,9 @@
         <div class="stat"><b><span data-count="3">3</span><i>건</i></b><span>연구개발 과제</span></div>
         <div class="stat"><b><span data-count="5">5</span><i>종</i></b><span>로봇 시제품</span></div>
       </div>
+      <details class="fold tecB-fold tecB-fold--rnd">
+          <summary>증빙 자료 펼쳐 보기</summary>
+          
       <div class="eqgroup" data-reveal>
         <div class="eqgroup__head"><h3>연구개발 과제</h3></div>
         <p class="eqgroup__desc">기업부설연구소가 수행한 과제와 과제별 성능 지표입니다.</p>
@@ -422,6 +460,8 @@
           </tbody>
         </table>
       </div>
+
+        </details>
       <p class="doc-link" data-reveal><a class="tlink" href="assets/docs/shinjeong-robot-cleaning-system-2025-public.pdf" target="_blank" rel="noopener">기술소개서 (2025) 보기 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5L13 17.5"/></svg></a><span class="doc-meta">PDF · 54쪽 · 9.1MB · 홈페이지 공개용</span></p>
       <p class="note mt-block">출처: (주)신정개발 회사소개서(2024) · 기술소개서(2025)</p>
     </div>
@@ -502,5 +542,6 @@
   <a class="mcta__go" href="contact.html">현장 문의 <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5L13 17.5"/></svg></a>
 </nav>
 <script src="js/site.js"></script>
+<script src="js/tech-fold.js"></script>
 </body>
 </html>
