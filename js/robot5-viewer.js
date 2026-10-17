@@ -1,5 +1,8 @@
 /* 신정개발 홈페이지 — 장비·로봇 "자체 개발 무인 로봇" 구역의 로봇 3D 예시 모형 뷰어 (시안 B, 설정 look.robotViewer, 시안B 11차)
    - three.js r160 은 저장소 안 js/vendor/three/ 의 파일만 쓴다(외부 주소 0). 모형은 압축 확장 없는 보통 GLB 라 기본 GLTFLoader 만 쓴다.
+   - 모형(assets/models/robot5.glb, 11차 다듬기 2)은 원본(삼각형 214만 개)의 매끈한 표면을 줄인 모형 위에 '물체 기준 노멀 맵'으로 구워 넣은 것이라
+     정점 노멀이 없다 → 재질 extras.normalMapSpace === 'object' 를 보고 ObjectSpaceNormalMap + flatShading 을 켠다(옛 방식 모형도 그대로 열린다).
+   - 반사 환경은 제품 촬영 스튜디오처럼(위 밝고 아래 어두운 둘레 + 소프트박스 몇 장) 코드로 만든다 — 금속이 구겨진 은박이 아니라 크롬처럼 보이게.
    - 처음에는 사이트의 로봇 실사(대체 사진)가 보이고, 구역이 화면 가까이 오면 모형을 불러와 다 그려진 뒤에만 3D 로 바꾼다.
      WebGL 이 안 되거나 불러오기에 실패하면 대체 사진과 안내 줄이 그대로 남는다(빈 상자 없음).
    - 끌어서 회전(마우스: 상하좌우 / 휴대폰: 가로 끌기는 회전, 세로 쓸기는 페이지 스크롤), 가만히 두면 천천히 자동 회전, 멈춤·재생 단추.
@@ -32,18 +35,33 @@
     Promise.all([
       import(base + 'three.module.min.js'),
       import(base + 'loaders/GLTFLoader.js'),
-      import(base + 'controls/OrbitControls.js'),
-      import(base + 'environments/RoomEnvironment.js')
+      import(base + 'controls/OrbitControls.js')
     ]).then(function (m) {
-      var THREE = m[0], GLTFLoader = m[1].GLTFLoader, OrbitControls = m[2].OrbitControls, RoomEnvironment = m[3].RoomEnvironment;
+      var THREE = m[0], GLTFLoader = m[1].GLTFLoader, OrbitControls = m[2].OrbitControls;
       var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       var scene = new THREE.Scene();
+      /* 다듬기 2: 반사 환경을 스튜디오처럼 — 아래는 어둡고 위는 밝은 둘레(바닥 쪽이 크롬의 어두운 띠가 된다) + 큰 소프트박스 5장 */
+      function studio() {
+        var s = new THREE.Scene();
+        var geo = new THREE.SphereGeometry(10, 64, 32), pos = geo.attributes.position, cols = [];
+        var lo = new THREE.Color(0x3a3f47), hi = new THREE.Color(0xa8adb5), c = new THREE.Color();
+        for (var i = 0; i < pos.count; i++) { c.lerpColors(lo, hi, THREE.MathUtils.smoothstep(pos.getY(i) / 10, -0.25, 0.55)); cols.push(c.r, c.g, c.b); }
+        geo.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3));
+        s.add(new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.BackSide })));
+        function panel(w, h, k, x, y, z) { var p = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: new THREE.Color(k, k, k), side: THREE.DoubleSide })); p.position.set(x, y, z); p.lookAt(0, 0, 0); s.add(p); }
+        panel(9, 6, 5, 0, 8.5, 0.5);        // 위 큰 소프트박스
+        panel(4, 6.5, 7, -6.5, 3, 5);       // 왼쪽 앞 주광
+        panel(1.4, 8, 6, 7, 2.5, -3.5);     // 오른쪽 뒤 띠 조명(윤곽)
+        panel(1.4, 8, 4, -6, 2.5, -6);      // 왼쪽 뒤 띠 조명
+        panel(7, 2.2, 2, 3, 1.2, 8);        // 오른쪽 앞 보조광
+        return s;
+      }
       var pmrem = new THREE.PMREMGenerator(renderer);
-      scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
-      /* 다듬기: 빛을 부드럽게 — 위에서 비추는 주광을 낮추고, 하늘·바닥 반사광을 약하게 더한다 */
+      scene.environment = pmrem.fromScene(studio(), 0.04).texture; pmrem.dispose();
+      /* 빛을 부드럽게 — 위에서 비추는 주광을 낮추고, 하늘·바닥 반사광을 약하게 더한다 */
       var key = new THREE.DirectionalLight(0xffffff, 1.1); key.position.set(2, 3, 2.5); scene.add(key);
       scene.add(new THREE.HemisphereLight(0xffffff, 0xdfe4ea, 0.5));
       var camera = new THREE.PerspectiveCamera(32, 1, 0.01, 100);
@@ -58,14 +76,16 @@
         var model = gltf.scene;
         var bb = new THREE.Box3().setFromObject(model), size = bb.getSize(new THREE.Vector3()), mid = bb.getCenter(new THREE.Vector3());
         model.position.sub(mid); scene.add(model);
-        /* 다듬기: 질감을 비스듬히 봐도 또렷하게, 요철(노멀 맵)은 절반 정도로, 반사는 조금 약하게 — 금속이 구겨진 은박처럼 보이지 않게 */
+        /* 질감을 비스듬히 봐도 또렷하게(비등방 필터). 구워 넣은 '물체 기준 노멀 맵' 모형이면 그 방식으로 읽는다(정점 노멀이 없으니 flatShading 도 켠다);
+           옛 방식(접선 기준) 모형이면 요철을 절반으로 */
         var aniso = renderer.capabilities.getMaxAnisotropy();
         model.traverse(function (o) {
           if (!o.isMesh || !o.material) return;
           var mt = o.material;
           ['map', 'normalMap', 'metalnessMap', 'roughnessMap'].forEach(function (k) { if (mt[k]) mt[k].anisotropy = aniso; });
-          if (mt.normalScale) mt.normalScale.set(0.55, 0.55);
-          mt.envMapIntensity = 0.8;
+          if (mt.userData && mt.userData.normalMapSpace === 'object') { mt.normalMapType = THREE.ObjectSpaceNormalMap; mt.flatShading = true; mt.needsUpdate = true; }
+          else if (mt.normalScale) mt.normalScale.set(0.55, 0.55);
+          mt.envMapIntensity = 1;
         });
         /* 다듬기: 바닥에 닿는 부드러운 그림자(로봇 발밑의 흐린 타원) — 떠 있지 않고 놓여 있게 보인다 */
         var sc = document.createElement('canvas'); sc.width = sc.height = 256;
