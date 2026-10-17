@@ -1340,6 +1340,33 @@ ${PROCESS.steps.map((st, i) => `            <li><em>${String(i + 1).padStart(2, 
 `;
   },
 
+  /* 환경 띠 (시안B 12차) — 흩어져 있던 환경 관련 사실 4가지를 한 띠에 모은다. 남색 구역(일곱 단계) 바로 아래에 둔다.
+     사실 4칸은 새 내용이 아니라 회사 소개(CREDS.certs·awards·permits, 연혁)·현장 진행 방식(탈수 설명)에 이미 있는 글의 재사용이다.
+     새 문장은 제목·부제(설정 home.copy.envB)뿐 — 확인요청서 2-9. */
+  envB: (bg) => {
+    const c = CFG.home.copy.envB;
+    const facts = [
+      { b: 'ISO 14001:2015', s: '환경경영 인증' },            // CREDS.certs 'ISO 14001:2015 (환경경영)' · 연혁 2017.05
+      { b: '환경부장관상 수상', s: '2007' },                   // CREDS.awards '환경부장관상 (2007)' · 연혁 2007.10
+      { b: '폐기물 수집·운반업 허가', s: '일반 · 지정' },       // CREDS.permits 일반·지정폐기물 수집·운반업 허가 · 연혁 2004.10(일반)·2006.05(지정)
+      { b: '회수물 탈수 처리', s: '폐기물 처리량을 줄입니다' }  // 현장 진행 방식 '회수물 탈수 과정' 설명(폐기물 처리량·비용·시간을 줄입니다)
+    ];
+    return `  <!-- ===== 환경 띠 (시안B 12차): 회사 소개·현장 진행 방식에 있는 환경 관련 사실 4가지 — 새 사실·숫자 없음 ===== -->
+  <section class="section envB-sec${BG_CLASS[bg]}" aria-labelledby="envB-title">
+    <div class="wrap">
+      <div class="envB-head" data-reveal>
+        <span class="eyebrow envB-eyebrow">${esc(c.eyebrow)}</span>
+        <h2 id="envB-title">${esc(c.title)}</h2>
+        <p class="lead envB-lead">${esc(c.lead)}</p>
+      </div>
+      <ul class="envB-grid" data-reveal data-delay="90">
+${facts.map((f) => `        <li class="envB-card"><b>${esc(f.b)}</b><span>${esc(f.s)}</span></li>`).join('\n')}
+      </ul>
+    </div>
+  </section>
+`;
+  },
+
   /* 현장의 장면 — 사진 카드 세 장 */
   scenes: (bg) => {
     const c = CFG.home.copy.scenes;
@@ -2235,6 +2262,11 @@ function checkConfig() {
       if (!b.label) configError(`사업분야 색판 ${i + 1}번째의 라벨(label)이 없습니다 (설정 home.copy.what.boards)`);
       if (!PHOTOS[b.photo]) configError(`사업분야 색판 ${i + 1}번째의 사진 번호 '${b.photo}'이 사진 목록에 없습니다 (설정 home.copy.what.boards)`);
     });
+  }
+  /* 환경 띠 'envB' (시안 B 12차) */
+  if (CFG.home.sections.some((s) => s.id === 'envB')) {
+    const e = CFG.home.copy.envB || {};
+    ['eyebrow', 'title', 'lead'].forEach((f) => { if (!e[f]) configError(`환경 띠('envB')의 ${f} 문구가 없습니다 (설정 home.copy.envB)`); });
   }
   /* 큰 틀 'slides'의 장면 (시안 B) */
   if (CFG.frame.hero === 'slides') {

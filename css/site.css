@@ -1769,3 +1769,20 @@ body[data-hero="slides"][data-page="home"] .hdr.is-scrolled .hdr__cta:hover { ba
   .tecB-viewer__stage { height: 300px; }
   .tecB-viewer__ctrl { justify-content: flex-start; }
 }
+
+/* ========== 시안 B 12차 — 메인 "환경" 띠 (home.sections 'envB', tools/build.js HOME_SECTIONS.envB) ==========
+   남색 구역(일곱 단계) 바로 아래, 옅은 포인트색 바탕(--brand-tint) 위에 가운데 정렬 제목 + 사실 칸 4개(흰 카드).
+   새 모션 없음 — 기존 data-reveal 만. 휴대폰(≤720px)은 칸 2×2. */
+.envB-sec { background: var(--brand-tint); }
+.envB-head { text-align: center; }
+.envB-eyebrow { margin-bottom: 20px; }
+.envB-head h2 { margin: 0; }
+.envB-lead { margin: 16px auto 0; }
+.envB-grid { list-style: none; margin: clamp(32px, 4vw, 48px) auto 0; padding: 0; max-width: 880px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.envB-card { padding: 24px 14px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--white); text-align: center; word-break: keep-all; }
+.envB-card b { display: block; font-size: var(--fs-h4); font-weight: 700; color: var(--ink); letter-spacing: -0.02em; line-height: 1.35; }
+.envB-card span { display: block; margin-top: 8px; font-size: var(--fs-sm); color: var(--muted); line-height: 1.6; }
+@media (max-width: 720px) {
+  .envB-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .envB-card { padding: 20px 12px; }
+}
