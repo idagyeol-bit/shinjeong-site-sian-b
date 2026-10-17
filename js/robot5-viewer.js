@@ -43,28 +43,57 @@
       var scene = new THREE.Scene();
       var pmrem = new THREE.PMREMGenerator(renderer);
       scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
-      var key = new THREE.DirectionalLight(0xffffff, 1.4); key.position.set(2, 3, 2.5); scene.add(key);
+      /* 다듬기: 빛을 부드럽게 — 위에서 비추는 주광을 낮추고, 하늘·바닥 반사광을 약하게 더한다 */
+      var key = new THREE.DirectionalLight(0xffffff, 1.1); key.position.set(2, 3, 2.5); scene.add(key);
+      scene.add(new THREE.HemisphereLight(0xffffff, 0xdfe4ea, 0.5));
       var camera = new THREE.PerspectiveCamera(32, 1, 0.01, 100);
       var canvas = renderer.domElement; canvas.className = 'tecB-viewer__gl'; canvas.setAttribute('aria-hidden', 'true');
       var controls = new OrbitControls(camera, canvas);
       controls.enableZoom = false; controls.enablePan = false; controls.enableDamping = true; controls.dampingFactor = 0.08;
       controls.autoRotate = !reduce; controls.autoRotateSpeed = 1.2;
-      controls.minPolarAngle = Math.PI * 0.12; controls.maxPolarAngle = Math.PI * 0.62;
+      controls.minPolarAngle = Math.PI * 0.12; controls.maxPolarAngle = Math.PI * 0.47;   // 바닥 아래로는 내려가지 않는다(그림자를 밑에서 보지 않게)
       canvas.style.touchAction = 'pan-y';   // 휴대폰: 세로 쓸기는 페이지 스크롤, 가로 끌기만 회전
 
       new GLTFLoader().load(url, function (gltf) {
         var model = gltf.scene;
         var bb = new THREE.Box3().setFromObject(model), size = bb.getSize(new THREE.Vector3()), mid = bb.getCenter(new THREE.Vector3());
         model.position.sub(mid); scene.add(model);
-        var r = size.length() / 2, dist = r / Math.sin(THREE.MathUtils.degToRad(camera.fov / 2)) * 0.82;
-        camera.position.set(dist * 0.62, dist * 0.34, dist * 0.71); controls.target.set(0, 0, 0);
-        controls.minDistance = dist * 0.55; controls.maxDistance = dist * 1.6; controls.update();
-        var home = camera.position.clone();
+        /* 다듬기: 질감을 비스듬히 봐도 또렷하게, 요철(노멀 맵)은 절반 정도로, 반사는 조금 약하게 — 금속이 구겨진 은박처럼 보이지 않게 */
+        var aniso = renderer.capabilities.getMaxAnisotropy();
+        model.traverse(function (o) {
+          if (!o.isMesh || !o.material) return;
+          var mt = o.material;
+          ['map', 'normalMap', 'metalnessMap', 'roughnessMap'].forEach(function (k) { if (mt[k]) mt[k].anisotropy = aniso; });
+          if (mt.normalScale) mt.normalScale.set(0.55, 0.55);
+          mt.envMapIntensity = 0.8;
+        });
+        /* 다듬기: 바닥에 닿는 부드러운 그림자(로봇 발밑의 흐린 타원) — 떠 있지 않고 놓여 있게 보인다 */
+        var sc = document.createElement('canvas'); sc.width = sc.height = 256;
+        var sg = sc.getContext('2d'), grd = sg.createRadialGradient(128, 128, 0, 128, 128, 128);
+        grd.addColorStop(0, 'rgba(20,30,45,0.55)'); grd.addColorStop(0.5, 'rgba(20,30,45,0.22)'); grd.addColorStop(1, 'rgba(20,30,45,0)');
+        sg.fillStyle = grd; sg.fillRect(0, 0, 256, 256);
+        var shadow = new THREE.Mesh(new THREE.PlaneGeometry(size.x * 1.6, size.z * 2.1), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(sc), transparent: true, depthWrite: false }));
+        shadow.rotation.x = -Math.PI / 2; shadow.position.y = -size.y / 2 + 0.002; shadow.renderOrder = -1; scene.add(shadow);
+        /* 다듬기: 화면 비율(PC 가로로 긴 판 · 휴대폰 거의 정사각)에 맞춰, 돌려도 잘리지 않는 한에서 크게 보이는 거리를 그때그때 잰다.
+           +/− 단추는 이 거리에 곱하는 비율(zoomK)만 바꾼다 */
+        var dir = new THREE.Vector3(0.62, 0.34, 0.71).normalize(), zoomK = 1;
+        var needW = Math.hypot(size.x, size.z) * 1.06, elev = Math.asin(dir.y), needH = (size.y * Math.cos(elev) + Math.max(size.x, size.z) * Math.sin(elev)) * 1.3;    // 아래 그림자까지 들어오게 위아래 여유
+        function fitDist() {
+          var v = THREE.MathUtils.degToRad(camera.fov / 2), h = Math.atan(Math.tan(v) * camera.aspect);
+          return Math.max(needH / 2 / Math.tan(v), needW / 2 / Math.tan(h));
+        }
+        function place(keepDir) {
+          var d = fitDist() * zoomK, off = keepDir ? camera.position.clone().sub(controls.target) : dir.clone();
+          camera.position.copy(controls.target).add(off.setLength(d));
+          controls.minDistance = d * 0.99; controls.maxDistance = d * 1.01; controls.update();
+        }
+        controls.target.set(0, -size.y * 0.12, 0);   // 그림자를 포함한 무게 중심이 판 가운데 오게
 
         function resize() {
           var w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return;
-          renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+          renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); place(placed); placed = true;
         }
+        var placed = false;
         stage.appendChild(canvas); resize(); window.addEventListener('resize', resize);
         var visible = true, raf = null;
         /* 한 번에 한 장만 예약한다: 그리는 동안에는 raf 가 살아 있어서 controls 의 change 신호가 장을 또 예약하지 않는다 */
@@ -85,13 +114,10 @@
         if (pp) pp.addEventListener('click', function () { setPlay(!controls.autoRotate); });
         box.querySelectorAll('[data-v="zoom"]').forEach(function (b) {
           b.addEventListener('click', function () {
-            var k = b.getAttribute('data-k') === 'in' ? 0.85 : 1 / 0.85;
-            var off = camera.position.clone().sub(controls.target);
-            var d = THREE.MathUtils.clamp(off.length() * k, controls.minDistance, controls.maxDistance);
-            camera.position.copy(controls.target).add(off.setLength(d)); controls.update(); run();
+            zoomK = THREE.MathUtils.clamp(zoomK * (b.getAttribute('data-k') === 'in' ? 0.85 : 1 / 0.85), 0.55, 1.5);
+            place(true); run();
           });
         });
-        void home;
       }, undefined, function () { fail(); renderer.dispose(); });
     }).catch(fail);
   }
