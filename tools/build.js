@@ -451,7 +451,9 @@ const EQ_ANCHOR = (svcId) => (EQUIP_GROUPS.find((g) => g.svc === svcId) || {}).i
 
 /* 시안B 3차: 장비·로봇 다이어트판을 쓰는지(설정 diet.technology). 표는 지우지 않고 눌러서 펼치는 접기(<details class="fold">, 현장 진행 방식의 효율성 비교와 같은 단추)에 넣는다 */
 const techDiet = () => !!(CFG.diet && CFG.diet.technology);   // CFG 는 시안마다 바뀌므로 그때그때 읽는다
-const tecFold = (label, body, extra) => `<details class="fold tecB-fold${extra ? ' ' + extra : ''}">
+const procDiet = () => !!(CFG.diet && CFG.diet.process);      // 시안B 4차: 현장 진행 방식 다이어트판(같은 접기 장치를 쓴다)
+/* extra: 덧붙일 class · hash: 주소가 #hash 로 들어오면 js/tech-fold.js 가 이 접기를 연다 */
+const tecFold = (label, body, extra, hash) => `<details class="fold tecB-fold${extra ? ' ' + extra : ''}"${hash ? ` data-open-hash="${hash}"` : ''}>
           <summary>${esc(label)}</summary>
           ${body}
         </details>`;
@@ -1708,12 +1710,16 @@ ${cmpTable(PROCESS.eff, '주요 효율성', '제한', '가능')}
         <div data-reveal><h2>용도별 적용 범위와 유의점</h2><p class="lead">무인 장비를 적용하는 대표 용도 네 가지의 적용 범위와 장점, 유의점입니다.</p></div>
       </div>
       <div class="uses">
-${PROCESS.cases.map((c, i) => `        <article class="uses__row" data-reveal${i ? ` data-delay="${i * 70}"` : ''}>
-          <h3>${esc(c.t)}</h3>
-          <dl class="uses__body">
+${PROCESS.cases.map((c, i) => {
+  const body = `<dl class="uses__body">
 ${[['적용 범위', c.scope], ['장점', c.pros], ['유의점', c.cons]].map(([k, xs]) => `            <div><dt>${k}</dt><dd><ul>${xs.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></dd></div>`).join('\n')}
-          </dl>
-        </article>`).join('\n')}
+          </dl>`;
+  /* 다이어트판(시안B 4차): 묶음 이름은 늘 보이고, 적용 범위·장점·유의점은 묶음마다 접기 안에 그대로 */
+  return `        <article class="uses__row${procDiet() ? ' procB-use' : ''}" data-reveal${i ? ` data-delay="${i * 70}"` : ''}>
+          <h3>${esc(c.t)}</h3>
+          ${procDiet() ? tecFold('적용 범위와 유의점 펼쳐 보기', body, 'procB-fold--use') : body}
+        </article>`;
+}).join('\n')}
       </div>
     </div>
   </section>
@@ -1726,7 +1732,7 @@ ${[['적용 범위', c.scope], ['장점', c.pros], ['유의점', c.cons]].map(([
         <div class="head__aside" data-reveal data-delay="90"><p class="lead">데칸타(원심분리)·필터프레스(여과·압착)로 탈수해 폐기물 처리량·비용·시간을 줄입니다.</p></div>
       </div>
       <div data-reveal>
-${dewaterDiagram()}
+${procDiet() ? `        ${tecFold('탈수 과정 펼쳐 보기', '\n' + dewaterDiagram() + '\n', 'procB-fold--dw', 'dewater')}` : dewaterDiagram()}
       </div>
 ${SRC_LINE}    </div>
   </section>
@@ -1734,7 +1740,7 @@ ${SRC_LINE}    </div>
 ` + cta({
   h2: '우리 현장은 어떤 순서로<br>진행될지 물어보세요',
   p: '대상 설비·작업 목적·희망 일정을 알려 주시면 현장 검토부터 안내하겠습니다.'
-}) + MAIN_END + footer() + foot(['process-scene.js']);
+}) + MAIN_END + footer() + foot(procDiet() ? ['process-scene.js', 'tech-fold.js'] : ['process-scene.js']);
 
 /* ---------- 5. 수행 이력 ---------- */
 pages['projects.html'] = () => head({

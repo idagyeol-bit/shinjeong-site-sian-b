@@ -1676,3 +1676,11 @@ body[data-hero="slides"][data-page="home"] .hdr.is-scrolled .hdr__cta:hover { ba
 .tecB-fold--rnd[open] > summary { margin-bottom: 8px; }
 .eqgroup__main > .tecB-fold--eq + .glance__more { margin-top: 14px; }
 @media (max-width: 720px) { .tecB-key .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ========== 시안 B — 현장 진행 방식 다이어트판 (설정 diet.process, 시안B 4차) ==========
+   3차의 접기(.fold.tecB-fold)를 그대로 쓴다. 여기서는 용도별 줄(.uses__row) 안에서의 자리만 정한다 */
+.procB-use { align-items: start; }
+.procB-use > .procB-fold--use { margin-top: 0; min-width: 0; }
+.procB-use > .procB-fold--use > summary { margin-top: -6px; }
+@media (max-width: 960px) { .procB-use > .procB-fold--use > summary { margin-top: 0; } }
+.procB-fold--dw { margin-top: 0; }
