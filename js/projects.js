@@ -34,6 +34,14 @@
 
       if (countEl) countEl.textContent = String(shown);
       if (emptyEl) emptyEl.hidden = shown !== 0;
+
+      /* 시안B 14차: 연도 머리글(.projB-year)은 다음 머리글까지 보이는 줄이 하나도 없으면 머리글째 숨긴다 */
+      var heads = Array.prototype.slice.call(root.querySelectorAll('.projB-year'));
+      heads.forEach(function (h) {
+        var any = false, el = h.nextElementSibling;
+        while (el && !el.classList.contains('projB-year')) { if (!el.hidden) any = true; el = el.nextElementSibling; }
+        h.hidden = !any;
+      });
     }
 
     btns.forEach(function (btn) {

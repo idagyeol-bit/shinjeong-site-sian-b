@@ -558,6 +558,13 @@ const PROJECT_SUMMARY = {
   n: 170, unit: '여 건', l: '2020~2023년 수행 실적 (회사소개서 2024)',
   sectors: ['석유화학·정유·산업가스 플랜트', '발전 설비', '지자체·공공기관 상·하수도', '건설 현장']
 };
+/* 시안B 14차: 수행 이력 비주얼판(설정 look.projects)의 숫자 띠 3칸 — 숫자·표현은 모두 소개 문장(keepLead)과 위 PROJECT_SUMMARY 에서 꺼낸 것(새 숫자 0).
+   사진 카드 4칸의 글자는 PROJECT_SUMMARY.sectors 그대로, 사진은 설정 look.projects.photos */
+const PROJECT_STATS_B = [
+  { n: PROJECT_SUMMARY.n, unit: PROJECT_SUMMARY.unit, l: '2020~2023년 수행 실적' },      // 170여 건
+  { n: 4, unit: '곳', l: '4년 연속 단가계약 발주처' },                                     // 소개 문장 "4개 발주처와는 4년 연속 단가계약"
+  { n: PROJECT_SUMMARY.sectors.length, unit: '개 분야', l: '플랜트 · 발전 · 공공 · 건설' }  // sectors 4개의 줄임 이름표(전체 이름은 바로 아래 사진 카드에)
+];
 /* 이력이 10건을 넘을 때만 분야 탭을 보여 준다.
    로봇 적용 체크·검색창은 계속 숨긴다(11차 — 결과가 비는 검색창을 만들지 않는다는 4차 결정) */
 const SHOW_FILTERS = PROJECTS.length > 10;
@@ -1871,13 +1878,20 @@ pages['projects.html'] = () => head({
   <section class="section">
     <div class="wrap">
 
-      <div class="psum" data-reveal>
+${CFG.look && CFG.look.projects ? `      <!-- 시안B 14차: 숫자 띠 3칸 + 현장 분야 4칸 사진 카드 (글자는 기존 170여 건 띠·칩 그대로, 사진은 분위기용) -->
+      <div class="stats projB-stats" data-reveal>
+${PROJECT_STATS_B.map((s) => `        <div class="stat"><b><span data-count="${s.n}">${s.n}</span><i>${esc(s.unit)}</i></b><span>${esc(s.l)}</span></div>`).join('\n')}
+      </div>
+      <ul class="projB-sectors" aria-label="주요 발주처 업종" data-reveal data-delay="90">
+${PROJECT_SUMMARY.sectors.map((x, i) => `        <li class="projB-sector">${photo(P(CFG.look.projects.photos[i]), '(max-width:720px) 46vw, 300px')}<b>${esc(x)}</b></li>`).join('\n')}
+      </ul>
+` : `      <div class="psum" data-reveal>
         <div class="stat"><b><span data-count="${PROJECT_SUMMARY.n}">${PROJECT_SUMMARY.n}</span><i>${esc(PROJECT_SUMMARY.unit)}</i></b><span>${esc(PROJECT_SUMMARY.l)}</span></div>
         <ul class="psum__chips" aria-label="주요 발주처 업종">
 ${PROJECT_SUMMARY.sectors.map((x) => `          <li class="chip">${esc(x)}</li>`).join('\n')}
         </ul>
       </div>
-
+`}
 ${SHOW_FILTERS ? `      <div class="filters" role="group" aria-label="분야 선택" data-reveal>
         <button type="button" data-filter="전체" aria-pressed="true">전체</button>
 ${PROJECT_CATS.map((c) => `        <button type="button" data-filter="${esc(c)}" aria-pressed="false">${esc(c)}</button>`).join('\n')}
@@ -1895,9 +1909,17 @@ ${SHOW_SEARCH ? `      <div class="toolbar" data-reveal>
       <p class="note mt-6" data-reveal>전체 목록은 문의 시 안내합니다.</p>
 
 ${REC_HEAD.replace('class="rec__head"', 'class="rec__head mt-10"')}
-      <ul class="rec" id="recList" data-reveal>
+${CFG.look && CFG.look.projects ? `      <ul class="rec projB-list" id="recList" data-reveal>
+${(() => {
+  /* 시안B 14차: 연도 머리글(큰 글)로 묶는다 — 단가계약 2건의 '2020~2023' 은 한 묶음, 나머지는 기간의 앞 네 자리(연도). 줄 순서·글자는 그대로.
+     빈 묶음(필터로 걸러져 줄이 없는 연도)은 js/projects.js 가 머리글째 숨긴다 */
+  const key = (p) => (/^\d{4}~\d{4}$/.test(p.period) ? p.period : p.period.slice(0, 4));
+  let last = null;
+  return PROJECT_ORDER.map(prj).map((p) => { const k = key(p), head = k !== last ? `        <li class="projB-year"><h3>${esc(k)}</h3></li>\n` : ''; last = k; return head + recRow(p); }).join('\n');
+})()}
+      </ul>` : `      <ul class="rec" id="recList" data-reveal>
 ${PROJECT_ORDER.map(prj).map((p) => recRow(p)).join('\n')}
-      </ul>
+      </ul>`}
 
       <p class="note rec__empty" id="recEmpty" hidden>조건에 맞는 이력이 없습니다. 다른 분야를 선택하거나 검색어를 지워 보세요.</p>
 
@@ -2281,6 +2303,12 @@ function checkConfig() {
       if (!b.label) configError(`사업분야 색판 ${i + 1}번째의 라벨(label)이 없습니다 (설정 home.copy.what.boards)`);
       if (!PHOTOS[b.photo]) configError(`사업분야 색판 ${i + 1}번째의 사진 번호 '${b.photo}'이 사진 목록에 없습니다 (설정 home.copy.what.boards)`);
     });
+  }
+  /* 수행 이력 비주얼판 (시안 B 14차) */
+  if (CFG.look && CFG.look.projects) {
+    const ph = CFG.look.projects.photos;
+    if (!Array.isArray(ph) || ph.length !== PROJECT_SUMMARY.sectors.length) configError(`수행 이력 비주얼판에는 현장 분야 ${PROJECT_SUMMARY.sectors.length}개만큼 사진 번호가 있어야 합니다 (설정 look.projects.photos)`);
+    ph.forEach((id, i) => { if (!PHOTOS[id]) configError(`수행 이력 비주얼판 ${i + 1}번째 사진 번호 '${id}'이 사진 목록에 없습니다 (설정 look.projects.photos)`); });
   }
   /* 환경 띠 'envB' (시안 B 12차) */
   if (CFG.home.sections.some((s) => s.id === 'envB')) {

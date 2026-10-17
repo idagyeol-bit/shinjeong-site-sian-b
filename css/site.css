@@ -1810,3 +1810,28 @@ body[data-hero="slides"][data-page="home"] .hdr.is-scrolled .hdr__cta:hover { ba
   .histB-ms span { margin-top: 6px; }
   .histB-foldwrap { text-align: left; }
 }
+
+/* ========== 시안 B 14차 — 수행 이력 비주얼판 (설정 look.projects, tools/build.js pages['projects.html']) ==========
+   숫자 띠 3칸(.stats 모양 그대로) → 현장 분야 4칸 사진 카드(사진 위 이름표) → 연도 머리글로 묶은 줄 목록(.rec 줄 그대로) + 로봇 적용 남색 배지.
+   필터·안내 줄·빈 결과 문구는 그대로. 새 모션 없음 */
+.projB-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); padding-bottom: clamp(28px, 3vw, 40px); margin-bottom: clamp(28px, 3vw, 40px); border-bottom: 1px solid var(--line); }
+.projB-sectors { list-style: none; margin: 0 0 clamp(32px, 4vw, 48px); padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.projB-sector { position: relative; overflow: hidden; border-radius: var(--radius-lg); background: var(--soft-2); aspect-ratio: 3 / 2; }
+.projB-sector img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.projB-sector b { position: absolute; left: 0; right: 0; bottom: 0; padding: 34px 16px 14px; background: linear-gradient(to top, rgba(8, 18, 30, 0.82), rgba(8, 18, 30, 0)); color: #fff; font-size: var(--fs-sm); font-weight: 700; letter-spacing: -0.02em; line-height: 1.4; word-break: keep-all; }
+.projB-list { border-top: 0; }
+.rec__head + .projB-list { border-top: 0; }
+.projB-year { padding: 36px 4px 10px; border-bottom: 2px solid var(--ink); }
+.projB-year:first-child { padding-top: 6px; }
+.projB-year h3 { margin: 0; font-size: var(--fs-h2); font-weight: 700; color: var(--brand); letter-spacing: -0.03em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.projB-year[hidden] { display: none; }
+.projB-list .chip { background: var(--navy); color: #fff; }
+@media (max-width: 720px) {
+  .projB-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 16px; }
+  .projB-stats .stat:first-child { grid-column: 1 / -1; }
+  .projB-sectors { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .projB-sector b { padding: 26px 12px 10px; font-size: 13px; }
+  .rec__head + .projB-list { border-top: 0; margin-top: 0; }
+  .projB-year { padding: 28px 4px 8px; }
+  .projB-year h3 { font-size: 26px; }
+}
