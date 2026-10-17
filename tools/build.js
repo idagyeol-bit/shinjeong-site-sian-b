@@ -1485,26 +1485,29 @@ ${s.worktime ? `            <div><dt>작업 시기</dt><dd>${esc(s.worktime)}</d
        큰 사진이 원본보다 넓은 자리에 놓이면 흐려지므로, 같은 사진을 흐리게 깐 배경 위에 원본 크기 이하로 가운데 얹는다(휴대폰은 화면 폭 그대로) */
     const vis = CFG.look && CFG.look.services && CFG.look.services[s.id];
     if (vis) {
-      const hp = P(vis.photo);
+      const hp = vis.photo ? P(vis.photo) : s.photo;   // 9차: photo 를 적지 않으면 그 쪽의 지금 대표 사진
       const big = hp.sizes[hp.sizes.length - 1];
       const key = [['작업 범위', s.targets.map(esc).join(' · ')], ['주요 장비', s.equip.map(esc).join(' · ')]].concat(s.worktime ? [['작업 시기', esc(s.worktime)]] : []);
+      /* 9차: 원본이 1000px 이상인 사진은 화면 폭을 채운다(원본 폭까지만 — 더 넓은 화면에서는 양옆에 8차의 흐린 배경).
+         1000px 미만(8차 P01)은 8차 그대로 흐린 배경 위 가운데에 원본 크기 이하. 칸 수는 표에 있는 줄만(작업 시기가 없는 쪽은 2칸) */
+      const fill = big >= 1000 ? '; --svcB-imgw: min(100%, var(--svcB-w)); --svcB-imgh: 100%; --svcB-fit: cover' : '';
       sections.push(`  <section class="section svcB">
-    <figure class="svcB-hero" style="--svcB-w: ${big}px; --svcB-ratio: ${hp.w} / ${hp.h}">
+    <figure class="svcB-hero" style="--svcB-w: ${big}px; --svcB-ratio: ${hp.w} / ${hp.h}${fill}">
       <img class="svcB-hero__bg" src="assets/photos/${hp.id}-${hp.sizes[0]}.jpg" alt="" aria-hidden="true" decoding="async">
       ${photo(hp, `(max-width:960px) 100vw, ${big}px`, true).replace('<img ', '<img class="svcB-hero__img" ')}
     </figure>
     <div class="wrap">
       <div class="head head--solo" data-reveal><div><h2>${esc(s.short)}</h2></div></div>
-      <dl class="svcB-key" data-reveal>
+      <dl class="svcB-key" data-reveal${key.length !== 3 ? ` style="--svcB-n: ${key.length}"` : ''}>
 ${key.map(([k, v]) => `        <div><dt>${k}</dt><dd>${v}</dd></div>`).join('\n')}
       </dl>
       ${tecFold('작업 정보 펼쳐 보기', `<div class="split split--top glance">
         ${glanceFig}
         <div>
           ${tbl}
-${links.length ? `          <p class="glance__links mt-18">${links.join('')}</p>\n` : ''}        </div>
+        </div>
       </div>`, 'svcB-fold')}
-      ${inquiryBtn}
+${links.length ? `      <p class="glance__links mt-18">${links.join('')}</p>   <!-- 9차: 준설의 탈수 과정 링크는 표 아래 자리 규칙(22차)대로 접기 밖, 접기 단추 아래 -->\n` : ''}      ${inquiryBtn}
     </div>
   </section>
 `);
