@@ -1786,3 +1786,27 @@ body[data-hero="slides"][data-page="home"] .hdr.is-scrolled .hdr__cta:hover { ba
   .envB-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   .envB-card { padding: 20px 12px; }
 }
+
+/* ========== 시안 B 13차 — 회사 소개 연혁: 핵심 이정표 5칸 + 전체 연혁 접기 (설정 diet.company, tools/build.js #history) ==========
+   PC: 가로 한 줄(연결선 + 점) · 휴대폰(≤720px): 세로로 쌓임(선은 세로). 접기는 3차의 .fold.tecB-fold 그대로, 펼치면 31차 2단 목록(.co-hist2)이 그대로 나온다. 새 모션 없음 */
+.histB-strip { list-style: none; margin: 8px 0 0; padding: 0; position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0 12px; }
+.histB-strip::before { content: ""; position: absolute; left: 10%; right: 10%; top: 7px; height: 2px; background: var(--line); }
+.histB-ms { position: relative; padding-top: 34px; text-align: center; word-break: keep-all; }
+.histB-ms::before { content: ""; position: absolute; left: 50%; top: 0; width: 16px; height: 16px; margin-left: -8px; box-sizing: border-box; border-radius: 50%; background: var(--white); border: 3px solid var(--brand); }
+.histB-ms b { display: block; font-size: clamp(26px, 2.4vw, 32px); font-weight: 700; color: var(--brand); line-height: 1.1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.histB-ms span { display: block; margin-top: 10px; font-size: var(--fs-body); font-weight: 600; color: var(--ink); line-height: 1.5; }
+.histB-ms small { display: block; margin-top: 6px; font-size: var(--fs-xs); color: var(--muted); line-height: 1.5; }
+.histB-foldwrap { margin-top: clamp(28px, 3.5vw, 44px); text-align: center; }
+.histB-fold > summary { margin: 0; }
+.histB-fold[open] > summary { margin-bottom: 24px; }
+.histB-fold .co-hist2 { text-align: left; }
+@media (max-width: 720px) {
+  .histB-strip { grid-template-columns: minmax(0, 1fr); gap: 0; padding-left: 30px; }
+  .histB-strip::before { left: 7px; right: auto; top: 8px; bottom: 8px; width: 2px; height: auto; }
+  .histB-ms { padding: 0 0 24px; text-align: left; }
+  .histB-ms:last-child { padding-bottom: 0; }
+  .histB-ms::before { left: -30px; top: 7px; margin-left: 0; }
+  .histB-ms b { font-size: 26px; }
+  .histB-ms span { margin-top: 6px; }
+  .histB-foldwrap { text-align: left; }
+}

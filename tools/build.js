@@ -2006,17 +2006,36 @@ ${CREDS.quals.map((q, i) => `            <div><dt>${esc(CREDS.qualFields[i])}</d
     </div>
   </section>
 
-  <!-- 04 연혁 (31차: 2단 — 2023~2015 / 2012~1992) -->
+  <!-- 04 연혁 (31차: 2단 — 2023~2015 / 2012~1992${compDiet() ? ' · 시안B 13차: 이정표 5칸 먼저, 2단 목록은 접기 안' : ''}) -->
   <section class="section section--soft" id="history">
     <div class="wrap">
       <div class="head head--solo" data-reveal><div><h2>연혁</h2><p class="lead">1992년 신학상사로 출발해 1995년 신정개발로 상호를 바꾸고, 2007년 법인으로 전환했습니다.</p></div></div>
-      <div class="co-hist2" data-reveal>
+${(() => {
+  const list = `      <div class="co-hist2" data-reveal>
 ${[C.history.slice(0, 7), C.history.slice(7)].map((part) => `        <ul class="hist hist--tight">
 ${part.map((h) => `            <li><b>${h.year}</b><ul class="hist__items">
 ${h.items.map((it) => `              <li><em>${it.m}</em><span>${esc(it.label)}</span></li>`).join('\n')}
             </ul></li>`).join('\n')}
         </ul>`).join('\n')}
-      </div>
+      </div>`;
+  if (!compDiet()) return list;
+  /* 시안B 13차: 핵심 이정표 5칸(연도 + 연혁 목록의 기존 문구 그대로) → '연혁 전체 펼쳐 보기' 접기 안에 2단 목록 그대로.
+     문구는 C.history 의 해당 연·월 항목에서 꺼내 쓴다(목록을 고치면 여기도 같이 바뀐다). 2023 은 괄호 안 등급을 작은 줄로 나눈다. */
+  const item = (year, m) => { const y = C.history.find((h) => h.year === year), it = y && y.items.find((x) => x.m === m); if (!it) { console.error(`연혁 이정표: ${year}.${m} 항목이 C.history 에 없습니다`); process.exit(1); } return it.label; };
+  const ms = [
+    { year: 1992, text: item(1992, '03') },                                                  // 신학상사 설립
+    { year: 1995, text: item(1995, '10') },                                                  // 상호 변경 — 신정개발
+    { year: 2007, text: item(2007, '09'), sub: '같은 해 ' + item(2007, '10') },               // 법인 전환 — ㈜신정개발 · 같은 해 환경부장관상 수상
+    { year: 2017, text: item(2017, '11') },                                                  // 기업부설연구소 설립
+    { year: 2023, text: item(2023, '05').replace(/\s*\((.+)\)$/, ''), sub: item(2023, '05').match(/\((.+)\)$/)[1] }  // 신용등급 우수기업 인증 · 신용등급 BBB-
+  ];
+  return `      <ol class="histB-strip" data-reveal aria-label="핵심 이정표">
+${ms.map((x) => `        <li class="histB-ms"><b>${x.year}</b><span>${esc(x.text)}</span>${x.sub ? `<small>${esc(x.sub)}</small>` : ''}</li>`).join('\n')}
+      </ol>
+      <div class="histB-foldwrap" data-reveal data-delay="90">
+        ${tecFold('연혁 전체 펼쳐 보기', '\n' + list + '\n      ', 'histB-fold')}
+      </div>`;
+})()}
     </div>
   </section>
 
