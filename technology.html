@@ -311,6 +311,17 @@
       <div class="head">
         <div data-reveal><h2>자체 개발 무인 로봇</h2><p class="lead">기업부설연구소에서 개발해, 신정개발이 맡은 현장 작업에 직접 투입하는 장비입니다.</p></div>
       </div>
+      <figure class="tecB-viewer" data-model="assets/models/robot5.glb" data-reveal>
+        <div class="tecB-viewer__stage" role="img" aria-labelledby="tecB-viewer-note">
+          <img class="tecB-viewer__fallback" src="assets/photos/W05-1600.jpg" srcset="assets/photos/W05-640.jpg 640w, assets/photos/W05-1000.jpg 1000w, assets/photos/W05-1600.jpg 1600w" sizes="(max-width:960px) 92vw, 1080px" width="1000" height="667" alt="스크루 궤도형 흡입 로봇" loading="lazy" decoding="async">
+        </div>
+        <div class="tecB-viewer__ctrl" hidden>
+          <button type="button" class="tecB-viewer__btn" data-v="pp" aria-pressed="false"><span class="tecB-viewer__pp-txt">자동 회전 멈춤</span></button>
+          <button type="button" class="tecB-viewer__btn tecB-viewer__btn--sq" data-v="zoom" data-k="in" aria-label="확대">+</button>
+          <button type="button" class="tecB-viewer__btn tecB-viewer__btn--sq" data-v="zoom" data-k="out" aria-label="축소">−</button>
+        </div>
+        <figcaption class="tecB-viewer__note" id="tecB-viewer-note">※ AI로 만든 3D 예시 모형입니다. 실제 로봇과 생김새가 다를 수 있습니다.</figcaption>
+      </figure>
       <div class="eqgroup" data-reveal>
         <div class="eqgroup__head"><h3>무인 흡입 로봇(Vacuum) 세대별 비교</h3></div>
         <p class="eqgroup__desc">탱크·Pond용 무인 흡입 로봇은 1세대부터 5세대까지 개발했습니다.</p>
@@ -543,5 +554,6 @@
 </nav>
 <script src="js/site.js"></script>
 <script src="js/tech-fold.js"></script>
+<script src="js/robot5-viewer.js"></script>
 </body>
 </html>

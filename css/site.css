@@ -1750,3 +1750,22 @@ body[data-hero="slides"][data-page="home"] .hdr.is-scrolled .hdr__cta:hover { ba
   main:has(.svcB) .tabs__in { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 56px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 56px), transparent); padding-right: 40px; }
 }
 .tecB-key.section--sm { padding-block: calc(var(--sec-y-sm) / 2); }
+
+/* ========== 시안 B 11차 — 장비·로봇 로봇 3D 예시 모형 뷰어 (설정 look.robotViewer, js/robot5-viewer.js) ==========
+   PC 높이 500px · 휴대폰 300px. 처음과 실패 때는 대체 사진(.tecB-viewer__fallback), 모형이 다 그려지면 .is-3d 로 캔버스만 보인다 */
+.tecB-viewer { margin: 0 0 clamp(36px, 4vw, 56px); }
+.tecB-viewer__stage { position: relative; height: 500px; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-lg); background: radial-gradient(120% 90% at 50% 40%, #ffffff 0%, #eef1f5 70%, #e3e8ee 100%); }
+.tecB-viewer__fallback { width: 100%; height: 100%; object-fit: cover; }
+.tecB-viewer__gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; }
+.tecB-viewer__gl:active { cursor: grabbing; }
+.tecB-viewer.is-3d .tecB-viewer__fallback { display: none; }
+.tecB-viewer__ctrl { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+.tecB-viewer__ctrl[hidden] { display: none; }
+.tecB-viewer__btn { min-height: 40px; padding: 0 16px; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; color: var(--ink); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+.tecB-viewer__btn:hover { border-color: var(--navy); }
+.tecB-viewer__btn--sq { width: 40px; padding: 0; font-size: 18px; line-height: 1; }
+.tecB-viewer__note { margin-top: 10px; font-size: var(--fs-xs); line-height: 1.6; color: var(--muted); }
+@media (max-width: 720px) {
+  .tecB-viewer__stage { height: 300px; }
+  .tecB-viewer__ctrl { justify-content: flex-start; }
+}

@@ -1613,7 +1613,25 @@ ${EQUIP_GROUPS.map(eqGroup).join('\n')}
       <div class="head">
         <div data-reveal><h2>자체 개발 무인 로봇</h2><p class="lead">기업부설연구소에서 개발해, 신정개발이 맡은 현장 작업에 직접 투입하는 장비입니다.</p></div>
       </div>
-${rndGroup('무인 흡입 로봇(Vacuum) 세대별 비교', '탱크·Pond용 무인 흡입 로봇은 1세대부터 5세대까지 개발했습니다.', robotTable('무인 흡입 로봇(Vacuum) 세대별 비교', ['세대', '방식', '적용 대상', '수중 작업', '구동', '비고'], PROCESS.generations), '세대별 비교 펼쳐 보기')}
+${(() => {
+  /* 시안B 11차(설정 look.robotViewer): 로봇 3D 예시 모형 뷰어 — js/robot5-viewer.js 가 three.js(js/vendor/three, r160)로 그린다.
+     처음과 실패 때는 사이트의 로봇 실사(W05)가 보이고, 안내 줄은 늘 보인다. 새 글은 안내 줄과 단추 이름뿐 */
+  const rv = CFG.look && CFG.look.robotViewer;
+  if (!rv) return '';
+  const fb = P(rv.fallback);
+  return `      <figure class="tecB-viewer" data-model="${rv.model}" data-reveal>
+        <div class="tecB-viewer__stage" role="img" aria-labelledby="tecB-viewer-note">
+          ${photo(fb, '(max-width:960px) 92vw, 1080px').replace('<img ', '<img class="tecB-viewer__fallback" ')}
+        </div>
+        <div class="tecB-viewer__ctrl" hidden>
+          <button type="button" class="tecB-viewer__btn" data-v="pp" aria-pressed="false"><span class="tecB-viewer__pp-txt">자동 회전 멈춤</span></button>
+          <button type="button" class="tecB-viewer__btn tecB-viewer__btn--sq" data-v="zoom" data-k="in" aria-label="확대">+</button>
+          <button type="button" class="tecB-viewer__btn tecB-viewer__btn--sq" data-v="zoom" data-k="out" aria-label="축소">−</button>
+        </div>
+        <figcaption class="tecB-viewer__note" id="tecB-viewer-note">${esc(rv.note)}</figcaption>
+      </figure>
+`;
+})()}${rndGroup('무인 흡입 로봇(Vacuum) 세대별 비교', '탱크·Pond용 무인 흡입 로봇은 1세대부터 5세대까지 개발했습니다.', robotTable('무인 흡입 로봇(Vacuum) 세대별 비교', ['세대', '방식', '적용 대상', '수중 작업', '구동', '비고'], PROCESS.generations), '세대별 비교 펼쳐 보기')}
 ${rndGroup('5세대 무인 클리닝 로봇 주요 사양', '5세대 무인 클리닝 로봇의 사양입니다.', robotTable('5세대 무인 클리닝 로봇 주요 사양', ['항목', '내용'], PROCESS.gen5, ['9.5em', '']))}
 ${rndGroup('기타 클리닝 로봇', '흡입 로봇 외에 토사·슬러지 작업과 고압 세척에 쓰는 로봇입니다.', robotTable('기타 클리닝 로봇', ['로봇', '대상', '조종', '구동', '수중 작업'], PROCESS.others), '기타 로봇 펼쳐 보기')}
     </div>
@@ -1665,7 +1683,7 @@ ${SRC_LINE}    </div>
 ` + cta({
   h2: '우리 현장에도 적용할 수 있는지<br>물어보세요',
   p: '출입구와 내부 구조, 잔류물 특성 등 알고 계신 정보를 보내 주세요.'
-}) + MAIN_END + footer() + foot(techDiet() ? ['tech-fold.js'] : []);
+}) + MAIN_END + footer() + foot((techDiet() ? ['tech-fold.js'] : []).concat(CFG.look && CFG.look.robotViewer ? ['robot5-viewer.js'] : []));
 
 
 /* ---------- 4-B. 현장 진행 방식 ---------- */
