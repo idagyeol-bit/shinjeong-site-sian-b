@@ -1539,7 +1539,7 @@ body.reel-dark[data-page="home"] .hdr .hdr__cta:hover { background: #fff; border
 .heroB__ph img { width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); transform: scale(1); }
 @media (orientation: portrait) { .heroB__ph img { object-position: var(--pos-m, var(--pos, 50% 50%)); } }
 .heroB__slide.is-on .heroB__ph img { animation: heroB-kb 9s ease-out forwards; }
-.heroB__scrim { position: absolute; inset: 0; background: linear-gradient(to top, #050c16d1 0%, #050c1659 38%, #050c161f 60%, #050c1640 100%); }
+.heroB__scrim { position: absolute; inset: 0; background: linear-gradient(to top, #050c16d1 0%, #050c1659 38%, #050c161f 60%, #050c1670 100%); }
 .heroB__txt { position: absolute; left: var(--gutter); right: var(--gutter); bottom: 150px; max-width: 900px; word-break: keep-all; }
 .heroB__tag { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 18px; font-size: 14px; font-weight: 600; letter-spacing: 0.22em; color: #8fe492; }
 .heroB__tag::before { content: ""; width: 34px; height: 2px; background: currentColor; }
@@ -1737,3 +1737,16 @@ body[data-hero="slides"][data-page="home"] .hdr.is-scrolled .hdr__cta:hover { ba
   .svcB-key { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .svcB-key > div { padding: 18px 0; border-bottom: 1px solid var(--line); }
 }
+
+/* ========== 시안 B 10차 — 전체 다듬기 (글자·사실 변경 없음, 모양 값만) ==========
+   1) 분야 상세: 큰 사진 아래 제목을 약 80% 크기로, 사진·제목 사이 여백을 줄인다
+   2) 분야 상세(휴대폰): 분야 탭 줄 오른쪽 끝을 서서히 투명하게 — 옆으로 더 넘길 수 있다는 표시
+   3) 장비·로봇: 핵심 숫자 띠 위아래 여백을 절반으로
+   4) 메인 히어로 어둠막 윗부분은 위 .heroB__scrim 의 100% 값(#050c1640 → #050c1670)을 한 단계 올렸다(다섯 장면 공통) */
+.svcB .svcB-hero { margin-bottom: clamp(28px, 3vw, 44px); }
+.svcB .head { margin-bottom: clamp(22px, 2.4vw, 34px); }
+.svcB .head h2 { font-size: calc(var(--fs-h2) * 0.8); }
+@media (max-width: 960px) {
+  main:has(.svcB) .tabs__in { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 56px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 56px), transparent); padding-right: 40px; }
+}
+.tecB-key.section--sm { padding-block: calc(var(--sec-y-sm) / 2); }
