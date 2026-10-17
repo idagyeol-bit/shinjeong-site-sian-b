@@ -504,11 +504,28 @@ ${rows.map((r) => `            <tr>${r.map((v, i) => `<td${i ? ` data-label="${e
 }
 /* 무인 로봇 시스템 구역의 묶음 하나: 소제목 → 설명 → 표 (24차 .eqgroup 틀).
    fold: 다이어트판(시안B 3차)에서 표를 넣을 접기 단추 글자. 없으면 늘 펼침 */
-const rndGroup = (title, desc, table, fold) => `      <div class="eqgroup" data-reveal>
+const rndGroup = (title, desc, table, fold, between) => `      <div class="eqgroup" data-reveal>
         <div class="eqgroup__head"><h3>${esc(title)}</h3></div>
         <p class="eqgroup__desc">${esc(desc)}</p>
-        ${fold && techDiet() ? tecFold(fold, table) : table}
+${between ? between + '\n' : ''}        ${fold && techDiet() ? tecFold(fold, table) : table}
       </div>`;
+
+/* 시안B 15차: 로봇 1→5세대 발전 이정표 5칸 — 모든 글자는 세대별 비교 표(PROCESS.generations)의 그 세대 행 값 그대로.
+   작은 줄 = 적용 대상(쉼표 → ·) + 지시서가 세대마다 정한 열(3 = '수중 작업'+'가능', 4 = 구동+' 구동', 5 = 비고). 마지막 세대 칸은 남색(모양만).
+   표는 접기 안에 그대로 남는다(다이어트판에서만 보인다) */
+function genStrip() {
+  const picks = [[3], [4], [3], [5], [3, 5]];
+  const rows = PROCESS.generations;
+  if (rows.length !== picks.length) { console.error('로봇 세대 이정표: 세대별 비교 표의 행 수가 5가 아닙니다'); process.exit(1); }
+  const cells = rows.map((r, i) => {
+    const sub = picks[i].map((c) => (c === 3 ? (r[3] === '가능' ? '수중 작업 가능' : null) : c === 4 ? r[4] + ' 구동' : r[5] !== '—' ? r[5] : null));
+    if (sub.some((s) => !s)) { console.error(`로봇 세대 이정표: ${r[0]} 행의 값이 지시서와 다릅니다`); process.exit(1); }
+    return { gen: r[0], type: r[1], target: r[2].replace(/,\s*/g, ' · '), sub: sub.join(' · ') };
+  });
+  return `        <ol class="genB-strip" aria-label="무인 흡입 로봇 세대별 발전 이정표">
+${cells.map((c, i) => `          <li class="genB-ms${i === cells.length - 1 ? ' genB-ms--now' : ''}"><b>${esc(c.gen)}</b><strong>${esc(c.type)}</strong><span>${esc(c.target)}</span><small>${esc(c.sub)}</small></li>`).join('\n')}
+        </ol>`;
+}
 
 const FAQ = [
   { q: '어떤 정보를 보내면 상담에 도움이 되나요?', a: '대상 설비, 작업 목적, 현장 상태와 희망 일정을 알려 주세요. 크기·구조·사진·도면 등 알고 계신 정보를 함께 보내 주시면 더 정확하게 안내해 드릴 수 있습니다.' },
@@ -1665,7 +1682,7 @@ ${(() => {
         <figcaption class="tecB-viewer__note" id="tecB-viewer-note">${esc(rv.note)}</figcaption>
       </figure>
 `;
-})()}${rndGroup('무인 흡입 로봇(Vacuum) 세대별 비교', '탱크·Pond용 무인 흡입 로봇은 1세대부터 5세대까지 개발했습니다.', robotTable('무인 흡입 로봇(Vacuum) 세대별 비교', ['세대', '방식', '적용 대상', '수중 작업', '구동', '비고'], PROCESS.generations), '세대별 비교 펼쳐 보기')}
+})()}${rndGroup('무인 흡입 로봇(Vacuum) 세대별 비교', '탱크·Pond용 무인 흡입 로봇은 1세대부터 5세대까지 개발했습니다.', robotTable('무인 흡입 로봇(Vacuum) 세대별 비교', ['세대', '방식', '적용 대상', '수중 작업', '구동', '비고'], PROCESS.generations), '세대별 비교 펼쳐 보기', techDiet() ? genStrip() : '')}
 ${rndGroup('5세대 무인 클리닝 로봇 주요 사양', '5세대 무인 클리닝 로봇의 사양입니다.', robotTable('5세대 무인 클리닝 로봇 주요 사양', ['항목', '내용'], PROCESS.gen5, ['9.5em', '']))}
 ${rndGroup('기타 클리닝 로봇', '흡입 로봇 외에 토사·슬러지 작업과 고압 세척에 쓰는 로봇입니다.', robotTable('기타 클리닝 로봇', ['로봇', '대상', '조종', '구동', '수중 작업'], PROCESS.others), '기타 로봇 펼쳐 보기')}
     </div>

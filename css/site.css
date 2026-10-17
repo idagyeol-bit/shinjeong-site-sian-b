@@ -1835,3 +1835,29 @@ body[data-hero="slides"][data-page="home"] .hdr.is-scrolled .hdr__cta:hover { ba
   .projB-year { padding: 28px 4px 8px; }
   .projB-year h3 { font-size: 26px; }
 }
+
+/* ========== 시안 B 15차 — 장비·로봇: 무인 흡입 로봇 1→5세대 발전 이정표 (설정 diet.technology, tools/build.js genStrip) ==========
+   세대별 비교 소개 문장과 '세대별 비교 펼쳐 보기' 접기 사이. PC: 칸 5개 가로 한 줄(연결선 + 점) · 휴대폰(≤720px): 2+2+1.
+   마지막 세대 칸만 남색(지금 세대, 모양만). 글자는 모두 표의 값 그대로, 새 모션 없음 */
+.genB-strip { list-style: none; margin: 22px 0 0; padding: 0; position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
+.genB-strip::before { content: ""; position: absolute; left: 10%; right: 10%; top: 27px; height: 2px; background: var(--line); }
+.genB-ms { position: relative; padding: 42px 12px 22px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--soft); text-align: center; word-break: keep-all; }
+.genB-ms::before { content: ""; position: absolute; left: 50%; top: 20px; width: 14px; height: 14px; margin-left: -7px; box-sizing: border-box; border-radius: 50%; background: var(--white); border: 3px solid var(--brand); }
+.genB-ms b { display: block; font-size: clamp(22px, 1.9vw, 28px); font-weight: 700; color: var(--brand); line-height: 1.1; letter-spacing: -0.03em; }
+.genB-ms strong { display: block; margin-top: 10px; font-size: var(--fs-body); font-weight: 700; color: var(--ink); line-height: 1.4; }
+.genB-ms span, .genB-ms small { display: block; font-size: var(--fs-xs); color: var(--muted); line-height: 1.6; }
+.genB-ms span { margin-top: 8px; }
+.genB-ms--now { background: var(--navy); border-color: var(--navy); }
+.genB-ms--now::before { background: var(--navy); border-color: #fff; }
+.genB-ms--now b, .genB-ms--now strong { color: #fff; }
+.genB-ms--now span, .genB-ms--now small { color: var(--on-navy-sub); }
+.eqgroup .genB-strip + .tecB-fold--rnd, .eqgroup .genB-strip + .tecB-fold { margin-top: 24px; }
+@media (max-width: 960px) {
+  .genB-ms { padding: 40px 8px 18px; }
+}
+@media (max-width: 720px) {
+  .genB-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .genB-strip::before { display: none; }
+  .genB-ms:last-child { grid-column: 1 / -1; }
+  .genB-ms b { font-size: 22px; }
+}
