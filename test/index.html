@@ -115,9 +115,8 @@
           <p class="heroB__sub">설비 하나를 깨끗이 하는 일이 공장을, 도시를, 바다를 바꾼다고 믿습니다</p>
         </div>
       </div>
-      <div class="heroB__slide" data-i="3" role="group" aria-roledescription="slide" aria-label="로봇" aria-hidden="true" data-cine="robot">
-        <div class="heroB__ph"><img src="../assets/photos/W05-2400.jpg" srcset="../assets/photos/W05-640.jpg 640w, ../assets/photos/W05-1000.jpg 1000w, ../assets/photos/W05-1600.jpg 1600w, ../assets/photos/W05-2400.jpg 2400w" sizes="100vw" width="1000" height="667" alt="신정개발 흡입 로봇" decoding="async" style="--pos: 50% 50%; --pos-m: 50% 56%"></div>
-        <div class="heroB3d" data-model="assets/models/robot5.glb" aria-hidden="true"></div>   <!-- 시안B 20차: 로봇 리빌 시네마틱(js/heroB3d.js) — 모형이 준비되면 위 사진 대신 보인다 -->
+      <div class="heroB__slide" data-i="3" role="group" aria-roledescription="slide" aria-label="로봇" aria-hidden="true" data-video="1">
+        <div class="heroB__ph"><img src="../assets/photos/AI09-2400.jpg" srcset="../assets/photos/AI09-960.jpg 960w, ../assets/photos/AI09-1600.jpg 1600w, ../assets/photos/AI09-2400.jpg 2400w" sizes="100vw" width="4096" height="2304" alt="원격 조종기를 든 작업자 앞에서 호스를 끌며 작업하는 주황색 궤도형 로봇" decoding="async" style="--pos: 50% 50%; --pos-m: 50% 50%"><video class="heroB__vid" muted playsinline loop preload="none" aria-hidden="true" data-mp4="assets/video/AI09-hero.mp4" data-webm="assets/video/AI09-hero.webm" style="--pos: 50% 50%; --pos-m: 50% 50%"></video>   <!-- 시안B 22차: 연출 영상(js/heroB-video.js 가 한가할 때 source 를 붙여 받고, 장면이 켜지면 처음부터 무음 반복 재생). 포스터는 위 사진 --></div>
         <div class="heroB__scrim" aria-hidden="true"></div>
         <div class="heroB__txt">
           <span class="heroB__tag">ROBOT · 로봇</span>
@@ -386,7 +385,7 @@
       <p>&copy; <span data-year>2026</span> (주)신정개발. All rights reserved.</p>
       <button class="totop" type="button" data-totop>맨 위로 <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8.5 7H17v8.5"/></svg></button>
     </div>
-    <p class="ftr__ai">본 사이트의 일부 이미지는 이해를 돕기 위해 연출된 AI 이미지입니다.</p>   <!-- 시안B 23차: AI 연출 이미지 공통 고지(설정 look.aiNotice, look.aiMark 가 'footer' 일 때) — 개별 배지 대신 바닥글 한 줄 -->
+    <p class="ftr__ai">본 사이트의 일부 이미지·영상은 이해를 돕기 위해 연출된 AI 이미지입니다.</p>   <!-- 시안B 23차: AI 연출 이미지 공통 고지(설정 look.aiNotice, look.aiMark 가 'footer' 일 때) — 개별 배지 대신 바닥글 한 줄 -->
   </div>
   <div class="moB-wordmark" aria-hidden="true">SHINJEONG DEVELOPMENT</div>   <!-- 시안B 16차: 바닥 대형 워드마크(장식, 머리말의 영문 상호 재사용, 낭독기에 안 읽힘) -->
 </footer>
@@ -398,6 +397,6 @@
 <script src="../js/site.js"></script>
 <script src="../js/moB.js"></script>
 <script src="../js/hero-slides.js"></script>
-<script src="../js/heroB3d.js"></script>
+<script src="../js/heroB-video.js"></script>
 </body>
 </html>

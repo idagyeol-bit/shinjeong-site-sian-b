@@ -134,6 +134,8 @@ const PHOTOS = {
   /* 시안B 21차: 첫 화면 3번(환경)·5번(발전) 장면 배경 — 이다결 님이 ChatGPT 로 만들어 준 AI 연출 이미지(2026-10-19, 상업 사용 가능). 첫 화면에만 쓰고 '※ 연출 이미지' 표시. 출처 tools/photo-plan.json */
   AI07: { id: 'AI07', w: 3344, h: 1882, sizes: [960, 1600, 2400], alt: '푸른 바다와 도시가 보이는 해안의 밝은 석유화학 플랜트 전경', cap: '연출 이미지 — 해안 플랜트 전경' },
   AI08: { id: 'AI08', w: 3344, h: 1882, sizes: [960, 1600, 2400], alt: '동틀 녘 플랜트를 바라보는 안전모 쓴 작업자의 뒷모습', cap: '연출 이미지 — 동틀 녘 플랜트와 작업자' },
+  /* 시안B 22차: 첫 화면 4번 장면 연출 영상(assets/video/AI09-hero.mp4·webm)의 포스터 — 영상 첫 프레임. 이다결 님이 ChatGPT(Sora)로 만들어 준 영상(2026-10-19). 출처 tools/photo-plan.json */
+  AI09: { id: 'AI09', w: 4096, h: 2304, sizes: [960, 1600, 2400], alt: '원격 조종기를 든 작업자 앞에서 호스를 끌며 작업하는 주황색 궤도형 로봇', cap: '연출 영상 — 작업자와 무인 로봇' },
   P03: { id: 'P03', w: 1000, h: 667, sizes: [640, 1000, 1600], alt: '촉매가 쌓인 반응기 안에 투입된 흡입 로봇과 호스', cap: '반응기 안에서 촉매를 제거하는 로봇' },
   P06: { id: 'P06', w: 1000, h: 667, sizes: [640], alt: '진공흡입차 앞에서 호스 작업을 지켜보는 신정개발 작업자', cap: '흡입차와 신정개발 작업자' },
   P08: { id: 'P08', w: 1000, h: 667, sizes: [640, 800], alt: '도로 위에서 GPR 장비를 밀며 조사하는 작업자', cap: '도로 GPR 조사' },
@@ -1232,8 +1234,8 @@ function heroSlides() {
   return `  <!-- ===== 히어로: 구호·가치 5장면 자동 전환 (큰 틀 'slides', 시안 B) ===== -->
   <section class="heroB" id="heroB" aria-roledescription="carousel" aria-label="신정개발이 중요하게 생각하는 것">
     <div class="heroB__stage" aria-live="off">
-${list.map((sc, i) => `      <div class="heroB__slide${i ? '' : ' is-on'}" data-i="${i}" role="group" aria-roledescription="slide" aria-label="${esc(sc.name)}"${i ? ' aria-hidden="true"' : ''}${sc.cine ? ` data-cine="${esc(sc.cine)}"` : ''}>
-        <div class="heroB__ph">${img(sc, i)}</div>${sc.cine ? `
+${list.map((sc, i) => `      <div class="heroB__slide${i ? '' : ' is-on'}" data-i="${i}" role="group" aria-roledescription="slide" aria-label="${esc(sc.name)}"${i ? ' aria-hidden="true"' : ''}${sc.cine ? ` data-cine="${esc(sc.cine)}"` : ''}${sc.video ? ' data-video="1"' : ''}>
+        <div class="heroB__ph">${img(sc, i)}${sc.video ? `<video class="heroB__vid" muted playsinline loop preload="none" aria-hidden="true" data-mp4="${esc(sc.video.mp4)}"${sc.video.webm ? ` data-webm="${esc(sc.video.webm)}"` : ''}${sc.pos || sc.posM ? ` style="--pos: ${sc.pos || '50% 50%'}; --pos-m: ${sc.posM || sc.pos || '50% 50%'}"` : ''}></video>   <!-- 시안B 22차: 연출 영상(js/heroB-video.js 가 한가할 때 source 를 붙여 받고, 장면이 켜지면 처음부터 무음 반복 재생). 포스터는 위 사진 -->` : ''}</div>${sc.cine ? `
         <div class="heroB3d" data-model="${esc(CFG.hero.cine.model)}" aria-hidden="true"></div>   <!-- 시안B 20차: 로봇 리빌 시네마틱(js/heroB3d.js) — 모형이 준비되면 위 사진 대신 보인다 -->` : ''}
         <div class="heroB__scrim" aria-hidden="true"></div>${sc.mark && aiBadge() ? `
         <span class="heroB__mark" aria-hidden="true">${esc(sc.mark)}</span>   <!-- 시안B 21차: AI 연출 이미지 표시(장면 오른쪽 위 모서리) · 23차: 설정 look.aiMark 가 'badge' 일 때만 -->` : ''}
@@ -1491,7 +1493,7 @@ pages['index.html'] = () => {
   }) + header('home', null, 'index.html') + `
 <main id="main">
 
-` + frame('hero')() + '\n' + CFG.home.sections.map((s) => S[s.id](s.bg)).join('\n') + '\n' + cta({ home: true }) + MAIN_END + footer() + foot((CFG.frame.hero === 'reel' ? ['reel.js'] : CFG.frame.hero === 'slides' ? ['hero-slides.js'] : []).concat(CFG.frame.hero === 'slides' && CFG.hero.scenes.some((sc) => sc.cine) ? ['heroB3d.js'] : []).concat(CFG.home.sections.some((s) => s.id === 'whatB') ? ['biz-stack.js'] : []));
+` + frame('hero')() + '\n' + CFG.home.sections.map((s) => S[s.id](s.bg)).join('\n') + '\n' + cta({ home: true }) + MAIN_END + footer() + foot((CFG.frame.hero === 'reel' ? ['reel.js'] : CFG.frame.hero === 'slides' ? ['hero-slides.js'] : []).concat(CFG.frame.hero === 'slides' && CFG.hero.scenes.some((sc) => sc.cine) ? ['heroB3d.js'] : []).concat(CFG.frame.hero === 'slides' && CFG.hero.scenes.some((sc) => sc.video) ? ['heroB-video.js'] : []).concat(CFG.home.sections.some((s) => s.id === 'whatB') ? ['biz-stack.js'] : []));
 };
 
 /* ---------- 2. 사업분야 ---------- */
@@ -2359,6 +2361,9 @@ function checkConfig() {
       if (!PHOTOS[sc.photo]) configError(`첫 화면 장면 '${sc.name}'의 사진 번호 '${sc.photo}'이 사진 목록에 없습니다 (설정 hero.scenes)`);
       if (sc.cine && sc.cine !== 'robot') configError(`첫 화면 장면 '${sc.name}'의 cine 는 'robot' 만 됩니다 (설정 hero.scenes)`);
       if (sc.cine && !(CFG.hero.cine && CFG.hero.cine.model)) configError(`첫 화면 장면 '${sc.name}'의 3D 연출에는 모형 경로가 있어야 합니다 (설정 hero.cine.model)`);
+      if (sc.video && !sc.video.mp4) configError(`첫 화면 장면 '${sc.name}'의 영상에는 mp4 경로가 있어야 합니다 (설정 hero.scenes[].video.mp4)`);
+      if (sc.video && !fs.existsSync(path.join(OUT, sc.video.mp4))) configError(`첫 화면 장면 '${sc.name}'의 영상 파일이 없습니다: ${sc.video.mp4}`);
+      if (sc.video && sc.cine) configError(`첫 화면 장면 '${sc.name}'에 영상(video)과 3D 연출(cine)을 함께 둘 수 없습니다 — 하나만 남기세요`);
     });
   }
 }
