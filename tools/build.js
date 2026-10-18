@@ -697,7 +697,7 @@ ${V ? '' : `<link rel="canonical" href="${SITE_URL}${here}">
 <link rel="stylesheet" href="css/${V ? `tokens.${V.name}.css` : 'tokens.css'}">
 <link rel="stylesheet" href="css/site.css">
 ${!marked && o.jsonld ? `<script type="application/ld+json">${JSON.stringify(o.jsonld)}</script>\n` : ''}</head>
-<body data-page="${o.page}"${o.page === 'home' && (CFG.frame.hero === 'reel' || CFG.frame.hero === 'slides') ? ` data-hero="${CFG.frame.hero}"` : ''}>
+<body class="moB-root" data-page="${o.page}"${o.page === 'home' && (CFG.frame.hero === 'reel' || CFG.frame.hero === 'slides') ? ` data-hero="${CFG.frame.hero}"` : ''}>
 <a class="skip-link" href="#main">본문 바로가기</a>
 ${V ? `<div class="pvbar" role="note">검토용 ${esc(V.label)}입니다 · <a href="../index.html">기본판 보기</a> · 공식 홈페이지 <a href="${OFFICIAL_SITE.url}" target="_blank" rel="noopener">${OFFICIAL_SITE.label}</a></div>\n`
     : S ? `<div class="sianbar" role="note" style="--sian: ${S.color}"><span class="sianbar__name">${esc(S.name)}</span>${S.direction ? `<span class="sianbar__dir">${esc(S.direction)}</span>` : ''}<span class="sianbar__note">최종본과 다른 작업용 판입니다</span></div>\n`
@@ -854,6 +854,7 @@ ${g.items.map((i) => `            <li><a href="${i.href}"${i.blank ? ' target="_
       <button class="totop" type="button" data-totop>맨 위로 ${icon('up', 13)}</button>
     </div>
   </div>
+  <div class="moB-wordmark" aria-hidden="true">${esc(C.brandEn)}</div>   <!-- 시안B 16차: 바닥 대형 워드마크(장식, 머리말의 영문 상호 재사용, 낭독기에 안 읽힘) -->
 </footer>
 
 <nav class="mcta" aria-label="빠른 문의">
@@ -875,6 +876,7 @@ const MAIN_END = '</main>\n\n';
 
 function foot(extraJs) {
   return `<script src="js/site.js"></script>
+<script src="js/moB.js"></script>
 ${(extraJs || []).map((f) => `<script src="js/${f}"></script>`).join('\n')}${extraJs && extraJs.length ? '\n' : ''}</body>
 </html>
 `;

@@ -1861,3 +1861,54 @@ body[data-hero="slides"][data-page="home"] .hdr.is-scrolled .hdr__cta:hover { ba
   .genB-ms:last-child { grid-column: 1 / -1; }
   .genB-ms b { font-size: 22px; }
 }
+
+/* ========== 시안 B 16차 — 전 페이지 공통 모션·디자인 시스템 (moB-, js/moB.js) ==========
+   글자·숫자·링크·사진 선택은 그대로. body.moB-root(생성기) 아래의 모양 규칙 + html.moB-on(스크립트가 살아 있을 때)의 움직임 규칙.
+   움직임은 transform·opacity·clip-path 만 쓴다. 움직임 줄이기면 전부 즉시 보이고, 스크립트가 없으면 moB-on 이 없어 숨김 상태가 생기지 않는다 */
+/* 1 제목 줄 올라오기 — h2 의 줄(<br> 기준)마다 가림막(.moB-l) 아래에서 밀려 올라온다 */
+.moB-title .moB-l { display: block; overflow: hidden; padding-bottom: 0.1em; margin-bottom: -0.1em; }   /* 글자 아랫부분이 가림막에 잘리지 않게 */
+.moB-on .moB-title .moB-li { display: inline-block; transform: translateY(108%); transition: transform 0.7s var(--ease); will-change: transform; }
+.moB-on .moB-title.is-in .moB-li { transform: none; }
+/* 3 순차 등장 — 묶음의 자식이 70ms 간격으로 떠오른다(묶음 자체는 자리 이동 없이 자식이 움직인다) */
+.moB-on .moB-stagger > * { opacity: 0; transform: translateY(18px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); transition-delay: calc(var(--i, 0) * 70ms); }
+.moB-on .moB-stagger.is-in > * { opacity: 1; transform: none; }
+.moB-on .moB-stagger[data-reveal] { transform: none; }
+/* 4 사진 커튼·확대 — 왼쪽에서 걷히고, 올리면 1.03배(상자 radius 안에서 잘림) */
+/* 커튼은 상자가 아니라 사진(img)에 건다 — 상자에 clip-path 를 걸면 Chromium 이 '보이는 넓이 0'으로 쳐서 IntersectionObserver 가 깨어나지 않는다 */
+.moB-on .moB-pic img { clip-path: inset(0 100% 0 0); transition: clip-path 0.8s var(--ease), transform 1.1s var(--ease); }
+.moB-on .moB-pic.is-in img { clip-path: inset(0 0 0 0); }
+.moB-root .moB-pic img { transition: transform 1.1s var(--ease); }
+.moB-root .moB-pic:hover img { transform: scale(1.03); }
+/* 5 버튼·링크 마이크로 모션 — 화살표 6px, 배경 한 단계 짙게, 밑줄은 왼쪽에서 자라남, 접기 단추 테두리 brand */
+.moB-root .btn:hover svg, .moB-root .hdr__cta:hover svg, .moB-root .mcta__go:hover svg { transform: translateX(6px); }
+.moB-root .btn--fill:hover { background: #0a2238; }
+.moB-root .hdr__cta:hover { background: #0a2238; border-color: #0a2238; color: #fff; }
+.moB-root .tlink, .moB-root .rec__cat, .moB-root .scard__go {
+  border-bottom-color: transparent; text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor); background-size: 0 1px; background-repeat: no-repeat; background-position: 0 100%;
+  transition: background-size 0.25s var(--ease), color 0.2s;
+}
+.moB-root .tlink:hover, .moB-root .tlink:focus-visible, .moB-root .rec__cat:hover, .moB-root .rec__cat:focus-visible, .moB-root .scard__go:hover { background-size: 100% 1px; text-decoration: none; }
+.moB-root .scard:hover .scard__go { background-size: 100% 1px; }
+.moB-root .fold summary:hover, .moB-root .fold summary:focus-visible { border-color: var(--brand); }
+/* 6 머리말 축소 — html.moB-shrunk(스크립트): 높이 80→64px, 반투명 + blur(유리) */
+html.moB-shrunk { --header-h: 64px; }
+html.is-preview.moB-shrunk { --header-h: calc(64px + var(--pv-h)); }   /* 시안 띠(--pv-h)가 있으면 그 높이는 그대로 더한다 */
+@media (max-width: 960px) {
+  html.moB-shrunk { --header-h: 58px; }
+  html.is-preview.moB-shrunk { --header-h: calc(58px + var(--pv-h)); }
+}
+.moB-root .hdr { transition: background 0.35s, color 0.35s, border-color 0.35s, height 0.3s var(--ease), box-shadow 0.3s; }
+html.moB-shrunk .hdr,
+html.moB-shrunk body[data-page] .hdr.is-scrolled { background: #ffffffd9; border-bottom-color: #e2e5e8b3; box-shadow: 0 1px 2px #0f172a0a; -webkit-backdrop-filter: saturate(1.4) blur(12px); backdrop-filter: saturate(1.4) blur(12px); }
+/* 7 바닥 대형 워드마크 — 헤더의 영문 상호를 화면 폭에 가깝게, 글자색 6% */
+.moB-wordmark { margin: clamp(28px, 4vw, 60px) 0 -0.08em; padding-inline: var(--gutter); font-size: clamp(22px, 7.05vw, 118px); font-weight: 800; letter-spacing: -0.045em; line-height: 0.9; color: var(--ink); opacity: 0.06; white-space: nowrap; overflow: hidden; text-align: center; user-select: none; pointer-events: none; }
+/* 8 제목 스케일 업 — 크기는 토큰 --fs-h2(tools/site.config.js), 자간은 한 단계 더 좁게 */
+.moB-root h2 { letter-spacing: -0.045em; }
+@media (prefers-reduced-motion: reduce) {
+  .moB-on .moB-title .moB-li, .moB-on .moB-stagger > *, .moB-on .moB-pic { transform: none !important; opacity: 1 !important; clip-path: none !important; transition: none !important; }
+  .moB-root .moB-pic:hover img { transform: none; }
+}
+@media (max-width: 720px) {
+  .moB-wordmark { margin-top: 24px; }
+}

@@ -40,7 +40,7 @@ module.exports = {
       '--font': 'Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif', // 글꼴 (앞에서부터 있는 것을 쓴다. 따옴표 안의 큰따옴표는 지우지 않는다)
       '--fs-display': 'clamp(34px, 5.2vw, 62px)', // 메인 첫 화면의 큰 제목 (업무 다섯 개)
       '--fs-h1': 'clamp(28px, 4.2vw, 50px)',      // 각 페이지 맨 위 제목
-      '--fs-h2': 'clamp(25px, 3.1vw, 42px)',      // 구역 제목 (예: 사업분야, 현장 진행 방식)
+      '--fs-h2': 'clamp(28px, 3.6vw, 50px)',      // 구역 제목 (예: 사업분야, 현장 진행 방식) — 시안B 16차: 한 단계 키움(PC 42→50px, 약 119%)
       '--fs-h3': 'clamp(19px, 1.6vw, 24px)',      // 카드 제목
       '--fs-h4': 'clamp(17px, 1.3vw, 19px)',      // 작은 제목
       '--fs-lead': 'clamp(16px, 1.25vw, 19px)',   // 제목 아래 설명 문장

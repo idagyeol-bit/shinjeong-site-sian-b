@@ -91,7 +91,7 @@
         var end = parseFloat(el.getAttribute('data-count'));
         if (isNaN(end)) return;
         if (reduce) { el.textContent = String(end); return; }
-        var dur = 1400, t0 = null;
+        var dur = 1000, t0 = null;   // 시안B 16차: 약 1초(HTML 원문 숫자는 그대로, 표시만 0→제 값)
         var step = function (t) {
           if (t0 === null) t0 = t;
           var p = Math.min((t - t0) / dur, 1);
