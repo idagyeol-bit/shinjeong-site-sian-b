@@ -111,44 +111,30 @@
       <div class="head">
         <div data-reveal><h2>현장 배치와 작업 순서</h2><p class="lead">위험한 작업은 로봇이 먼저 하고, 작업자는 설비 밖에서 조종합니다.</p></div>
       </div>
-      <div class="diagram" data-reveal>
-        <div class="scn-stage" id="scn-stage" data-fallback="js/process-scene-2d.js" role="img" aria-label="현장 배치와 작업 순서: 작업자는 설비 밖 제어 차량에서 CCTV로 내부를 보며 로봇을 조종합니다. 로봇이 설비 안에서 회수한 물질은 호스를 따라 진공흡입차로 갑니다. 위험 물질이 줄어든 뒤 작업자가 투입되어 최종 잔여물을 제거합니다.">
-          <canvas id="scn-gl"></canvas>
-          <div class="scn-labels" id="scn-labels" aria-hidden="true">
-            <span class="scn-lb" id="scn-lb1"><span class="scn-n">1</span><span class="scn-t">제어 차량</span></span>
-            <span class="scn-lb" id="scn-lb2"><span class="scn-n scn-n--b">2</span><span class="scn-t">로봇</span></span>
-            <span class="scn-lb" id="scn-lb3"><span class="scn-n">3</span><span class="scn-t">진공흡입차</span></span>
-            <span class="scn-lb" id="scn-lb4"><span class="scn-n">4</span><span class="scn-t">분리장치</span></span>
-            <span class="scn-lb scn-lb--t" id="scn-lbT">설비 (탱크 · 반응기 · Pond)</span>
-            <span class="scn-lb scn-lb--s" id="scn-lbC">CCTV</span>
-            <span class="scn-lb scn-lb--s" id="scn-lbS">원격 조종 · CCTV 영상</span>
-            <span class="scn-lb scn-lb--s" id="scn-lbH">회수물</span>
-            <span class="scn-lb scn-lb--d" id="scn-lbD"><i>✓</i>클리닝 완료</span>
-          </div>
-          <span class="scn-tip" aria-hidden="true">끌어서 돌려 보기</span>
-          <p class="scn-nogl">그림을 표시할 수 없습니다. 아래 설명을 참고해 주세요.</p>
+      <div class="procB-vis" data-reveal>
+        <div class="procB-vid" data-video="1">
+          <div class="procB-vid__ph"><img src="assets/photos/AI09-2400.jpg" srcset="assets/photos/AI09-960.jpg 960w, assets/photos/AI09-1600.jpg 1600w, assets/photos/AI09-2400.jpg 2400w" sizes="(max-width: 960px) 92vw, 1200px" width="4096" height="2304" alt="원격 조종기를 든 작업자 앞에서 호스를 끌며 작업하는 주황색 궤도형 로봇" loading="lazy" decoding="async"></div>
+          <video class="procB-vid__v" muted playsinline loop preload="none" aria-hidden="true" data-mp4="assets/video/AI09-hero.mp4" data-webm="assets/video/AI09-hero.webm"></video>   <!-- js/procB-video.js 가 구역이 가까워지면 source 를 붙여 받고, 화면에 오면 무음 반복 재생. 포스터는 위 사진 -->
         </div>
-        <p class="scn-hint">옆으로 밀어서 볼 수 있습니다.</p>
-        <div class="scn-ctrl">
-          <button type="button" id="scn-pp" aria-pressed="false">멈춤</button>
-          <button type="button" id="scn-rs">처음부터</button>
-          <ol class="scn-steps">
-            <li><b>1</b>원격 조종</li>
-            <li><b>2</b>로봇 투입 · 회수</li>
-            <li><b>3</b>진공흡입차로 회수</li>
-            <li><b>4</b>작업자 최종 클리닝</li>
-          </ol>
-        </div>
-        <p class="scn-say" id="scn-say">작업자는 설비 밖 제어 차량에서 CCTV로 내부를 보며 로봇을 조종합니다.</p>
-        <ul class="scn-legend">
-          <li><b><span class="scn-n">1</span>제어 차량</b><p>작업자가 CCTV로 내부를 보며 로봇을 조종합니다.</p></li>
-          <li><b><span class="scn-n scn-n--b">2</span>로봇</b><p>잔여 위험 물질을 회수하고, 전면부 Jet Nozzle로 내부를 세척합니다.</p></li>
-          <li><b><span class="scn-n">3</span>진공흡입차</b><p>호스로 연결해 회수물을 흡입합니다.</p></li>
-          <li><b><span class="scn-n">4</span>분리장치</b><p>촉매·충진물 작업에서 회수물을 분리합니다.</p></li>
-        </ul>
-        <p class="diagram__note">실제 배치는 현장 조건에 맞춰 정합니다. 그림은 이해를 돕기 위해 단순화한 것입니다.</p>
       </div>
-      <div class="grid grid--3 mt-24">
+      <dl class="svcB-key procB-key" data-reveal style="--svcB-n: 4">
+        <div><dt><span class="scn-n">1</span>제어 차량</dt><dd>작업자가 CCTV로 내부를 보며 로봇을 조종합니다.</dd></div>
+        <div><dt><span class="scn-n scn-n--b">2</span>로봇</dt><dd>잔여 위험 물질을 회수하고, 전면부 Jet Nozzle로 내부를 세척합니다.</dd></div>
+        <div><dt><span class="scn-n">3</span>진공흡입차</dt><dd>호스로 연결해 회수물을 흡입합니다.</dd></div>
+        <div><dt><span class="scn-n">4</span>분리장치</dt><dd>촉매·충진물 작업에서 회수물을 분리합니다.</dd></div>
+      </dl>
+      <details class="fold tecB-fold procB-fold">
+          <summary>작업 순서 자세히 보기</summary>
+          <ol class="procB-order">
+          <li><b>1</b><span>원격 조종</span><p>작업자는 설비 밖 제어 차량에서 CCTV로 내부를 보며 로봇을 조종합니다.</p></li>
+          <li><b>2</b><span>로봇 투입 · 회수</span><p>로봇이 설비 안에서 잔여 위험 물질을 회수합니다.</p></li>
+          <li><b>3</b><span>진공흡입차로 회수</span><p>회수물은 호스를 따라 진공흡입차로 갑니다.</p></li>
+          <li><b>4</b><span>작업자 최종 클리닝</span><p>위험 물질이 줄어든 뒤 작업자가 투입되어 최종 잔여물을 제거합니다.</p></li>
+        </ol>
+        <p class="diagram__note">실제 배치는 현장 조건에 맞춰 정합니다. 그림은 이해를 돕기 위해 단순화한 것입니다.</p>
+        </details>
+      <h3 class="procB-sub" data-reveal>같은 구성의 실제 현장 장비</h3>   <!-- 시안B 25차: 사진 3장의 역할(위 카드 번호와 이어짐) -->
+      <div class="grid grid--3 procB-shots">
         <figure class="pcard pcard--num" data-reveal>
           <div class="pcard__fig"><img src="assets/photos/R07-1600.jpg" srcset="assets/photos/R07-640.jpg 640w, assets/photos/R07-1000.jpg 1000w, assets/photos/R07-1600.jpg 1600w" sizes="(max-width:720px) 92vw, 420px" width="1000" height="667" alt="차량에 설치된 모니터·제어 장치 앞에 선 조종자" loading="lazy" decoding="async"></div>
           <figcaption><b><span class="scn-n">1</span>제어 차량 (원격 조종·CCTV)</b></figcaption>
@@ -459,7 +445,7 @@
 </nav>
 <script src="js/site.js"></script>
 <script src="js/moB.js"></script>
-<script src="js/process-scene.js"></script>
+<script src="js/procB-video.js"></script>
 <script src="js/tech-fold.js"></script>
 </body>
 </html>

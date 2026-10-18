@@ -2011,3 +2011,36 @@ html.moB-shrunk body[data-page] .hdr.is-scrolled { background: #ffffffd9; border
   .cta--compact .cta__act { width: 100%; }
   .cta--compact .cta__act .btn { flex: 1 1 100%; justify-content: center; }
 }
+
+/* ========== 시안B 25차: 현장 진행 방식 — 연출 영상 + 4구성 카드 한 겹 + 접기 (설정 look.processVideo) ========== */
+/* 영상: 포스터 사진(3D 자리와 같은 둥근 모서리) 위에 같은 자리로 영상을 얹고, 그림이 나오기 시작하면(.is-video) 보인다 */
+.procB-vis { margin: 0 0 clamp(24px, 3vw, 36px); }
+.procB-vid { position: relative; overflow: hidden; border-radius: var(--radius-lg); background: var(--soft-2); aspect-ratio: 16 / 9; }
+.procB-vid__ph, .procB-vid__ph img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.procB-vid__ph img { object-fit: cover; display: block; }
+.procB-vid__v { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.6s ease; pointer-events: none; }
+.procB-vid.is-video .procB-vid__v { opacity: 1; }
+/* 4구성 카드: 분야 상세 핵심 칸(.svcB-key, 8차)과 같은 결 — 위 2px 선·4칸·같은 간격. 번호 동그라미(.scn-n)는 28차 그대로 */
+.procB-key { margin-bottom: clamp(20px, 2.4vw, 28px); }
+.procB-key dt { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; font-size: 16px; letter-spacing: -0.02em; color: var(--ink); }
+.procB-key dd { font-size: 14.5px; font-weight: 400; line-height: 1.65; color: var(--text); }
+/* 접기 안: 장면 자막 4개 + 문장 + 각주(28차 글자 그대로) */
+.procB-fold[open] > summary { margin-bottom: 20px; }
+.procB-order { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 0; padding: 0; list-style: none; }
+.procB-order li { padding-top: 12px; border-top: 3px solid var(--line); }
+.procB-order li b { display: block; font-size: 12px; font-weight: 700; color: var(--brand); }
+.procB-order li span { display: block; margin-top: 2px; font-size: var(--fs-sm); font-weight: 700; color: var(--ink); }
+.procB-order li p { margin-top: 6px; font-size: 14px; line-height: 1.7; color: var(--text); }
+.procB-fold .diagram__note { margin-top: 16px; }
+/* 사진 3장: 작은 구역 제목 + 같은 규격(3:2·같은 모서리·같은 간격 — .pcard 공통) */
+.procB-sub { margin: clamp(28px, 3.4vw, 44px) 0 16px; font-size: var(--fs-sm); font-weight: 700; letter-spacing: 0.02em; color: var(--brand); }
+.procB-shots .pcard__fig { aspect-ratio: 3 / 2; border-radius: var(--radius-lg); }
+@media (max-width: 960px) {
+  .procB-key { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; }
+  .procB-key > div { padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .procB-order { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 520px) {
+  .procB-key { grid-template-columns: minmax(0, 1fr); }
+  .procB-order { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+}

@@ -931,6 +931,42 @@ ${row('필터프레스 (Filter-Press)', '여과·압착을 이용한 탈수', PR
 }
 
 /* 현장 배치와 작업 순서 — 회사소개서 p.33 · 기술소개서 p.18~20의 구성. 그림은 js/process-scene.js(3D), js/process-scene-2d.js(2D)가 그린다 (28차) */
+/* 시안B 25차: 3D판(siteDiagram)과 영상판(siteVideo)이 같은 글자를 쓰도록 여기 한 곳에 둔다. 글자는 28차 그대로 */
+const SITE_LEGEND = [   // 4구성 — 번호·이름·한 줄 설명
+  { n: '1', name: '제어 차량', d: '작업자가 CCTV로 내부를 보며 로봇을 조종합니다.' },
+  { n: '2', name: '로봇', d: '잔여 위험 물질을 회수하고, 전면부 Jet Nozzle로 내부를 세척합니다.', b: true },
+  { n: '3', name: '진공흡입차', d: '호스로 연결해 회수물을 흡입합니다.' },
+  { n: '4', name: '분리장치', d: '촉매·충진물 작업에서 회수물을 분리합니다.' }
+];
+const SITE_STEPS = ['원격 조종', '로봇 투입 · 회수', '진공흡입차로 회수', '작업자 최종 클리닝'];   // 3D 장면 자막 4개(.scn-steps)
+const SITE_SAYS = [   // 장면마다 나오는 문장(js/process-scene.js 의 says 와 같다 — 영상판에서는 접기 안에 글로 보인다)
+  '작업자는 설비 밖 제어 차량에서 CCTV로 내부를 보며 로봇을 조종합니다.',
+  '로봇이 설비 안에서 잔여 위험 물질을 회수합니다.',
+  '회수물은 호스를 따라 진공흡입차로 갑니다.',
+  '위험 물질이 줄어든 뒤 작업자가 투입되어 최종 잔여물을 제거합니다.'
+];
+const SITE_NOTE = '실제 배치는 현장 조건에 맞춰 정합니다. 그림은 이해를 돕기 위해 단순화한 것입니다.';
+const scnN = (it) => `<span class="scn-n${it.b ? ' scn-n--b' : ''}">${it.n}</span>`;
+
+/* 시안B 25차(설정 look.processVideo): 자체 3D 대신 22차의 연출 영상(무음 자동 반복, 화면에 올 때 재생·벗어나면 정지, 받기 전·실패·움직임 줄이기엔 포스터).
+   아래에 4구성 카드 한 줄(분야 상세 핵심 칸 .svcB-key 와 같은 결), 겹치던 장면 자막·문장·각주는 접기 '작업 순서 자세히 보기' 안으로(한 글자도 지우지 않음).
+   설정 look.processVideo 를 지우면 28차 3D(siteDiagram)로 돌아간다 */
+function siteVideo(pv) {
+  const poster = P(pv.poster);
+  return `      <div class="procB-vis" data-reveal>
+        <div class="procB-vid" data-video="1">
+          <div class="procB-vid__ph">${photo(poster, '(max-width: 960px) 92vw, 1200px')}</div>
+          <video class="procB-vid__v" muted playsinline loop preload="none" aria-hidden="true" data-mp4="${esc(pv.mp4)}"${pv.webm ? ` data-webm="${esc(pv.webm)}"` : ''}></video>   <!-- js/procB-video.js 가 구역이 가까워지면 source 를 붙여 받고, 화면에 오면 무음 반복 재생. 포스터는 위 사진 -->
+        </div>
+      </div>
+      <dl class="svcB-key procB-key" data-reveal style="--svcB-n: 4">
+${SITE_LEGEND.map((it) => `        <div><dt>${scnN(it)}${esc(it.name)}</dt><dd>${esc(it.d)}</dd></div>`).join('\n')}
+      </dl>
+      ${tecFold('작업 순서 자세히 보기', `<ol class="procB-order">
+${SITE_STEPS.map((st, i) => `          <li><b>${i + 1}</b><span>${esc(st)}</span><p>${esc(SITE_SAYS[i])}</p></li>`).join('\n')}
+        </ol>
+        <p class="diagram__note">${esc(SITE_NOTE)}</p>`, 'procB-fold')}`;
+}
 function siteDiagram() {
   return `      <div class="diagram" data-reveal>
         <div class="scn-stage" id="scn-stage" data-fallback="js/process-scene-2d.js" role="img" aria-label="현장 배치와 작업 순서: 작업자는 설비 밖 제어 차량에서 CCTV로 내부를 보며 로봇을 조종합니다. 로봇이 설비 안에서 회수한 물질은 호스를 따라 진공흡입차로 갑니다. 위험 물질이 줄어든 뒤 작업자가 투입되어 최종 잔여물을 제거합니다.">
@@ -954,20 +990,14 @@ function siteDiagram() {
           <button type="button" id="scn-pp" aria-pressed="false">멈춤</button>
           <button type="button" id="scn-rs">처음부터</button>
           <ol class="scn-steps">
-            <li><b>1</b>원격 조종</li>
-            <li><b>2</b>로봇 투입 · 회수</li>
-            <li><b>3</b>진공흡입차로 회수</li>
-            <li><b>4</b>작업자 최종 클리닝</li>
+${SITE_STEPS.map((st, i) => `            <li><b>${i + 1}</b>${esc(st)}</li>`).join('\n')}
           </ol>
         </div>
-        <p class="scn-say" id="scn-say">작업자는 설비 밖 제어 차량에서 CCTV로 내부를 보며 로봇을 조종합니다.</p>
+        <p class="scn-say" id="scn-say">${esc(SITE_SAYS[0])}</p>
         <ul class="scn-legend">
-          <li><b><span class="scn-n">1</span>제어 차량</b><p>작업자가 CCTV로 내부를 보며 로봇을 조종합니다.</p></li>
-          <li><b><span class="scn-n scn-n--b">2</span>로봇</b><p>잔여 위험 물질을 회수하고, 전면부 Jet Nozzle로 내부를 세척합니다.</p></li>
-          <li><b><span class="scn-n">3</span>진공흡입차</b><p>호스로 연결해 회수물을 흡입합니다.</p></li>
-          <li><b><span class="scn-n">4</span>분리장치</b><p>촉매·충진물 작업에서 회수물을 분리합니다.</p></li>
+${SITE_LEGEND.map((it) => `          <li><b>${scnN(it)}${esc(it.name)}</b><p>${esc(it.d)}</p></li>`).join('\n')}
         </ul>
-        <p class="diagram__note">실제 배치는 현장 조건에 맞춰 정합니다. 그림은 이해를 돕기 위해 단순화한 것입니다.</p>
+        <p class="diagram__note">${esc(SITE_NOTE)}</p>
       </div>`;
 }
 
@@ -1789,6 +1819,7 @@ pages['process.html'] = () => head({
   /* 시안B 7차(설정 look.process): 3D 배치를 첫 구역으로 올리고, 일곱 단계는 아이콘 가로 스트립(PC 7칸, 휴대폰 세로).
      글자(단계 번호·이름·설명, 구역 제목·설명)는 그대로이고 자리와 모양만 바뀐다. 바탕은 흰색·연회색이 번갈아 오게 서로 바꾼다 */
   const vis = !!(CFG.look && CFG.look.process);
+  const pv = CFG.look && CFG.look.processVideo;   // 시안B 25차: 있으면 3D 대신 연출 영상 + 카드 한 겹
   const STEP_ICONS = ['checklist', 'truck', 'suction', 'robot', 'monitor', 'worker', 'filter'];   // 단계를 알아보게 하는 선 아이콘(장식 아님)
   const steps = vis ? `  <!-- 02 진행 순서 (시안B 7차: 아이콘 가로 스트립) -->
   <section class="section section--soft">
@@ -1833,8 +1864,9 @@ ${PROCESS.steps.map((st, i) => `        <article data-reveal${i ? ` data-delay="
       <div class="head">
         <div data-reveal><h2>현장 배치와 작업 순서</h2><p class="lead">위험한 작업은 로봇이 먼저 하고, 작업자는 설비 밖에서 조종합니다.</p></div>
       </div>
-${siteDiagram()}
-      <div class="grid grid--3 mt-24">
+${pv ? siteVideo(pv) : siteDiagram()}
+${pv ? `      <h3 class="procB-sub" data-reveal>같은 구성의 실제 현장 장비</h3>   <!-- 시안B 25차: 사진 3장의 역할(위 카드 번호와 이어짐) -->
+      <div class="grid grid--3 procB-shots">` : `      <div class="grid grid--3 mt-24">`}
 ${pcards(['R07', 'R25', 'R27'], null, null, null, [
   '<span class="scn-n">1</span>제어 차량 (원격 조종·CCTV)',
   '<span class="scn-n">1</span><span class="scn-dash">–</span><span class="scn-n scn-n--b">2</span>제어 차량과 로봇의 연결',
@@ -1915,7 +1947,7 @@ ${SRC_LINE}    </div>
 ` + cta({
   h2: '우리 현장은 어떤 순서로<br>진행될지 물어보세요',
   p: '대상 설비·작업 목적·희망 일정을 알려 주시면 현장 검토부터 안내하겠습니다.'
-}) + MAIN_END + footer() + foot(procDiet() ? ['process-scene.js', 'tech-fold.js'] : ['process-scene.js']);
+}) + MAIN_END + footer() + foot([CFG.look && CFG.look.processVideo ? 'procB-video.js' : 'process-scene.js'].concat(procDiet() ? ['tech-fold.js'] : []))   /* 시안B 25차: 영상판이면 3D 스크립트 대신 procB-video.js */;
 
 /* ---------- 5. 수행 이력 ---------- */
 pages['projects.html'] = () => head({
@@ -2381,6 +2413,14 @@ function checkConfig() {
       if (sc.video && !fs.existsSync(path.join(OUT, sc.video.mp4))) configError(`첫 화면 장면 '${sc.name}'의 영상 파일이 없습니다: ${sc.video.mp4}`);
       if (sc.video && sc.cine) configError(`첫 화면 장면 '${sc.name}'에 영상(video)과 3D 연출(cine)을 함께 둘 수 없습니다 — 하나만 남기세요`);
     });
+  }
+  /* 시안B 25차: 현장 진행 방식의 연출 영상(설정 look.processVideo) */
+  if (CFG.look && CFG.look.processVideo) {
+    const pv = CFG.look.processVideo;
+    if (!pv.mp4) configError('현장 진행 방식 영상에는 mp4 경로가 있어야 합니다 (설정 look.processVideo.mp4)');
+    else if (!fs.existsSync(path.join(OUT, pv.mp4))) configError(`현장 진행 방식 영상 파일이 없습니다: ${pv.mp4}`);
+    if (pv.webm && !fs.existsSync(path.join(OUT, pv.webm))) configError(`현장 진행 방식 영상 파일이 없습니다: ${pv.webm}`);
+    if (!pv.poster || !PHOTOS[pv.poster]) configError(`현장 진행 방식 영상의 포스터 사진 번호가 사진 목록에 없습니다 (설정 look.processVideo.poster): ${pv.poster}`);
   }
 }
 
