@@ -818,7 +818,15 @@ ${SERVICES.map((s) => `      <a href="${s.file}"${s.id === activeId ? ' aria-cur
 
 /* 맨 아래 문의 띠. 기본 제목·문장·버튼 문구는 tools/site.config.js 에 있다 (41차, 이다결 님 "가"):
    메인 페이지는 home.copy.cta (cta({ home: true })), 그 밖의 페이지는 common.cta. 페이지가 넘기는 제목·문장(h2, p)이 있으면 그것이 먼저다 */
+/* 시안B 26차(설정 look.contactFlow: 'footer'): 본문의 문의 장치를 걷고 문의 접점을 머리말 버튼 + 바닥글 윗줄 두 곳으로 모은다(이다결 님 2026-10-19 결정).
+   - 모든 페이지 하단 문의 띠(cta, 24차 압축형 포함)와 메인 색판 뒤 '어느 업무인지 모르겠다면 문의하기' 버튼을 그리지 않는다(코드·문구·스타일은 남는다).
+   - 바닥글 맨 윗줄에 소형 문의 줄(.ftrB-ask): 왼쪽 '현장 문의'(common.headerCta 재사용), 오른쪽 '현장 문의하기 →'(common.cta.button 재사용)와 이메일.
+   - 수행 이력 띠의 문장(PROJECTS_CTA_P)은 문의 페이지에 같은 역할 안내가 없어 '적어 주시면 좋은 내용' 아래로 옮긴다. 그 밖의 띠 문장은 문의 페이지에 이미 같은 안내가 있다(26차 보고).
+   설정을 지우면 24차 상태(띠 압축형 + 고아 버튼)로 돌아간다 */
+const contactFooterOnly = () => !!(CFG.look && CFG.look.contactFlow === 'footer');
+const PROJECTS_CTA_P = '참고하신 이력과 대상 설비를 알려 주시면 비슷한 현장의 진행 방법을 안내해 드립니다.';   // 수행 이력 문의 띠 문장(26차: 띠가 꺼지면 문의 페이지로)
 function cta(o) {
+  if (contactFooterOnly()) return '';   // 시안B 26차: 문의 띠 없음(접점은 머리말 버튼 + 바닥글 윗줄)
   const t = o || {};
   const d = t.home ? CFG.home.copy.cta : CFG.common.cta;
   /* 시안B 24차(설정 look.ctaCompact): 제목 첫 줄 + 버튼 2개만(한 줄 압축형). 안내 문장(t.p / d.text)은 지우지 않고 넘겨 두되 그리지 않는다 —
@@ -858,7 +866,14 @@ function footer() {
     { h: g.contact, items: [{ href: 'contact.html', label: '현장 문의' }, { href: `mailto:${C.email}`, label: '이메일로 문의' }] }
   ];
   return `<footer class="ftr">
-  <div class="wrap">
+  <div class="wrap">${contactFooterOnly() ? `
+    <div class="ftrB-ask">   <!-- 시안B 26차: 바닥글 윗줄 소형 문의 줄 — 머리말 낱말·문의 버튼 문구·이메일 재사용(새 문장 없음) -->
+      <span class="ftrB-ask__label">${esc(CFG.common.headerCta)}</span>
+      <div class="ftrB-ask__act">
+        <a class="btn btn--line btn--sm" href="contact.html">${esc(CFG.common.cta.button)} ${arrow(18)}</a>
+        <a class="ftrB-ask__mail" href="mailto:${C.email}">${C.email}</a>
+      </div>
+    </div>` : ''}
     <div class="ftr__top">
       <div class="ftr__brand">
         <img class="ftr__logo" src="assets/logo/shinjeong-symbol.svg" width="30" height="37" alt="" aria-hidden="true">
@@ -1374,7 +1389,7 @@ ${i ? '' : `      <h2 class="bizB__sec" id="bizB-title">${c.title}</h2>\n`}     
       </div>
     </article>`;
   }).join('\n')}
-    <div class="bizB__end"><a class="btn btn--line btn--sm" href="contact.html">${c.button} ${arrow(18)}</a></div>
+${contactFooterOnly() ? '' : `    <div class="bizB__end"><a class="btn btn--line btn--sm" href="contact.html">${c.button} ${arrow(18)}</a></div>`}
   </section>
 `;
   },
@@ -2014,7 +2029,7 @@ ${PROJECT_ORDER.map(prj).map((p) => recRow(p)).join('\n')}
 
 ` + cta({
   h2: '비슷한 현장을<br>검토하고 계신가요?',
-  p: '참고하신 이력과 대상 설비를 알려 주시면 비슷한 현장의 진행 방법을 안내해 드립니다.'
+  p: PROJECTS_CTA_P
 }) + MAIN_END + footer() + foot(['projects.js']);
 
 /* ---------- 6. 회사 소개 ---------- */
@@ -2296,7 +2311,8 @@ ${SERVICES.map((s) => `                  <option value="${s.id}">${esc(s.title)}
             <li><b>작업 목적</b><p>클리닝·제거·교체·조사 등</p></li>
             <li><b>현장 상태</b><p>크기·구조·잔류물 정보, 사진·도면</p></li>
             <li><b>희망 일정</b><p>정기보수 기간 등 가능한 시기</p></li>
-          </ul>
+          </ul>${contactFooterOnly() ? `
+          <p class="note mt-12">${esc(PROJECTS_CTA_P)}</p>   <!-- 시안B 26차: 수행 이력 문의 띠에서 옮긴 문장 -->` : ''}
           <h3 class="mt-block-sm">문의 후 진행 순서</h3>
           <ol class="ct-guide__steps">
             <li><b>문의</b><p>전화, 이메일, 문의 양식 가운데 편한 방법으로 알려 주세요.</p></li>

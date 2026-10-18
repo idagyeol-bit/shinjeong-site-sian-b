@@ -2044,3 +2044,15 @@ html.moB-shrunk body[data-page] .hdr.is-scrolled { background: #ffffffd9; border
   .procB-key { grid-template-columns: minmax(0, 1fr); }
   .procB-order { grid-template-columns: minmax(0, 1fr); gap: 12px; }
 }
+
+/* ========== 시안B 26차: 바닥글 윗줄 소형 문의 줄 (설정 look.contactFlow: 'footer') ========== */
+/* 왼쪽 작은 글 '현장 문의', 오른쪽 소형 버튼 + 이메일. 바닥글의 기존 묶음(.ftr__top) 위에 한 줄, 아래 선으로 나눈다 */
+.ftrB-ask { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px; padding-bottom: clamp(22px, 2.6vw, 30px); margin-bottom: clamp(28px, 3.4vw, 44px); border-bottom: 1px solid var(--line); }
+.ftrB-ask__label { font-size: var(--fs-sm); font-weight: 700; letter-spacing: -0.01em; color: var(--ink); }
+.ftrB-ask__act { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; }
+.ftrB-ask__mail { display: inline-block; padding: 8px 0; font-size: var(--fs-sm); color: var(--brand); text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+@media (max-width: 720px) {
+  .ftrB-ask { flex-direction: column; align-items: flex-start; }
+  .ftrB-ask__act { width: 100%; }
+  .ftrB-ask__act .btn { flex: 1 1 100%; justify-content: center; }
+}
