@@ -151,11 +151,12 @@ module.exports = {
         button: '어느 업무인지 모르겠다면 문의하기',             // 카드 아래 버튼 문구 (문의 페이지로 간다)
         boards: [                                             // 시안 B 색판(whatB) — 위에서부터 이 순서로 쌓인다. 제목·설명·칩은 사업분야 데이터 그대로
           // svc = 업무 번호(바꾸지 않는다) · label = 판 위 영문 알약 라벨 · photo = 사진 번호 · alt = 사진 설명(사진에 보이는 것만)
-          { svc: 'S01', label: 'Cleaning', photo: 'P01', alt: '탱크 내부 고압 세척 작업' },
-          { svc: 'S02', label: 'Catalyst', photo: 'P03', alt: '반응기 내부의 촉매 흡입 로봇' },
-          { svc: 'S03', label: 'Chemical', photo: 'W09', alt: '플랜트에서 작업 중인 진공흡입차' },   // 화학세정 작업 사진은 아직 없음(고객 사진 오면 교체, 남은 일 19번)
-          { svc: 'S04', label: 'Dredging', photo: 'W10', alt: '맨홀 호스 준설 작업' },
-          { svc: 'S05', label: 'Pipeline', photo: 'W04' }                                      // alt 없음 = 사진 목록의 설명(도로 위 맨홀 공사 현장) — 사진에 '관로 조사'는 보이지 않아서
+          // 시안B 19차: 다섯 판 사진을 분야 상세 상단(18차)과 같은 AI 연출 이미지로 통일(alt 는 사진 목록의 18차 문구 그대로, note 는 사진 모서리 표시). 예전 사진(P01·P03·W09·W10·W04)은 다른 쓰임 그대로
+          { svc: 'S01', label: 'Cleaning', photo: 'AI02', note: '※ 연출 이미지' },   // 2차 P01 → 19차 AI02
+          { svc: 'S02', label: 'Catalyst', photo: 'AI03', note: '※ 연출 이미지' },   // 2차 P03 → 19차 AI03
+          { svc: 'S03', label: 'Chemical', photo: 'AI04', note: '※ 연출 이미지' },   // 2차 W09 → 19차 AI04
+          { svc: 'S04', label: 'Dredging', photo: 'AI05', note: '※ 연출 이미지' },   // 2차 W10 → 19차 AI05
+          { svc: 'S05', label: 'Pipeline', photo: 'AI06', note: '※ 연출 이미지' }    // 2차 W04 → 19차 AI06
         ]
       },
       projects: {                           // 주요 수행 이력

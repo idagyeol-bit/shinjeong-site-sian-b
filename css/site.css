@@ -1628,8 +1628,10 @@ body[data-hero="slides"][data-page="home"] .hdr.is-scrolled .hdr__cta:hover { ba
 .bizB__chips li { padding: 5px 12px; border-radius: 999px; font-size: 12.5px; line-height: 1.5; }
 .bizB__go { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; min-height: 44px; font-size: 15px; font-weight: 700; }
 .bizB__go:hover { text-decoration: underline; text-underline-offset: 3px; }
-.bizB__shot { flex: 0 1 400px; margin: 0; }
+.bizB__shot { position: relative; flex: 0 1 400px; margin: 0; }
 .bizB__shot img { display: block; width: 100%; height: 280px; object-fit: cover; border-radius: 10px; }
+/* 시안B 19차: AI 연출 이미지 표시 — 사진 오른쪽 아래 모서리의 작은 배지(18차 상세 상단 .svcB-hero__note 와 같은 결) */
+.bizB__shot-note { position: absolute; right: 10px; bottom: 10px; margin: 0; padding: 3px 8px; border-radius: 4px; background: #0b1622a6; color: #ffffffd9; font-size: 11.5px; line-height: 1.5; letter-spacing: 0; pointer-events: none; }
 .bizB__end { position: relative; z-index: 1; padding: 66px var(--gutter); background: #fff; text-align: center; }
 /* 판 색 — 흰색 → 연회색 → 남색 → 짙은 남색 → 연초록 */
 .bizB__panel--1 { background: #ffffff; color: #141a33; }

@@ -1312,7 +1312,7 @@ ${i ? '' : `      <h2 class="bizB__sec" id="bizB-title">${c.title}</h2>\n`}     
           <ul class="bizB__chips" aria-label="${esc(s.title)} 대상 설비">${CARD_CHIPS[s.id].map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
           <a class="bizB__go" href="${s.file}" aria-label="${esc(s.title)} 자세히 보기">자세히 보기 ${arrow(14)}</a>
         </div>
-        <figure class="bizB__shot">${photo({ ...P(b.photo), alt: b.alt || P(b.photo).alt }, '(max-width:960px) 92vw, 400px')}</figure>
+        <figure class="bizB__shot">${photo({ ...P(b.photo), alt: b.alt || P(b.photo).alt }, '(max-width:960px) 92vw, 400px')}${b.note ? `<figcaption class="bizB__shot-note">${esc(b.note)}</figcaption>` : ''}</figure>   <!-- 시안B 19차: note = AI 연출 이미지 표시 -->
       </div>
     </article>`;
   }).join('\n')}
