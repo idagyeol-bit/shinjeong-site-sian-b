@@ -1224,8 +1224,9 @@ function heroSlides() {
   return `  <!-- ===== 히어로: 구호·가치 5장면 자동 전환 (큰 틀 'slides', 시안 B) ===== -->
   <section class="heroB" id="heroB" aria-roledescription="carousel" aria-label="신정개발이 중요하게 생각하는 것">
     <div class="heroB__stage" aria-live="off">
-${list.map((sc, i) => `      <div class="heroB__slide${i ? '' : ' is-on'}" data-i="${i}" role="group" aria-roledescription="slide" aria-label="${esc(sc.name)}"${i ? ' aria-hidden="true"' : ''}>
-        <div class="heroB__ph">${img(sc, i)}</div>
+${list.map((sc, i) => `      <div class="heroB__slide${i ? '' : ' is-on'}" data-i="${i}" role="group" aria-roledescription="slide" aria-label="${esc(sc.name)}"${i ? ' aria-hidden="true"' : ''}${sc.cine ? ` data-cine="${esc(sc.cine)}"` : ''}>
+        <div class="heroB__ph">${img(sc, i)}</div>${sc.cine ? `
+        <div class="heroB3d" data-model="${esc(CFG.hero.cine.model)}" aria-hidden="true"></div>   <!-- 시안B 20차: 로봇 리빌 시네마틱(js/heroB3d.js) — 모형이 준비되면 위 사진 대신 보인다 -->` : ''}
         <div class="heroB__scrim" aria-hidden="true"></div>
         <div class="heroB__txt">
           <span class="heroB__tag">${esc(sc.tag)}</span>
@@ -1481,7 +1482,7 @@ pages['index.html'] = () => {
   }) + header('home', null, 'index.html') + `
 <main id="main">
 
-` + frame('hero')() + '\n' + CFG.home.sections.map((s) => S[s.id](s.bg)).join('\n') + '\n' + cta({ home: true }) + MAIN_END + footer() + foot((CFG.frame.hero === 'reel' ? ['reel.js'] : CFG.frame.hero === 'slides' ? ['hero-slides.js'] : []).concat(CFG.home.sections.some((s) => s.id === 'whatB') ? ['biz-stack.js'] : []));
+` + frame('hero')() + '\n' + CFG.home.sections.map((s) => S[s.id](s.bg)).join('\n') + '\n' + cta({ home: true }) + MAIN_END + footer() + foot((CFG.frame.hero === 'reel' ? ['reel.js'] : CFG.frame.hero === 'slides' ? ['hero-slides.js'] : []).concat(CFG.frame.hero === 'slides' && CFG.hero.scenes.some((sc) => sc.cine) ? ['heroB3d.js'] : []).concat(CFG.home.sections.some((s) => s.id === 'whatB') ? ['biz-stack.js'] : []));
 };
 
 /* ---------- 2. 사업분야 ---------- */
@@ -2347,6 +2348,8 @@ function checkConfig() {
     CFG.hero.scenes.forEach((sc, i) => {
       ['name', 'tag', 'title', 'sub'].forEach((f) => { if (!sc[f]) configError(`첫 화면 장면 ${i + 1}번째의 ${f}가 없습니다 (설정 hero.scenes)`); });
       if (!PHOTOS[sc.photo]) configError(`첫 화면 장면 '${sc.name}'의 사진 번호 '${sc.photo}'이 사진 목록에 없습니다 (설정 hero.scenes)`);
+      if (sc.cine && sc.cine !== 'robot') configError(`첫 화면 장면 '${sc.name}'의 cine 는 'robot' 만 됩니다 (설정 hero.scenes)`);
+      if (sc.cine && !(CFG.hero.cine && CFG.hero.cine.model)) configError(`첫 화면 장면 '${sc.name}'의 3D 연출에는 모형 경로가 있어야 합니다 (설정 hero.cine.model)`);
     });
   }
 }

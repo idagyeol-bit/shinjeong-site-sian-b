@@ -1,6 +1,6 @@
 /* 신정개발 홈페이지 — 첫 화면 구호·가치 5장면 자동 전환 (시안 B, 큰 틀 'slides', 시안B 1차)
-   - 7초마다 다음 장면으로 바뀐다(교차 흐림 1.1초, 사진 느린 축소·글 올라오기는 css/site.css 의 .heroB 규칙).
-   - 이전·다음 버튼, 오른쪽 아래 장면 이름표, ← → 키로 장면을 고르면 그 장면부터 7초를 다시 센다.
+   - 5초마다 다음 장면으로 바뀐다(시안B 20차: 7초 → 5초. 교차 흐림 1.1초, 사진 느린 축소·글 올라오기는 css/site.css 의 .heroB 규칙).
+   - 이전·다음 버튼, 오른쪽 아래 장면 이름표, ← → 키로 장면을 고르면 그 장면부터 5초를 다시 센다.
    - 멈춤 버튼: 자동 전환과 진행 막대를 멈춘다. 다시 누르면 지금 장면부터 다시 센다.
    - 움직임 줄이기: 처음부터 멈춘 상태(1장면). 버튼으로 넘기는 것은 된다.
    - 다른 탭으로 가 있는 동안은 시간을 세지 않는다.
@@ -17,7 +17,7 @@
   var pp = root.querySelector('[data-pp]');
   var n = slides.length;
   if (n < 2) return;
-  var DELAY = 7000;
+  var DELAY = 5000;   // css 의 .heroB__bar 막대(heroB-bar 5s)와 같은 값
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var cur = 0, timer = null, playing = !reduce;
 

@@ -1538,7 +1538,7 @@ body.reel-dark[data-page="home"] .hdr .hdr__cta:hover { background: #fff; border
 .heroB__ph { position: absolute; inset: 0; overflow: hidden; }
 .heroB__ph img { width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); transform: scale(1); }
 @media (orientation: portrait) { .heroB__ph img { object-position: var(--pos-m, var(--pos, 50% 50%)); } }
-.heroB__slide.is-on .heroB__ph img { animation: heroB-kb 9s ease-out forwards; }
+.heroB__slide.is-on .heroB__ph img { animation: heroB-kb 6.5s ease-out forwards; }   /* 20차: 5초 전환 + 1.1초 겹침에 맞춰 9초 → 6.5초 */
 .heroB__scrim { position: absolute; inset: 0; background: linear-gradient(to top, #050c16d1 0%, #050c1659 38%, #050c161f 60%, #050c1670 100%); }
 .heroB__txt { position: absolute; left: var(--gutter); right: var(--gutter); bottom: 150px; max-width: 900px; word-break: keep-all; }
 .heroB__tag { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 18px; font-size: 14px; font-weight: 600; letter-spacing: 0.22em; color: #8fe492; }
@@ -1567,7 +1567,7 @@ body.reel-dark[data-page="home"] .hdr .hdr__cta:hover { background: #fff; border
 .heroB__count b { font-size: 16px; color: #fff; }
 .heroB__bar { flex: 0 1 220px; width: 220px; min-width: 40px; height: 2px; overflow: hidden; background: #ffffff4d; }
 .heroB__bar i { display: block; width: 0; height: 100%; background: #fff; }
-.heroB.is-playing .heroB__bar i { animation: heroB-bar 7s linear forwards; }
+.heroB.is-playing .heroB__bar i { animation: heroB-bar 5s linear forwards; }   /* 20차: 전환 간격(js/hero-slides.js DELAY)과 같은 5초 */
 @keyframes heroB-bar { from { width: 0; } to { width: 100%; } }
 .heroB__tabs { right: var(--gutter); gap: 22px; }
 .heroB__tab { padding: 0 0 6px; border: 0; border-bottom: 2px solid transparent; background: none; font: inherit; font-size: 13.5px; color: #ffffff8c; cursor: pointer; transition: color 0.2s, border-color 0.2s; }
@@ -1597,7 +1597,19 @@ body[data-hero="slides"][data-page="home"] .hdr.is-scrolled .hdr__cta:hover { ba
   .heroB__ctrl { bottom: 40px; }
   .heroB__txt { bottom: 104px; }
 }
+/* 시안B 20차: 4번 장면 '로봇 리빌 시네마틱'(js/heroB3d.js). 모형이 준비되면 장면에 .is-3d 가 붙어 사진이 사라지고 어두운 3D 무대가 보인다.
+   글귀는 헤드라이트가 켜지는 0.5초에 맞춰 올라온다(글자는 그대로, 시점만). 움직임 줄이기·실패·준비 전에는 .is-3d 가 없어 실사 그대로 */
+.heroB3d { position: absolute; inset: 0; opacity: 0; visibility: hidden; background: radial-gradient(120% 90% at 50% 85%, #0d1d31 0%, #06101c 55%, #03080f 100%); transition: opacity 0.6s ease, visibility 0s linear 0.6s; }
+.heroB3d canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.heroB__slide.is-3d .heroB3d { opacity: 1; visibility: visible; transition: opacity 0.6s ease; }
+.heroB__slide.is-3d .heroB__ph { opacity: 0; transition: opacity 0.6s ease; }
+.heroB__slide.is-3d .heroB__scrim { background: linear-gradient(to top, #03080fcc 0%, #03080f40 40%, #03080f00 62%, #03080f4d 100%); }
+.heroB__slide.is-3d.is-on .heroB__tag { animation-delay: 0.5s; }
+.heroB__slide.is-3d.is-on .heroB__title { animation-delay: 0.65s; }
+.heroB__slide.is-3d.is-on .heroB__sub { animation-delay: 0.85s; }
+.heroB__slide.is-3d.is-on .heroB__note { animation-delay: 1s; }
 @media (prefers-reduced-motion: reduce) {
+  .heroB3d { display: none; }
   .heroB__slide, .heroB__slide.is-on { transition: none; }
   .heroB__slide.is-on .heroB__ph img, .heroB__slide.is-on .heroB__tag, .heroB__slide.is-on .heroB__title,
   .heroB__slide.is-on .heroB__sub, .heroB__slide.is-on .heroB__note, .heroB__bar i { animation: none !important; opacity: 1; transform: none; }
