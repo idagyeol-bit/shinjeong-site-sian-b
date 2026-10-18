@@ -527,6 +527,7 @@ body[data-page="home"] .hdr:not(.is-scrolled) .hdr__cta:hover { background: #fff
 .ftr__note { padding-top: 26px; font-size: var(--fs-xs); color: var(--muted); }
 .ftr__note + .ftr__bot { padding-top: 10px; }
 .ftr__bot { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: center; justify-content: space-between; padding-top: 26px; font-size: var(--fs-xs); color: var(--muted); }
+.ftr__ai { margin: 10px 0 0; font-size: var(--fs-xs); line-height: 1.7; color: var(--muted); word-break: keep-all; }   /* 시안B 23차: AI 연출 이미지 공통 고지 — 저작권 줄 아래, 같은 결의 작은 글 */
 .totop { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 8px 4px; margin: -8px -4px; font-size: var(--fs-xs); font-weight: 600; color: var(--ink); }
 .totop:hover { color: var(--brand); }
 

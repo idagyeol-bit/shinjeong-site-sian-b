@@ -462,7 +462,11 @@ const EQ_ANCHOR = (svcId) => (EQUIP_GROUPS.find((g) => g.svc === svcId) || {}).i
 /* 시안B 3차: 장비·로봇 다이어트판을 쓰는지(설정 diet.technology). 표는 지우지 않고 눌러서 펼치는 접기(<details class="fold">, 현장 진행 방식의 효율성 비교와 같은 단추)에 넣는다 */
 const techDiet = () => !!(CFG.diet && CFG.diet.technology);   // CFG 는 시안마다 바뀌므로 그때그때 읽는다
 const procDiet = () => !!(CFG.diet && CFG.diet.process);      // 시안B 4차: 현장 진행 방식 다이어트판(같은 접기 장치를 쓴다)
-const compDiet = () => !!(CFG.diet && CFG.diet.company);      // 시안B 5차: 회사 소개 다이어트판(같은 접기 장치를 쓴다)
+const compDiet = () => !!(CFG.diet && CFG.diet.company);
+/* 시안B 23차: AI 연출 이미지 고지 — look.aiMark 가 'badge' 면 사진마다 개별 배지(18·19·21차), 'footer'(기본값 아님, 시안 B 설정)면 바닥글 공통 한 줄만.
+   설정이 없으면(기본판·다른 시안) 예전대로 배지를 쓰고 바닥글 줄은 넣지 않는다 */
+const aiBadge = () => !(CFG.look && CFG.look.aiMark === 'footer');
+const aiNotice = () => (CFG.look && CFG.look.aiMark === 'footer' && CFG.look.aiNotice) ? CFG.look.aiNotice : '';      // 시안B 5차: 회사 소개 다이어트판(같은 접기 장치를 쓴다)
 /* 회사 소개 줄 목록 한 칸: 다이어트판이면 오른쪽 내용을 '<목록 이름> 펼쳐 보기' 접기에 넣는다(이름 h3 은 늘 보임) */
 const coRow = (title, body) => `        <div class="co-rows__row${compDiet() ? ' comB-row' : ''}" data-reveal>
           <h3>${esc(title)}</h3>
@@ -862,7 +866,8 @@ ${g.items.map((i) => `            <li><a href="${i.href}"${i.blank ? ' target="_
     <div class="ftr__bot">
       <p>&copy; <span data-year>2026</span> ${esc(C.name)}. All rights reserved.</p>
       <button class="totop" type="button" data-totop>맨 위로 ${icon('up', 13)}</button>
-    </div>
+    </div>${aiNotice() ? `
+    <p class="ftr__ai">${esc(aiNotice())}</p>   <!-- 시안B 23차: AI 연출 이미지 공통 고지(설정 look.aiNotice, look.aiMark 가 'footer' 일 때) — 개별 배지 대신 바닥글 한 줄 -->` : ''}
   </div>
   <div class="moB-wordmark" aria-hidden="true">${esc(C.brandEn)}</div>   <!-- 시안B 16차: 바닥 대형 워드마크(장식, 머리말의 영문 상호 재사용, 낭독기에 안 읽힘) -->
 </footer>
@@ -1230,8 +1235,8 @@ function heroSlides() {
 ${list.map((sc, i) => `      <div class="heroB__slide${i ? '' : ' is-on'}" data-i="${i}" role="group" aria-roledescription="slide" aria-label="${esc(sc.name)}"${i ? ' aria-hidden="true"' : ''}${sc.cine ? ` data-cine="${esc(sc.cine)}"` : ''}>
         <div class="heroB__ph">${img(sc, i)}</div>${sc.cine ? `
         <div class="heroB3d" data-model="${esc(CFG.hero.cine.model)}" aria-hidden="true"></div>   <!-- 시안B 20차: 로봇 리빌 시네마틱(js/heroB3d.js) — 모형이 준비되면 위 사진 대신 보인다 -->` : ''}
-        <div class="heroB__scrim" aria-hidden="true"></div>${sc.mark ? `
-        <span class="heroB__mark" aria-hidden="true">${esc(sc.mark)}</span>   <!-- 시안B 21차: AI 연출 이미지 표시(장면 오른쪽 위 모서리) -->` : ''}
+        <div class="heroB__scrim" aria-hidden="true"></div>${sc.mark && aiBadge() ? `
+        <span class="heroB__mark" aria-hidden="true">${esc(sc.mark)}</span>   <!-- 시안B 21차: AI 연출 이미지 표시(장면 오른쪽 위 모서리) · 23차: 설정 look.aiMark 가 'badge' 일 때만 -->` : ''}
         <div class="heroB__txt">
           <span class="heroB__tag">${esc(sc.tag)}</span>
           <${i ? 'h2' : 'h1'} class="heroB__title">${sc.title}</${i ? 'h2' : 'h1'}>
@@ -1317,7 +1322,7 @@ ${i ? '' : `      <h2 class="bizB__sec" id="bizB-title">${c.title}</h2>\n`}     
           <ul class="bizB__chips" aria-label="${esc(s.title)} 대상 설비">${CARD_CHIPS[s.id].map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
           <a class="bizB__go" href="${s.file}" aria-label="${esc(s.title)} 자세히 보기">자세히 보기 ${arrow(14)}</a>
         </div>
-        <figure class="bizB__shot">${photo({ ...P(b.photo), alt: b.alt || P(b.photo).alt }, '(max-width:960px) 92vw, 400px')}${b.note ? `<figcaption class="bizB__shot-note">${esc(b.note)}</figcaption>` : ''}</figure>   <!-- 시안B 19차: note = AI 연출 이미지 표시 -->
+        <figure class="bizB__shot">${photo({ ...P(b.photo), alt: b.alt || P(b.photo).alt }, '(max-width:960px) 92vw, 400px')}${b.note && aiBadge() ? `<figcaption class="bizB__shot-note">${esc(b.note)}</figcaption>` : ''}</figure>   <!-- 시안B 19차: note = AI 연출 이미지 표시 · 23차: 설정 look.aiMark 가 'badge' 일 때만 -->
       </div>
     </article>`;
   }).join('\n')}
@@ -1560,7 +1565,7 @@ ${s.worktime ? `            <div><dt>작업 시기</dt><dd>${esc(s.worktime)}</d
     <figure class="svcB-hero" style="--svcB-w: ${big}px; --svcB-ratio: ${hp.w} / ${hp.h}${fill}">
       <img class="svcB-hero__bg" src="assets/photos/${hp.id}-${hp.sizes[0]}.jpg" alt="" aria-hidden="true" decoding="async">
       ${photo(hp, `(max-width:960px) 100vw, ${big}px`, true).replace('<img ', '<img class="svcB-hero__img" ')}
-${vis.note ? `      <figcaption class="svcB-hero__note">${esc(vis.note)}</figcaption>   <!-- 시안B 18차: AI 연출 이미지 표시(실제 현장 사진 아님) -->\n` : ''}    </figure>
+${vis.note && aiBadge() ? `      <figcaption class="svcB-hero__note">${esc(vis.note)}</figcaption>   <!-- 시안B 18차: AI 연출 이미지 표시(실제 현장 사진 아님) · 23차: 설정 look.aiMark 가 'badge' 일 때만 -->\n` : ''}    </figure>
     <div class="wrap">
       <div class="head head--solo" data-reveal><div><h2>${esc(s.short)}</h2></div></div>
       <dl class="svcB-key" data-reveal${key.length !== 3 ? ` style="--svcB-n: ${key.length}"` : ''}>
