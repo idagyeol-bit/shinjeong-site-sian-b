@@ -821,6 +821,21 @@ ${SERVICES.map((s) => `      <a href="${s.file}"${s.id === activeId ? ' aria-cur
 function cta(o) {
   const t = o || {};
   const d = t.home ? CFG.home.copy.cta : CFG.common.cta;
+  /* 시안B 24차(설정 look.ctaCompact): 제목 첫 줄 + 버튼 2개만(한 줄 압축형). 안내 문장(t.p / d.text)은 지우지 않고 넘겨 두되 그리지 않는다 —
+     같은 내용 안내가 문의 페이지(머리 문장·'적어 주시면 좋은 내용'·'문의 후 진행 순서'·업무 선택)에 이미 있다(24차 보고). look.ctaCompact 를 지우면 예전 띠로 */
+  if (CFG.look && CFG.look.ctaCompact) {
+    const first = String(t.h2 || d.title).split(/<br\s*\/?>/i)[0].replace(/,\s*$/, '');   // 두 줄 제목의 첫 줄만(끝의 쉼표는 뺀다)
+    return `  <section class="cta cta--compact">
+    <div class="wrap">
+      <h2 data-reveal>${first}</h2>
+      <div class="cta__act" data-reveal data-delay="80">
+        <a class="btn btn--ghost" href="contact.html">${d.button} ${arrow(18)}</a>
+        <a class="btn btn--ghost" href="mailto:${C.email}">${C.email}</a>
+      </div>
+    </div>
+  </section>
+`;
+  }
   return `  <section class="cta">
     <div class="wrap">
       <h2 data-reveal>${t.h2 || d.title}</h2>
@@ -1318,6 +1333,7 @@ ${c.boards.map((b, i) => {
     return `    <article class="bizB__panel bizB__panel--${i + 1}">
 ${i ? '' : `      <h2 class="bizB__sec" id="bizB-title">${c.title}</h2>\n`}      <div class="bizB__in">
         <div class="bizB__txt">
+          <span class="bizB__num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>   <!-- 시안B 24차: 장식 번호(메뉴의 04 표기와 같은 결, 낭독기에 안 읽힘) -->
           <span class="bizB__pill" lang="en">${esc(b.label)}</span>
           <h3 class="bizB__title"><a href="${s.file}">${esc(s.title)}</a></h3>
           <p>${esc(s.card)}</p>

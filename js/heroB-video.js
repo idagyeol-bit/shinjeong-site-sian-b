@@ -39,7 +39,11 @@
     new MutationObserver(sync).observe(slide, { attributes: true, attributeFilter: ['class'] });
     document.addEventListener('visibilitychange', sync);
     if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { inView = es[0].isIntersecting; sync(); }).observe(slide);
-    function kick() { if ('requestIdleCallback' in window) requestIdleCallback(attach, { timeout: 2500 }); else setTimeout(attach, 600); }
-    if (document.readyState === 'complete') kick(); else window.addEventListener('load', kick);
+    /* 시안B 24차: 1번 장면 사진이 표시된 직후 받기 시작한다(17차 3D 와 같은 정책 — 1번 사진을 방해하지 않는 가장 이른 때). 사진 신호가 없으면 load 뒤 */
+    var first = document.querySelector('.heroB__slide[data-i="0"] .heroB__ph img');
+    function kick() { requestAnimationFrame(function () { v.preload = 'auto'; attach(); }); }
+    if (first && !first.complete) { first.addEventListener('load', kick, { once: true }); first.addEventListener('error', kick, { once: true }); window.addEventListener('load', kick, { once: true }); }
+    else if (first) kick();
+    else if (document.readyState === 'complete') kick(); else window.addEventListener('load', kick, { once: true });
   });
 })();

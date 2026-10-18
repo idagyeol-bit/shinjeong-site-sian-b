@@ -1949,3 +1949,65 @@ html.moB-shrunk body[data-page] .hdr.is-scrolled { background: #ffffffd9; border
 /* ========== 시안 B 17차 — 3D 뷰어 로딩 표시 (js/robot5-viewer.js .is-loading): 모형을 불러오는 동안 대체 사진 오른쪽 아래에 글자 없는 작은 고리가 돈다 ========== */
 .tecB-viewer.is-loading .tecB-viewer__stage::after { content: ""; position: absolute; right: 14px; bottom: 14px; width: 22px; height: 22px; box-sizing: border-box; border: 2.5px solid #ffffffb3; border-top-color: var(--brand); border-radius: 50%; box-shadow: 0 0 0 3px #0000001a; animation: tecB-spin 0.9s linear infinite; }
 @keyframes tecB-spin { to { transform: rotate(360deg); } }
+
+/* ========== 시안 B 24차 ① — 신뢰 숫자 띠를 남색 대기업 띠로 (home.sections 'trust' bg: 'navy') ==========
+   숫자·단위 흰색, 이름표 밝은 톤, 숫자 사이 가는 세로 구분선(위 선은 뺀다). 칩·출처는 띠 안에서 작고 옅게. 휴대폰 2×2(.stats 기본 규칙) */
+.trust.section--navy { border-bottom: 0; padding-block: clamp(40px, 4.5vw, 64px); }
+.trust.section--navy .stats { gap: 0; }
+.trust.section--navy .stat { padding: 6px 24px 6px 0; border-top: 0; }
+.trust.section--navy .stat + .stat { padding-left: 28px; border-left: 1px solid var(--on-navy-line); }
+.trust.section--navy .stat b { color: #fff; }
+.trust.section--navy .stat b i { color: #dbe6f2; }
+.trust.section--navy .stat > span { color: var(--on-navy-sub); }
+.trust.section--navy .trust__info { margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--on-navy-line); }
+.trust.section--navy .trust__sites > b { color: #dbe6f2; font-weight: 500; }
+.trust.section--navy .trust__chips .chip { height: 28px; padding: 0 11px; font-size: 12.5px; background: #ffffff14; color: #c7d8e6; }
+.trust.section--navy .trust__src { color: #8fa9bd; }
+@media (max-width: 720px) {
+  .trust.section--navy .stats { gap: 18px 0; }
+  .trust.section--navy .stat { padding: 0 12px 0 0; }
+  .trust.section--navy .stat + .stat { padding-left: 0; border-left: 0; }
+  .trust.section--navy .stat:nth-child(2n) { padding-left: 18px; border-left: 1px solid var(--on-navy-line); }
+}
+
+/* ========== 시안 B 24차 ② — 색판 5장 브랜드 톤 사다리 + 장식 번호 + 규격 통일 (bizB) ==========
+   판 색: 1 흰색 → 2 연한 파랑(--brand-tint) → 3 파랑(--brand) → 4 남색(--navy) → 5 짙은 남색(--navy-deep). 글·칩·단추는 명암 대비만 맞춘다(계열 밖 색 없음).
+   글 블록(.bizB__txt)과 사진 상자(.bizB__shot)는 다섯 판 모두 같은 칸 크기·자리(격자). 쌓임 모션·문구·사진·순서 그대로 */
+.bizB__in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 440px); gap: 56px; align-items: center; }
+.bizB__txt { max-width: none; min-height: 300px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+.bizB__num { display: block; margin-bottom: 14px; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; line-height: 1; opacity: 0.55; }
+.bizB__shot { flex: none; width: 100%; }
+.bizB__shot img { height: 300px; }
+.bizB__panel--1 { background: #ffffff; color: var(--ink); }
+.bizB__panel--2 { background: var(--brand-tint); color: var(--ink); }
+.bizB__panel--1 .bizB__pill, .bizB__panel--2 .bizB__pill { background: #ffffff; color: var(--brand); border: 1px solid #d5e2ee; }
+.bizB__panel--1 .bizB__pill { background: var(--brand-tint); border-color: transparent; }
+.bizB__panel--1 .bizB__chips li, .bizB__panel--2 .bizB__chips li { background: #ffffff; color: #3f4a57; border: 1px solid #dfe6ee; }
+.bizB__panel--1 .bizB__chips li { background: #f3f5f8; border-color: transparent; }
+.bizB__panel--1 .bizB__txt p, .bizB__panel--2 .bizB__txt p { color: #3f4a57; }
+.bizB__panel--1 .bizB__go, .bizB__panel--2 .bizB__go, .bizB__panel--1 .bizB__num, .bizB__panel--2 .bizB__num { color: var(--brand); }
+.bizB__panel--3 { background: var(--brand); color: #ffffff; }
+.bizB__panel--4 { background: var(--navy); color: #ffffff; }
+.bizB__panel--5 { background: var(--navy-deep); color: #ffffff; }
+.bizB__panel--3 .bizB__pill, .bizB__panel--4 .bizB__pill, .bizB__panel--5 .bizB__pill { background: #ffffff22; color: #eaf2fa; }
+.bizB__panel--3 .bizB__chips li, .bizB__panel--4 .bizB__chips li, .bizB__panel--5 .bizB__chips li { background: #ffffff1a; color: #dbe6f2; }
+.bizB__panel--3 .bizB__txt p, .bizB__panel--4 .bizB__txt p, .bizB__panel--5 .bizB__txt p { color: #d6e3ef; }
+.bizB__panel--3 .bizB__go, .bizB__panel--4 .bizB__go, .bizB__panel--5 .bizB__go, .bizB__panel--3 .bizB__num, .bizB__panel--4 .bizB__num, .bizB__panel--5 .bizB__num { color: #ffffff; }
+.bizB__panel--3 :focus-visible, .bizB__panel--4 :focus-visible, .bizB__panel--5 :focus-visible { outline-color: #fff; }
+@media (max-width: 960px) {
+  .bizB__in { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .bizB__txt { min-height: 0; }
+  .bizB__shot img { height: 180px; }
+}
+
+/* ========== 시안 B 24차 ③ — 문의 띠 한 줄 압축형 (설정 look.ctaCompact → .cta--compact) ==========
+   PC: 왼쪽 제목 한 줄 · 오른쪽 버튼 2개, 높이는 예전의 절반 수준. 휴대폰: 제목 아래 버튼 세로. 남색 바탕·버튼 모양은 그대로 */
+.cta--compact { text-align: left; padding-block: clamp(36px, 4.5vw, 60px); }
+.cta--compact .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 40px; }
+.cta--compact h2 { margin: 0; max-width: none; font-size: clamp(22px, 2.3vw, 32px); line-height: 1.3; letter-spacing: -0.03em; }
+.cta--compact .cta__act { margin-top: 0; justify-content: flex-start; }
+@media (max-width: 720px) {
+  .cta--compact .wrap { flex-direction: column; align-items: flex-start; }
+  .cta--compact .cta__act { width: 100%; }
+  .cta--compact .cta__act .btn { flex: 1 1 100%; justify-content: center; }
+}
