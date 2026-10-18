@@ -1546,6 +1546,8 @@ body.reel-dark[data-page="home"] .hdr .hdr__cta:hover { background: #fff; border
 .heroB__title { margin: 0; max-width: none; color: #fff; font-size: clamp(32px, 3.75vw, 54px); font-weight: 800; line-height: 1.28; letter-spacing: -0.02em; text-shadow: 0 2px 24px #00000073; }
 .heroB__sub { margin: 20px 0 0; max-width: 46em; font-size: clamp(15px, 1.3vw, 18.5px); line-height: 1.6; color: #ffffffe0; }
 .heroB__note { margin: 10px 0 0; font-size: 12.5px; line-height: 1.5; color: #ffffff8c; }
+/* 시안B 21차: AI 연출 이미지 표시 — 장면 오른쪽 위 모서리(머리말 아래), 색판·분야 상세와 같은 결의 작은 배지. 글귀·단추·탭과 겹치지 않는다 */
+.heroB__mark { position: absolute; z-index: 2; right: var(--gutter); top: calc(var(--header-h) + 14px); padding: 3px 8px; border-radius: 4px; background: #0b1622a6; color: #ffffffd9; font-size: 11.5px; line-height: 1.5; letter-spacing: 0; pointer-events: none; }
 .heroB__slide.is-on .heroB__tag { animation: heroB-up 0.8s 0.15s ease both; }
 .heroB__slide.is-on .heroB__title { animation: heroB-up 0.9s 0.3s ease both; }
 .heroB__slide.is-on .heroB__sub { animation: heroB-up 0.9s 0.5s ease both; }

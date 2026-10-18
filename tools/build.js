@@ -131,6 +131,9 @@ const PHOTOS = {
   AI04: { id: 'AI04', w: 1672, h: 941, sizes: [640, 1000, 1672], alt: '열교환기 튜브 다발을 고압 세척하는 작업자들', cap: '연출 이미지 — 열교환기 세척' },
   AI05: { id: 'AI05', w: 1672, h: 941, sizes: [640, 1000, 1672], alt: '수조 안의 무인 준설 로봇과 가장자리에서 원격 조종하는 작업자들', cap: '연출 이미지 — 수조 준설 로봇' },
   AI06: { id: 'AI06', w: 1672, h: 941, sizes: [640, 1000, 1672], alt: '맨홀에 CCTV 조사 로봇을 투입하는 작업자들과 조사 차량', cap: '연출 이미지 — 관로 CCTV 조사' },
+  /* 시안B 21차: 첫 화면 3번(환경)·5번(발전) 장면 배경 — 이다결 님이 ChatGPT 로 만들어 준 AI 연출 이미지(2026-10-19, 상업 사용 가능). 첫 화면에만 쓰고 '※ 연출 이미지' 표시. 출처 tools/photo-plan.json */
+  AI07: { id: 'AI07', w: 3344, h: 1882, sizes: [960, 1600, 2400], alt: '푸른 바다와 도시가 보이는 해안의 밝은 석유화학 플랜트 전경', cap: '연출 이미지 — 해안 플랜트 전경' },
+  AI08: { id: 'AI08', w: 3344, h: 1882, sizes: [960, 1600, 2400], alt: '동틀 녘 플랜트를 바라보는 안전모 쓴 작업자의 뒷모습', cap: '연출 이미지 — 동틀 녘 플랜트와 작업자' },
   P03: { id: 'P03', w: 1000, h: 667, sizes: [640, 1000, 1600], alt: '촉매가 쌓인 반응기 안에 투입된 흡입 로봇과 호스', cap: '반응기 안에서 촉매를 제거하는 로봇' },
   P06: { id: 'P06', w: 1000, h: 667, sizes: [640], alt: '진공흡입차 앞에서 호스 작업을 지켜보는 신정개발 작업자', cap: '흡입차와 신정개발 작업자' },
   P08: { id: 'P08', w: 1000, h: 667, sizes: [640, 800], alt: '도로 위에서 GPR 장비를 밀며 조사하는 작업자', cap: '도로 GPR 조사' },
@@ -1227,7 +1230,8 @@ function heroSlides() {
 ${list.map((sc, i) => `      <div class="heroB__slide${i ? '' : ' is-on'}" data-i="${i}" role="group" aria-roledescription="slide" aria-label="${esc(sc.name)}"${i ? ' aria-hidden="true"' : ''}${sc.cine ? ` data-cine="${esc(sc.cine)}"` : ''}>
         <div class="heroB__ph">${img(sc, i)}</div>${sc.cine ? `
         <div class="heroB3d" data-model="${esc(CFG.hero.cine.model)}" aria-hidden="true"></div>   <!-- 시안B 20차: 로봇 리빌 시네마틱(js/heroB3d.js) — 모형이 준비되면 위 사진 대신 보인다 -->` : ''}
-        <div class="heroB__scrim" aria-hidden="true"></div>
+        <div class="heroB__scrim" aria-hidden="true"></div>${sc.mark ? `
+        <span class="heroB__mark" aria-hidden="true">${esc(sc.mark)}</span>   <!-- 시안B 21차: AI 연출 이미지 표시(장면 오른쪽 위 모서리) -->` : ''}
         <div class="heroB__txt">
           <span class="heroB__tag">${esc(sc.tag)}</span>
           <${i ? 'h2' : 'h1'} class="heroB__title">${sc.title}</${i ? 'h2' : 'h1'}>
