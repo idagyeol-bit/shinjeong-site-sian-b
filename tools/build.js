@@ -124,6 +124,13 @@ const PHOTOS = {
   /* AI 사진(시안B 1차, 이다결 님 제공): 이다결 님이 Meshy 로 만든 로봇 3D 그림. 클라이언트 ZIP·소개서 PDF 사진이 아니다('사진은 ZIP에서만' 규칙의 예외 — 이다결 님 결정).
      시안 B 첫 화면 5장면(발전)에만 쓰고, 실제 장비처럼 설명하지 않는다(장면에 'AI로 만든 3D 예시 그림' 표시). 파일은 받은 그대로 */
   AI01: { id: 'AI01', w: 1536, h: 1024, sizes: [1536], alt: '차세대 로봇 3D 그림' },
+  /* 시안B 18차: 분야 상세 5쪽 대표 비주얼 — 이다결 님이 ChatGPT 로 만들어 준 AI 연출 이미지(2026-10-18, 상업 사용 가능). 클라이언트 ZIP·PDF 사진 아님.
+     분야 상세 대표 비주얼에만 쓰고 '※ 연출 이미지입니다' 표시를 단다. 실적·현장 증거처럼 설명하지 않는다. 원본 사본 tools/photo-src/AI0x-original.png, 출처 기록 tools/photo-plan.json */
+  AI02: { id: 'AI02', w: 1672, h: 941, sizes: [640, 1000, 1672], alt: '흰 저장 탱크에 흡입 호스를 연결하고 고압 세척하는 작업자들과 진공흡입차', cap: '연출 이미지 — 저장 탱크 세척' },
+  AI03: { id: 'AI03', w: 1672, h: 941, sizes: [640, 1000, 1672], alt: '반응기 점검구에 호스를 연결해 촉매를 다루는 작업자들과 분리 장비', cap: '연출 이미지 — 반응기 촉매 작업' },
+  AI04: { id: 'AI04', w: 1672, h: 941, sizes: [640, 1000, 1672], alt: '열교환기 튜브 다발을 고압 세척하는 작업자들', cap: '연출 이미지 — 열교환기 세척' },
+  AI05: { id: 'AI05', w: 1672, h: 941, sizes: [640, 1000, 1672], alt: '수조 안의 무인 준설 로봇과 가장자리에서 원격 조종하는 작업자들', cap: '연출 이미지 — 수조 준설 로봇' },
+  AI06: { id: 'AI06', w: 1672, h: 941, sizes: [640, 1000, 1672], alt: '맨홀에 CCTV 조사 로봇을 투입하는 작업자들과 조사 차량', cap: '연출 이미지 — 관로 CCTV 조사' },
   P03: { id: 'P03', w: 1000, h: 667, sizes: [640, 1000, 1600], alt: '촉매가 쌓인 반응기 안에 투입된 흡입 로봇과 호스', cap: '반응기 안에서 촉매를 제거하는 로봇' },
   P06: { id: 'P06', w: 1000, h: 667, sizes: [640], alt: '진공흡입차 앞에서 호스 작업을 지켜보는 신정개발 작업자', cap: '흡입차와 신정개발 작업자' },
   P08: { id: 'P08', w: 1000, h: 667, sizes: [640, 800], alt: '도로 위에서 GPR 장비를 밀며 조사하는 작업자', cap: '도로 GPR 조사' },
@@ -1548,7 +1555,7 @@ ${s.worktime ? `            <div><dt>작업 시기</dt><dd>${esc(s.worktime)}</d
     <figure class="svcB-hero" style="--svcB-w: ${big}px; --svcB-ratio: ${hp.w} / ${hp.h}${fill}">
       <img class="svcB-hero__bg" src="assets/photos/${hp.id}-${hp.sizes[0]}.jpg" alt="" aria-hidden="true" decoding="async">
       ${photo(hp, `(max-width:960px) 100vw, ${big}px`, true).replace('<img ', '<img class="svcB-hero__img" ')}
-    </figure>
+${vis.note ? `      <figcaption class="svcB-hero__note">${esc(vis.note)}</figcaption>   <!-- 시안B 18차: AI 연출 이미지 표시(실제 현장 사진 아님) -->\n` : ''}    </figure>
     <div class="wrap">
       <div class="head head--solo" data-reveal><div><h2>${esc(s.short)}</h2></div></div>
       <dl class="svcB-key" data-reveal${key.length !== 3 ? ` style="--svcB-n: ${key.length}"` : ''}>

@@ -1734,6 +1734,8 @@ body[data-hero="slides"][data-page="home"] .hdr.is-scrolled .hdr__cta:hover { ba
 .svcB-hero__bg { position: absolute; inset: -40px; width: calc(100% + 80px); height: calc(100% + 80px); object-fit: cover; filter: blur(28px) saturate(1.05) brightness(0.72); transform: scale(1.05); }
 .svcB-hero__img { position: relative; z-index: 1; display: block; width: var(--svcB-imgw, auto); height: var(--svcB-imgh, auto); max-width: min(100%, var(--svcB-w)); max-height: 100%; object-fit: var(--svcB-fit, fill); box-shadow: 0 18px 48px #0000004d; }   /* 비율 그대로 줄기만 한다(원본 폭 이하) */
 /* 9차: 원본 1000px 이상 사진은 figure 의 --svcB-imgw·--svcB-imgh·--svcB-fit 로 화면 폭을 채운다(원본 폭까지만). 칸 수는 --svcB-n(기본 3). 8차 쪽은 변수가 없어 그대로 */
+/* 시안B 18차: AI 연출 이미지 표시 줄 — 큰 비주얼 오른쪽 아래 모서리, 작은 흰 글자(반투명 어두운 바탕) */
+.svcB-hero__note { position: absolute; z-index: 2; right: 14px; bottom: 12px; margin: 0; padding: 4px 9px; border-radius: 4px; background: #0b1622a6; color: #ffffffd9; font-size: 12px; line-height: 1.5; letter-spacing: 0; pointer-events: none; }
 .svcB-key { display: grid; grid-template-columns: repeat(var(--svcB-n, 3), minmax(0, 1fr)); gap: clamp(16px, 2vw, 32px); margin: 0 0 clamp(28px, 3vw, 40px); border-top: 2px solid var(--ink); word-break: keep-all; }
 .svcB-key > div { padding-top: 22px; }
 .svcB-key dt { margin-bottom: 10px; font-size: var(--fs-xs); font-weight: 700; letter-spacing: 0.04em; color: var(--brand); }
