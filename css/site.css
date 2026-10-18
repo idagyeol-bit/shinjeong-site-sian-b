@@ -1592,6 +1592,11 @@ body[data-hero="slides"][data-page="home"] .hdr.is-scrolled .hdr__cta:hover { ba
   .heroB__tag::before { width: 26px; }
   .heroB__sub { margin-top: 14px; }
 }
+@media (max-width: 430px) {   /* 시안B 17차: 휴대폰에서는 첫 화면을 화면의 약 78% 높이로 낮춰 가로 사진의 잘림을 줄인다(글·단추는 그대로, 초점은 장면별 --pos-m) */
+  .heroB { height: 78vh; height: 78svh; min-height: 520px; }
+  .heroB__ctrl { bottom: 40px; }
+  .heroB__txt { bottom: 104px; }
+}
 @media (prefers-reduced-motion: reduce) {
   .heroB__slide, .heroB__slide.is-on { transition: none; }
   .heroB__slide.is-on .heroB__ph img, .heroB__slide.is-on .heroB__tag, .heroB__slide.is-on .heroB__title,
@@ -1651,14 +1656,19 @@ body[data-hero="slides"][data-page="home"] .hdr.is-scrolled .hdr__cta:hover { ba
 .bizB__panel--5 .bizB__chips li { background: #ffffff; color: #3f6a46; }
 .bizB__panel--5 .bizB__go { color: #2f7d33; }
 
-@media (max-width: 960px) {   /* 휴대폰·좁은 화면: 붙지 않고 세로로 쌓인다 */
-  .bizB__panel { position: static; min-height: 0; padding: 72px var(--gutter) 48px; border-radius: 0; box-shadow: none; }
+@media (max-width: 960px) {   /* 휴대폰·좁은 화면 — 시안B 17차: 세로 나열(2차) 대신 PC처럼 아래 판이 올라와 덮는 쌓임. 판은 작게(사진 180px), 깊이 효과는 js/biz-stack.js 가 PC 의 절반 */
+  .bizB__panel { position: sticky; top: var(--header-h); min-height: 0; padding: 56px var(--gutter) 40px; border-radius: 18px 18px 0 0; box-shadow: 0 -10px 28px #0a101c1f; }
   .bizB__panel--1 { padding-top: 92px; }   /* 구역 제목(사업분야)과 첫 라벨 사이를 띄운다 */
   .bizB__sec { left: var(--gutter); right: var(--gutter); width: auto; padding: 0; }
-  .bizB__in { flex-direction: column; align-items: stretch; gap: 28px; will-change: auto; }
+  .bizB__in { flex-direction: column; align-items: stretch; gap: 22px; }
   .bizB__txt { max-width: none; }
+  .bizB__txt p { margin-top: 14px; }
+  .bizB__go { margin-top: 16px; }
   .bizB__shot { flex: none; }
-  .bizB__shot img { height: 240px; }
+  .bizB__shot img { height: 180px; }
+}
+@media (max-width: 960px) and (prefers-reduced-motion: reduce) {   /* 움직임 줄이기: 전처럼 세로 나열 */
+  .bizB__panel { position: static; border-radius: 0; box-shadow: none; }
 }
 @media (prefers-reduced-motion: reduce) { .bizB__in { transform: none !important; opacity: 1 !important; will-change: auto; } }
 @media print { .bizB__panel { position: static; min-height: 0; box-shadow: none; } }
@@ -1912,3 +1922,7 @@ html.moB-shrunk body[data-page] .hdr.is-scrolled { background: #ffffffd9; border
 @media (max-width: 720px) {
   .moB-wordmark { margin-top: 24px; }
 }
+
+/* ========== 시안 B 17차 — 3D 뷰어 로딩 표시 (js/robot5-viewer.js .is-loading): 모형을 불러오는 동안 대체 사진 오른쪽 아래에 글자 없는 작은 고리가 돈다 ========== */
+.tecB-viewer.is-loading .tecB-viewer__stage::after { content: ""; position: absolute; right: 14px; bottom: 14px; width: 22px; height: 22px; box-sizing: border-box; border: 2.5px solid #ffffffb3; border-top-color: var(--brand); border-radius: 50%; box-shadow: 0 0 0 3px #0000001a; animation: tecB-spin 0.9s linear infinite; }
+@keyframes tecB-spin { to { transform: rotate(360deg); } }

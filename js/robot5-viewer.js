@@ -25,11 +25,12 @@
   function webglOk() {
     try { var c = document.createElement('canvas'); return !!(window.WebGLRenderingContext && (c.getContext('webgl2') || c.getContext('webgl'))); } catch (e) { return false; }
   }
-  function fail() { box.classList.add('is-fallback'); if (ctrl) ctrl.hidden = true; }
+  function fail() { box.classList.remove('is-loading'); box.classList.add('is-fallback'); if (ctrl) ctrl.hidden = true; }
 
   function start() {
     if (started) return; started = true;
     if (!webglOk() || !url) { fail(); return; }
+    box.classList.add('is-loading');
     var base = new URL('vendor/three/', me).href;
     url = new URL('../' + url, me).href;
     Promise.all([
@@ -120,7 +121,7 @@
         function frame() { controls.update(); renderer.render(scene, camera); raf = visible ? requestAnimationFrame(frame) : null; }
         function run() { if (!raf && visible) raf = requestAnimationFrame(frame); }
         renderer.render(scene, camera);
-        box.classList.add('is-3d'); if (ctrl) ctrl.hidden = false;
+        box.classList.remove('is-loading'); box.classList.add('is-3d'); if (ctrl) ctrl.hidden = false;
         run();
         if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; run(); }).observe(stage);
         controls.addEventListener('change', run);
@@ -142,8 +143,7 @@
     }).catch(fail);
   }
 
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); start(); } }, { rootMargin: '300px 0px' });
-    io.observe(box);
-  } else start();
+  /* 시안B 17차: 페이지를 열면 바로 불러오기 시작한다(11차의 '화면에 들어올 때' 대신 — 이다결 님 지시).
+     그려지기 전·실패 시의 대체 사진 동작은 그대로이고, 불러오는 동안은 대체 사진 위에 글자 없는 작은 로딩 표시(.is-loading)가 돈다 */
+  start();
 })();
