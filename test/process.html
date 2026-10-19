@@ -242,28 +242,32 @@
       </div>
       <h3 class="mt-block" data-reveal>밀폐공간 작업 위험성 비교</h3>
       <p class="cmp-lead" data-reveal>작업자가 설비 안에 들어가면 아래 다섯 가지 위험에 노출됩니다. 로봇을 먼저 투입하면 이 위험을 피할 수 있습니다.</p>
-      <div class="grid grid--2 grid--pair mb-16">
-        <figure class="pcard" data-reveal>
-          <div class="pcard__fig"><img src="../assets/photos/P10-1000.jpg" srcset="../assets/photos/P10-640.jpg 640w, ../assets/photos/P10-1000.jpg 1000w" sizes="(max-width:720px) 92vw, 560px" width="1000" height="667" alt="방호복을 입고 탱크 안에서 흡입 호스를 다루는 작업자" loading="lazy" decoding="async"></div>
-          <figcaption><b>인원 투입 작업</b><span>작업자가 방호복을 입고 탱크 안에서 직접 흡입합니다.</span></figcaption>
+      <div class="procB-vs-grid mb-16">
+        <figure class="procB-vs procB-vs--human" data-reveal>
+          <div class="pcard__fig procB-vs__fig"><img src="../assets/photos/P10-1000.jpg" srcset="../assets/photos/P10-640.jpg 640w, ../assets/photos/P10-1000.jpg 1000w" sizes="(max-width:720px) 92vw, 560px" width="1000" height="667" alt="방호복을 입고 탱크 안에서 흡입 호스를 다루는 작업자" loading="lazy" decoding="async"></div>
+          <span class="procB-vs__tag">인원 투입 작업</span>
+          <figcaption class="procB-vs__cap"><b>작업자가 안에 들어갑니다</b><span>작업자가 방호복을 입고 탱크 안에서 직접 흡입합니다.</span></figcaption>
         </figure>
-        <figure class="pcard" data-reveal data-delay="80">
-          <div class="pcard__fig"><img src="../assets/photos/P11-960.jpg" srcset="../assets/photos/P11-640.jpg 640w, ../assets/photos/P11-960.jpg 960w" sizes="(max-width:720px) 92vw, 560px" width="1000" height="667" alt="탱크 바닥에서 흡입 호스를 끌고 작업하는 로봇" loading="lazy" decoding="async"></div>
-          <figcaption><b>로봇 투입 작업</b><span>탱크 안에는 로봇과 흡입 호스만 있습니다.</span></figcaption>
+        <figure class="procB-vs procB-vs--robot" data-reveal data-delay="80">
+          <div class="pcard__fig procB-vs__fig"><img src="../assets/photos/P11-960.jpg" srcset="../assets/photos/P11-640.jpg 640w, ../assets/photos/P11-960.jpg 960w" sizes="(max-width:720px) 92vw, 560px" width="1000" height="667" alt="탱크 바닥에서 흡입 호스를 끌고 작업하는 로봇" loading="lazy" decoding="async"></div>
+          <span class="procB-vs__tag">로봇 투입 작업</span>
+          <figcaption class="procB-vs__cap"><b>탱크 안에는 로봇만 있습니다</b><span>탱크 안에는 로봇과 흡입 호스만 있습니다.</span></figcaption>
         </figure>
       </div>
-      <table class="cmp cmp--2" data-reveal>
-        <thead><tr><th>주요 위험성</th><th>로봇을 먼저 투입하면</th></tr></thead>
-        <tbody>
-          <tr><td>유독가스에 의한 질식</td><td data-h="로봇을 먼저 투입하면">위험물질 사전 제거</td></tr>
-          <tr><td>고위험 물질 접촉</td><td data-h="로봇을 먼저 투입하면">위험물질 사전 제거</td></tr>
-          <tr><td>공기 공급 중단에 의한 질식</td><td data-h="로봇을 먼저 투입하면">작업자 안전 확보</td></tr>
-          <tr><td>줄 걸림에 의한 넘어짐</td><td data-h="로봇을 먼저 투입하면">내부 작업시간 최소화</td></tr>
-          <tr><td>협소 공간에 따른 근골격 부상</td><td data-h="로봇을 먼저 투입하면">협소공간 대체 투입</td></tr>
-        </tbody>
-      </table>
+      <div class="procB-rk" data-reveal>
+        <table class="procB-rk__t">
+          <thead><tr><th>주요 위험성</th><th>인원 투입 작업</th><th>로봇을 먼저 투입하면</th></tr></thead>
+          <tbody>
+            <tr><td>유독가스에 의한 질식</td><td data-h="인원 투입 작업"><span class="procB-rk__no"><i class="procB-rk__ico procB-rk__ico--no" aria-hidden="true">!</i>노출</span></td><td data-h="로봇을 먼저 투입하면"><span class="procB-rk__yes"><i class="procB-rk__ico procB-rk__ico--yes" aria-hidden="true">✓</i>위험물질 사전 제거</span></td></tr>
+            <tr><td>고위험 물질 접촉</td><td data-h="인원 투입 작업"><span class="procB-rk__no"><i class="procB-rk__ico procB-rk__ico--no" aria-hidden="true">!</i>노출</span></td><td data-h="로봇을 먼저 투입하면"><span class="procB-rk__yes"><i class="procB-rk__ico procB-rk__ico--yes" aria-hidden="true">✓</i>위험물질 사전 제거</span></td></tr>
+            <tr><td>공기 공급 중단에 의한 질식</td><td data-h="인원 투입 작업"><span class="procB-rk__no"><i class="procB-rk__ico procB-rk__ico--no" aria-hidden="true">!</i>노출</span></td><td data-h="로봇을 먼저 투입하면"><span class="procB-rk__yes"><i class="procB-rk__ico procB-rk__ico--yes" aria-hidden="true">✓</i>작업자 안전 확보</span></td></tr>
+            <tr><td>줄 걸림에 의한 넘어짐</td><td data-h="인원 투입 작업"><span class="procB-rk__no"><i class="procB-rk__ico procB-rk__ico--no" aria-hidden="true">!</i>노출</span></td><td data-h="로봇을 먼저 투입하면"><span class="procB-rk__yes"><i class="procB-rk__ico procB-rk__ico--yes" aria-hidden="true">✓</i>내부 작업시간 최소화</span></td></tr>
+            <tr><td>협소 공간에 따른 근골격 부상</td><td data-h="인원 투입 작업"><span class="procB-rk__no"><i class="procB-rk__ico procB-rk__ico--no" aria-hidden="true">!</i>노출</span></td><td data-h="로봇을 먼저 투입하면"><span class="procB-rk__yes"><i class="procB-rk__ico procB-rk__ico--yes" aria-hidden="true">✓</i>협소공간 대체 투입</span></td></tr>
+          </tbody>
+        </table>
+      </div>
       <p class="cmp-after" data-reveal>로봇이 모든 작업을 대신하지는 않습니다. 위험 물질이 줄어든 뒤 최종 클리닝은 작업자가 합니다.</p>
-      <details class="fold mt-24">
+      <details class="fold mt-24 procB-eff">   <!-- 시안B 28차: procB-eff 면 접기 안 표의 제한/가능이 같은 아이콘 체계(모양만) -->
         <summary>효율성 비교 표 보기</summary>
         <h3 class="mt-18 mb-16">밀폐공간 작업 효율성 비교</h3>
       <table class="cmp" data-reveal>

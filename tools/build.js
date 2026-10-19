@@ -1028,6 +1028,34 @@ ${rows.map((r) => `          <tr><td>${esc(r.r)}</td><td data-h="인원 투입">
       </table>`;
 }
 
+/* 시안B 28차(설정 look.riskCompare: 'cards'): 밀폐공간 작업 위험성 비교 —
+   ① 사진 2장(P10 인원 투입 / P11 로봇 투입)을 대비 카드로: 알약 배지(기존 카드 제목) + 사진 아래 어둠 그라데이션 위 큰 제목(새 안내문 2건) + 기존 캡션. 사진 파일은 그대로, 밝기는 CSS filter 만.
+   ② 표를 기술소개서 p.23 원본 구조(주요 위험성 | 인원 투입 ○ | Robot 투입 ✕ | 비고)로 복원: 3열 — 가운데 '노출'(새 안내문, 원본의 ○를 말로), 오른쪽 ✓ + 기존 비고 문구.
+   본선 29차의 '비고 칸만' 단순화(cmpTable2)는 시안 B 에 한해 이 설정으로 바꾼다(이다결 님 2026-10-19). 설정을 지우면 29차 2칸 표와 사진 카드로 돌아간다 */
+const riskCards = () => !!(CFG.look && CFG.look.riskCompare === 'cards');
+const RISK_VS = [   // 사진 번호 · 배지(기존 카드 제목) · 큰 제목(28차 새 안내문) · 캡션(기존 그대로)
+  { id: 'P10', tone: 'human', tag: '인원 투입 작업', title: '작업자가 안에 들어갑니다', cap: '작업자가 방호복을 입고 탱크 안에서 직접 흡입합니다.' },
+  { id: 'P11', tone: 'robot', tag: '로봇 투입 작업', title: '탱크 안에는 로봇만 있습니다', cap: '탱크 안에는 로봇과 흡입 호스만 있습니다.' }
+];
+function riskVsCards() {
+  return RISK_VS.map((c, i) => `        <figure class="procB-vs procB-vs--${c.tone}" data-reveal${i ? ` data-delay="${i * 80}"` : ''}>
+          <div class="pcard__fig procB-vs__fig">${photo(P(c.id), '(max-width:720px) 92vw, 560px')}</div>
+          <span class="procB-vs__tag">${esc(c.tag)}</span>
+          <figcaption class="procB-vs__cap"><b>${esc(c.title)}</b><span>${esc(c.cap)}</span></figcaption>
+        </figure>`).join('\n');
+}
+function riskTable3(rows, head) {
+  const no = '<i class="procB-rk__ico procB-rk__ico--no" aria-hidden="true">!</i>', yes = '<i class="procB-rk__ico procB-rk__ico--yes" aria-hidden="true">✓</i>';
+  return `      <div class="procB-rk" data-reveal>
+        <table class="procB-rk__t">
+          <thead><tr><th>${esc(head)}</th><th>인원 투입 작업</th><th>로봇을 먼저 투입하면</th></tr></thead>
+          <tbody>
+${rows.map((r) => `            <tr><td>${esc(r.r)}</td><td data-h="인원 투입 작업"><span class="procB-rk__no">${no}노출</span></td><td data-h="로봇을 먼저 투입하면"><span class="procB-rk__yes">${yes}${esc(r.m)}</span></td></tr>`).join('\n')}
+          </tbody>
+        </table>
+      </div>`;
+}
+
 /* 2칸 비교표 — 기술소개서 p.23의 '비고' 칸만 남긴다 (29차, 위험성 비교) */
 function cmpTable2(rows, head, label) {
   return `      <table class="cmp cmp--2" data-reveal>
@@ -1914,12 +1942,15 @@ ${g.rows.map(([t, v]) => `            <div><dt>${esc(t)}</dt><dd>${esc(v)}</dd><
       </div>
       <h3 class="mt-block" data-reveal>밀폐공간 작업 위험성 비교</h3>
       <p class="cmp-lead" data-reveal>작업자가 설비 안에 들어가면 아래 다섯 가지 위험에 노출됩니다. 로봇을 먼저 투입하면 이 위험을 피할 수 있습니다.</p>
-      <div class="grid grid--2 grid--pair mb-16">
+${riskCards() ? `      <div class="procB-vs-grid mb-16">
+${riskVsCards()}
+      </div>
+${riskTable3(PROCESS.risk, '주요 위험성')}` : `      <div class="grid grid--2 grid--pair mb-16">
 ${pcards(['P10', 'P11'], ['인원 투입 작업', '로봇 투입 작업'], '(max-width:720px) 92vw, 560px', ['작업자가 방호복을 입고 탱크 안에서 직접 흡입합니다.', '탱크 안에는 로봇과 흡입 호스만 있습니다.'])}
       </div>
-${cmpTable2(PROCESS.risk, '주요 위험성', '로봇을 먼저 투입하면')}
+${cmpTable2(PROCESS.risk, '주요 위험성', '로봇을 먼저 투입하면')}`}
       <p class="cmp-after" data-reveal>로봇이 모든 작업을 대신하지는 않습니다. 위험 물질이 줄어든 뒤 최종 클리닝은 작업자가 합니다.</p>
-      <details class="fold mt-24">
+      <details class="fold mt-24${riskCards() ? ' procB-eff' : ''}">   <!-- 시안B 28차: procB-eff 면 접기 안 표의 제한/가능이 같은 아이콘 체계(모양만) -->
         <summary>효율성 비교 표 보기</summary>
         <h3 class="mt-18 mb-16">밀폐공간 작업 효율성 비교</h3>
 ${cmpTable(PROCESS.eff, '주요 효율성', '제한', '가능')}
