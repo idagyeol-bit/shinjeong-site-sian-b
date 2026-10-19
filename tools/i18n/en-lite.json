@@ -1,0 +1,87 @@
+{
+ "_설명": [
+  "시안 B 축약 영문판(3쪽) 문구 사전. tools/build-en-lite.js 가 읽는다 (34차, 2026-10-19 이다결 님 결정).",
+  "문구는 34차 지시서의 '카피 전문'을 글자 그대로 옮긴 것이다. 숫자·연락처·주소의 숫자는 여기 적지 않고 국문 생성 결과(build.js 데이터)에서 가져온다.",
+  "고치려면 이 파일만 고치고 node tools/build-en-lite.js 를 다시 돌린다. 기존 전체 미러(tools/build-en.js · en.json)는 쓰지 않고 보존만 한다."
+ ],
+ "common": {
+  "draftTitle": "[Draft] ",
+  "draftBar": "Draft B — working preview, differs from the official site",
+  "brand": "Shinjeong Development",
+  "brandCo": "Shinjeong Development Co., Ltd.",
+  "nav": { "home": "Home", "technology": "Technology", "contact": "Contact" },
+  "toKorean": "KOR",
+  "toEnglish": "ENG",
+  "menuOpen": "Open menu",
+  "skip": "Skip to content",
+  "aiNotice": "Some images and videos on this site are AI-generated illustrations.",
+  "copyright": "All rights reserved.",
+  "toTop": "Back to top",
+  "footerTagline": "Industrial & environmental facility cleaning",
+  "since": "Since",
+  "hq": "HQ",
+  "branch": "Branch",
+  "tel": "Tel",
+  "fax": "Fax"
+ },
+ "home": {
+  "title": "Shinjeong Development | Industrial & Environmental Facility Cleaning",
+  "desc": "Since 1992, Shinjeong Development has cleaned, dredged and maintained industrial and environmental facilities — sending robots first into hazardous confined spaces.",
+  "heroTitle": "Industrial & Environmental Facility Cleaning Specialists",
+  "heroSub": "Since 1992, Shinjeong Development has cleaned, dredged and maintained industrial and environmental facilities — sending robots first into hazardous confined spaces, so people don't have to go in.",
+  "statsLabel": "Key figures",
+  "stats": ["confined-space operations / year", "projects (2020–2023)", "registered patents", "licenses & registrations"],
+  "statsPlus": [false, true, false, false],
+  "statsSource": "Source: Shinjeong Development Company Profile (2024) · Technical Profile (2025)",
+  "whatTitle": "What we do",
+  "services": [
+   { "t": "Equipment Cleaning", "d": "Residues & sediments inside tanks, ponds, drains and R.T.O units" },
+   { "t": "Catalyst & Packing Media", "d": "Removal and replacement in reactors" },
+   { "t": "Chemical Cleaning", "d": "Piping, heat exchangers, cooling towers, boilers" },
+   { "t": "Dredging & Sludge Recovery", "d": "Sediments from sewage lines and treatment facilities" },
+   { "t": "Pipeline Inspection & Repair", "d": "CCTV·GPR inspection, trenchless repair" }
+  ],
+  "robotsTitle": "Robots first, people after",
+  "robotsText": "Our in-house unmanned robots remove hazardous material first. Workers enter only after the risk is reduced, for final cleaning.",
+  "robotsButton": "Our robots →"
+ },
+ "technology": {
+  "title": "Unmanned Cleaning Robots | Shinjeong Development",
+  "desc": "In-house unmanned cleaning robots: explosion-proof design, remote operation, drives on fluid sludge, for tanks and reactors.",
+  "heroTitle": "Unmanned Cleaning Robots",
+  "heroSub": "Developed by our in-house R&D center and deployed on our own job sites.",
+  "tilesLabel": "Key features",
+  "tiles": [
+   { "k": "Explosion-proof design", "d": "Explosion-proof camera, aluminum body, non-steel screw", "ico": "shield" },
+   { "k": "Remote operation", "d": "Operators stay outside the facility", "ico": "remote" },
+   { "k": "Drives on fluid sludge", "d": "Screw- and chain-type wheels", "ico": "wave" },
+   { "k": "Tanks & reactors", "d": "Removes liquid and sludge inside", "ico": "tank2" }
+  ],
+  "workTitle": "How a job is set up",
+  "inside": "Inside the facility",
+  "outside": "Outside",
+  "robot": { "n": "Robot", "d": "Recovers hazardous residues; front jet nozzle cleans the interior" },
+  "outsideRows": [
+   { "n": "Control vehicle (remote control · CCTV)", "d": "Operator watches the interior via CCTV and controls the robot" },
+   { "n": "Vacuum truck", "d": "Collects recovered material through hoses" },
+   { "n": "Separator", "d": "Separates recovered material in catalyst work" }
+  ],
+  "bottomLine": "{gen} generations of in-house robots · R&D center since {rnd}",
+  "pdfButton": "Technical Profile (PDF) →"
+ },
+ "contact": {
+  "title": "Contact | Shinjeong Development",
+  "desc": "Contact Shinjeong Development by phone or email. HQ in Yeosu, branch in Seosan, Korea.",
+  "heroTitle": "Contact",
+  "phone": "Phone",
+  "phonePrefix": "+82-",
+  "hours": "Mon–Fri {hours} KST · Fax {fax}",
+  "email": "Email",
+  "emailNote": "Attach photos or drawings if available.",
+  "emailButton": "Email us →",
+  "address": "Address",
+  "hqLine": "HQ — 27, Bonggye 2-gil, Yeosu-si, Jeollanam-do, Korea",
+  "branchLine": "Branch — 1106, Chungui-ro, Jigok-myeon, Seosan-si, Chungcheongnam-do, Korea",
+  "privacy": "Your name and contact details are used only to reply to your inquiry."
+ }
+}

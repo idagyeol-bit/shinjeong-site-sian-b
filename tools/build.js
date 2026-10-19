@@ -839,7 +839,7 @@ ${SERVICES.map((s) => `              <li><a href="${s.file}"${cur(s.id)}><b>${es
 ${nav}
   </nav>
   <div class="hdr__act">
-${VARIANT || (CFG.sian && CFG.sian.lang === false) ? '' : `    ${lang}\n`}    <a class="hdr__cta" href="contact.html"${page === 'contact' ? ' aria-current="page"' : ''}>${CFG.common.headerCta} ${arrow(14)}</a>
+${VARIANT || (CFG.sian && CFG.sian.lang === false) ? '' : `    ${lang}\n`}${!VARIANT && CFG.look && CFG.look.enLite ? `    <a class="hdr__lang" href="en/index.html" hreflang="en" lang="en">ENG</a>   <!-- 시안B 34차: 축약 영문판(3쪽)으로 가는 소형 링크. 쪽별 대응이 없어 늘 영문 홈으로 -->\n` : ''}    <a class="hdr__cta" href="contact.html"${page === 'contact' ? ' aria-current="page"' : ''}>${CFG.common.headerCta} ${arrow(14)}</a>
     <button class="burger" type="button" aria-expanded="false" aria-controls="drawer" aria-label="메뉴 열기"><i></i><i></i><i></i></button>
   </div>
 </header>

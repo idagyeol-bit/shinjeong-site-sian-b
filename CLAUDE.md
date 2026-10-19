@@ -25,6 +25,7 @@
 - 자세한 사용법은 `README.md`, 디자인 규칙은 `가이드_대기업사이트_분석과_적용원칙.md`.
 
 ## 영어판 (34차)
+- **시안 B 예외(시안B 34차, 2026-10-19 이다결 님 결정):** 시안 B(`sian-b`)의 영어판은 전체 미러가 아니라 **축약 3쪽**(`en/index.html`·`en/technology.html`·`en/contact.html`)이다. `tools/build-en-lite.js`가 만들고, 영문 문구는 `tools/i18n/en-lite.json` 한 곳(34차 지시서 카피 전문 그대로 — 임의 번역·보충 금지)에 있다. 숫자·연락처·번지는 국문 생성 결과(곧 `tools/build.js` 데이터)에서 읽으므로 영문 파일에 숫자를 손으로 치지 않는다. 재생성은 `node tools/build.js` → `node tools/build-en-lite.js`. 시안 B에서는 아래 `tools/build-en.js`·`en.json`을 쓰지 않는다(보존만). 국문 머리말의 소형 `ENG` 링크는 설정 `look.enLite`(41차 "시안은 언어 선택 없음"의 시안 B 한정 예외). 영문 쪽도 검색 제외·시안 띠·AI 고지(영문) 적용.
 - 영어 페이지는 `en/` 아래에 있고, `tools/build-en.js`가 한국어 HTML을 읽어 만든다. `en/` 안의 파일은 직접 고치지 않는다.
 - 번역은 `tools/i18n/en.json` 한 곳에 있다. 한국어 문구를 바꾸거나 더하면 `node tools/build-en.js --list`로 빠진 문장을 보고, 같은 뜻의 영어를 이 파일에 넣는다. 영어 문장에는 한국어 원문에 없는 수치·표현을 더하지 않는다(절대 규칙 1과 같다).
 - 재생성은 항상 두 줄이다: `node tools/build.js` → `node tools/build-en.js`. 둘째 줄이 오류로 끝나면 번역이 빠진 것이므로 커밋하지 않는다.
