@@ -1138,6 +1138,40 @@ function pcards(ids, titles, sizesAttr, subs, nums) {   // subs[i]가 있으면 
   }).join('\n');
 }
 
+/* 시안B 31차(설정 look.galleryRoles): 분야 상세 '장비와 현장' 사진 3장을 '역할 배지 + 제목(기존 캡션) + 역할 한 줄' 카드로.
+   배지·역할 줄은 그 분야의 데이터(소개 문장 body·제목 short·작업 범위 targets·주요 장비 equip·작업 시기 worktime·사진 묶음 소개 gallery.lead·
+   작업 구성 concept·업무 설명 rows)와 보유 장비 표의 '용도' 칸(EQUIP_GROUPS), 사진 설명(alt·cap)에 이미 있는 글자만 재사용·발췌한다 —
+   생성 때 검사해 없는 글자면 멈춘다. 맞는 글이 없는 사진은 비워 둔다(절대 규칙 3). 설정을 지우면 예전 사진 카드(pcards)로 */
+const galleryRoles = () => !!(CFG.look && CFG.look.galleryRoles);
+const GALLERY_LEAD_B = '이 분야 현장에 투입되는 장비와 실제 작업 모습입니다.';   // 31차 새 글자 1건(구역 제목 아래 공통 소개 한 줄)
+const GALLERY_ROLES_B = {   // 사진 번호 → { tag: 역할 배지, role: 역할 한 줄 } (출처는 31차 보고 표)
+  P01: { tag: '세척', role: '탱크·Pond 내부 클리닝' },                                  // 배지: 장비 표 용도 칸(고압 JET-CLEANER) · 역할: 소개 문장 발췌
+  W07: { tag: '폐기물 수집·운반', role: '설비 클리닝에 쓰는 진공흡입차와 호스' },          // 배지: 장비 표 용도 칸(진공흡입차(습식)) 발췌 · 역할: 사진 묶음 소개 발췌
+  W09: {},                                                                            // 사진(작업 차량과 작업자)에 맞는 기존 문구 없음 → 비움
+  W05: { tag: '흡입', role: '촉매·충진물을 호스로 흡입해 회수하는 역할' },                 // 배지·역할: 작업 구성(concept) 그대로
+  R10: { tag: '반응기 내부 작업', role: '촉매 처리 작업 구성(Robot · Vacuum Car · Separator · Control Car)에 쓰이는 장비' },   // 배지: 장비 표 용도 칸 발췌 · 역할: 사진 묶음 소개 발췌
+  R13: { tag: '흡입', role: '촉매 처리 작업 구성(Robot · Vacuum Car · Separator · Control Car)에 쓰이는 장비' },             // 배지: 작업 구성 · 역할: 사진 묶음 소개 발췌
+  P06: { tag: '준설', role: '폐기물 수집·운반, 준설' },                                   // 배지·역할: 장비 표 용도 칸(진공흡입차(습식)) 그대로
+  W03: { tag: '준설', role: '하수도 퇴적물, 하수처리시설, 오수관, 폐수처리장 슬러지를 다룹니다.' },   // 배지: 장비 표 용도 칸 · 역할: 소개 문장 그대로
+  R15: { tag: '준설', role: '스키드 로더, 소형 굴삭기 등 준설 장비' },                     // 배지: 장비 표 용도 칸(스키드 로더·소형 굴삭기) · 역할: 사진 묶음 소개 발췌
+  P08: { tag: 'GPR 조사', role: '지하매설물을 대상으로 하는 GPR 조사 업무입니다.' },         // 배지: 작업 범위 발췌 · 역할: 업무 설명(rows) 그대로
+  R42: { tag: '관로 조사', role: '관로 내부를 대상으로 하는 CCTV 조사 업무입니다.' },        // 배지: 장비 표 용도 칸(관로 CCTV 로봇) · 역할: 업무 설명(rows) 그대로
+  R34: { tag: '관로 조사', role: '관로 내부 CCTV 조사' }                                   // 배지: 장비 표 용도 칸 · 역할: 소개 문장 발췌
+};
+function galleryCards(s) {
+  const eq = EQUIP_GROUPS.find((g) => g.svc === s.id);
+  const pool = [s.body, s.short, s.worktime || '', (s.gallery && s.gallery.lead) || ''].concat(s.targets || [], s.equip || [],
+    (s.concept || []).flatMap((c) => [c.label, c.text]), (s.rows || []).flatMap((r) => [r.label, r.text]), eq ? eq.rows.map((r) => r[2]) : []).join('\n');
+  return s.gallery.ids.map((id, i) => {
+    const p = P(id), t = s.gallery.titles[i], r = GALLERY_ROLES_B[id] || {};
+    [r.tag, r.role].filter(Boolean).forEach((x) => { if (!pool.includes(x) && !p.alt.includes(x) && !p.cap.includes(x)) configError(`'장비와 현장' 사진 ${id}의 글 '${x}'이 ${s.title} 분야의 데이터·장비 표·사진 설명에 없습니다 (GALLERY_ROLES_B)`); });
+    return `        <figure class="pcard svcB-gal__card"${robotAnchors().has(id) ? ` id="photo-${id}"` : ''} data-reveal${i ? ` data-delay="${i * 80}"` : ''}>
+          <div class="pcard__fig">${photo(p, '(max-width:720px) 92vw, 420px')}</div>
+          <figcaption>${r.tag ? `<span class="svcB-gal__tag">${esc(r.tag)}</span>` : ''}<b>${esc(t)}</b>${r.role ? `<span class="svcB-gal__role">${esc(r.role)}</span>` : ''}</figcaption>
+        </figure>`;
+  }).join('\n');
+}
+
 /* 수행 이력 한 줄 (메인·수행 이력 페이지 공통). 3번째 칸의 분야 이름이 분야 상세로 가는 링크다(13차) */
 function recRow(p) {
   const chip = p.robot === 'stated' ? ' <span class="chip">로봇 적용</span>' : '';
@@ -1728,11 +1762,12 @@ ${links.length ? `          <p class="glance__links mt-18">${links.join('')}</p>
 
     /* 장비·현장 사진 묶음 (사진 ZIP에서 고른 3장) */
     if (s.gallery) {
+      const gal = galleryRoles();   // 시안B 31차: 역할 카드(배지 + 제목 + 역할 줄)
       sections.push(`  <section class="${sec()}">
     <div class="wrap">
-      <div class="head head--solo" data-reveal><div><h2>장비와 현장</h2></div></div>
-      <div class="grid grid--3">
-${pcards(s.gallery.ids, s.gallery.titles)}
+      <div class="head head--solo" data-reveal><div><h2>장비와 현장</h2>${gal ? `<p class="lead">${GALLERY_LEAD_B}</p>` : ''}</div></div>
+      <div class="grid grid--3${gal ? ' svcB-gal' : ''}">
+${gal ? galleryCards(s) : pcards(s.gallery.ids, s.gallery.titles)}
       </div>
     </div>
   </section>

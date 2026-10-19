@@ -2181,3 +2181,13 @@ html.moB-shrunk body[data-page] .hdr.is-scrolled { background: #ffffffd9; border
   .procB-useB > .procB-fold--use > summary { margin-left: 20px; }
   .procB-useB .uses__body > div { padding: 18px 20px 20px; }
 }
+
+/* ========== 시안B 31차: 분야 상세 '장비와 현장' 역할 카드(svcB-gal) (설정 look.galleryRoles) ========== */
+/* 카드: 29차 카드와 같은 결(테두리·둥근 모서리·흰 바탕). 사진 위 + 글 아래(역할 배지 → 제목(기존 캡션) → 역할 한 줄) */
+.svcB-gal { align-items: stretch; }
+.svcB-gal__card { gap: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--white); }
+.svcB-gal__card .pcard__fig { border-radius: 0; }
+.svcB-gal__card figcaption { padding: 18px 20px 22px; }
+.svcB-gal__card b { font-size: var(--fs-body); font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
+.svcB-gal__card .svcB-gal__tag { display: inline-flex; align-items: center; min-height: 28px; margin: 0 0 10px; padding: 0 11px; border-radius: 100px; background: var(--brand-tint); color: var(--navy); font-size: 12.5px; font-weight: 700; letter-spacing: -0.01em; line-height: 1; }
+.svcB-gal__card .svcB-gal__role { display: block; margin-top: 6px; font-size: var(--fs-sm); line-height: 1.65; color: var(--muted); }
