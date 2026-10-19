@@ -28,7 +28,7 @@
 <a class="skip-link" href="#main">본문 바로가기</a>
 <div class="pvbar" role="note">검토용 시험 시안입니다 · <a href="../index.html">기본판 보기</a> · 공식 홈페이지 <a href="https://sjdevel.com/" target="_blank" rel="noopener">sjdevel.com</a></div>
 <header class="hdr">
-  <a class="hdr__brand" href="index.html" aria-label="(주)신정개발 홈">
+  <a class="hdr__brand" href="index.html">   <!-- 35차: 보이는 글자와 다른 aria-label 을 뺀다(접근성 'label-content-name-mismatch'). 이름은 보이는 상호 글자 그대로 -->
     <img class="hdr__logo" src="../assets/logo/shinjeong-symbol.svg" width="36" height="44" alt="" aria-hidden="true">
     <span class="hdr__brandtext"><b>(주)신정개발</b><span aria-hidden="true">SHINJEONG DEVELOPMENT</span></span>
   </a>
@@ -350,7 +350,7 @@
       </div>
       <nav class="ftr__map" aria-label="사이트맵">
         <div>
-          <h4>사업분야</h4>
+          <h3>사업분야</h3>   <!-- 35차: h4 → h3 (제목 단계 건너뜀 'heading-order' 수리, 글자·모양 그대로) -->
           <ul>
             <li><a href="service-equipment-cleaning.html">설비 클리닝</a></li>
             <li><a href="service-catalyst-media.html">촉매·충진물 작업</a></li>
@@ -360,7 +360,7 @@
           </ul>
         </div>
         <div>
-          <h4>기술</h4>
+          <h3>기술</h3>   <!-- 35차: h4 → h3 (제목 단계 건너뜀 'heading-order' 수리, 글자·모양 그대로) -->
           <ul>
             <li><a href="process.html">현장 진행 방식</a></li>
             <li><a href="technology.html">장비·로봇</a></li>
@@ -368,7 +368,7 @@
           </ul>
         </div>
         <div>
-          <h4>회사</h4>
+          <h3>회사</h3>   <!-- 35차: h4 → h3 (제목 단계 건너뜀 'heading-order' 수리, 글자·모양 그대로) -->
           <ul>
             <li><a href="projects.html">수행 이력</a></li>
             <li><a href="company.html">회사 소개</a></li>
@@ -377,7 +377,7 @@
           </ul>
         </div>
         <div>
-          <h4>문의</h4>
+          <h3>문의</h3>   <!-- 35차: h4 → h3 (제목 단계 건너뜀 'heading-order' 수리, 글자·모양 그대로) -->
           <ul>
             <li><a href="contact.html">현장 문의</a></li>
             <li><a href="mailto:shinjeong@sjdevel.com">이메일로 문의</a></li>

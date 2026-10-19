@@ -520,7 +520,7 @@ body[data-page="home"] .hdr:not(.is-scrolled) .hdr__cta:hover { background: #fff
 .ftr__info { margin-top: 22px; font-size: var(--fs-sm); line-height: 1.95; color: var(--muted); }
 .ftr__info a { display: inline-block; padding: 8px 0; color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
 .ftr__map { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
-.ftr__map h4 { font-size: var(--fs-sm); font-weight: 700; color: var(--ink); margin-bottom: 14px; }
+.ftr__map h3 {   /* 35차: 바닥글 묶음 제목 h4 → h3 */ font-size: var(--fs-sm); font-weight: 700; color: var(--ink); margin-bottom: 14px; }
 .ftr__map li + li { margin-top: 2px; }
 .ftr__map a { display: inline-block; padding: 7px 0; font-size: var(--fs-sm); line-height: 1.5; color: var(--muted); overflow-wrap: anywhere; }
 .ftr__map a:hover { color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }

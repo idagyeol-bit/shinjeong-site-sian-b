@@ -831,7 +831,7 @@ ${SERVICES.map((s) => `              <li><a href="${s.file}"${cur(s.id)}><b>${es
     }).join('\n');
 
   return `<header class="hdr">
-  <a class="hdr__brand" href="index.html" aria-label="${esc(C.name)} 홈">
+  <a class="hdr__brand" href="index.html">   <!-- 35차: 보이는 글자와 다른 aria-label 을 뺀다(접근성 'label-content-name-mismatch'). 이름은 보이는 상호 글자 그대로 -->
     <img class="hdr__logo" src="assets/logo/shinjeong-symbol.svg" width="36" height="44" alt="" aria-hidden="true">
     <span class="hdr__brandtext"><b>${esc(C.name)}</b><span aria-hidden="true">${esc(C.brandEn)}</span></span>
   </a>
@@ -962,7 +962,7 @@ function footer() {
       </div>
       <nav class="ftr__map" aria-label="사이트맵">
 ${map.map((g) => `        <div>
-          <h4>${esc(g.h)}</h4>
+          <h3>${esc(g.h)}</h3>   <!-- 35차: h4 → h3 (제목 단계 건너뜀 'heading-order' 수리, 글자·모양 그대로) -->
           <ul>
 ${g.items.map((i) => `            <li><a href="${i.href}"${i.blank ? ' target="_blank" rel="noopener"' : ''}>${esc(i.label)}</a></li>`).join('\n')}
           </ul>
@@ -1762,7 +1762,7 @@ ${s.worktime ? `            <div><dt>작업 시기</dt><dd>${esc(s.worktime)}</d
       const fill = big >= 1000 ? '; --svcB-imgw: min(100%, var(--svcB-w)); --svcB-imgh: 100%; --svcB-fit: cover' : '';
       sections.push(`  <section class="section svcB">
     <figure class="svcB-hero" style="--svcB-w: ${big}px; --svcB-ratio: ${hp.w} / ${hp.h}${fill}">
-      <img class="svcB-hero__bg" src="assets/photos/${hp.id}-${hp.sizes[0]}.jpg" alt="" aria-hidden="true" decoding="async">
+      <img class="svcB-hero__bg" src="assets/photos/${hp.id}-${hp.sizes[0]}.jpg" width="${hp.sizes[0]}" height="${Math.round(hp.sizes[0] * hp.h / hp.w)}" alt="" aria-hidden="true" decoding="async">   <!-- 35차: 흐린 배경 사진에도 크기 속성(배치 흔들림 방지, 모양 변화 없음) -->
       ${photo(hp, `(max-width:960px) 100vw, ${big}px`, true).replace('<img ', '<img class="svcB-hero__img" ')}
 ${vis.note && aiBadge() ? `      <figcaption class="svcB-hero__note">${esc(vis.note)}</figcaption>   <!-- 시안B 18차: AI 연출 이미지 표시(실제 현장 사진 아님) · 23차: 설정 look.aiMark 가 'badge' 일 때만 -->\n` : ''}    </figure>
     <div class="wrap">

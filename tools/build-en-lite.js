@@ -43,6 +43,8 @@ const num = (s) => (s.match(/\d+/g) || []);
 if (!num(D.contact.hqLine).includes(num(koAddr)[num(koAddr).length - 1])) fail(`본사 주소 번지가 다릅니다: ${D.contact.hqLine} ↔ ${koAddr}`);
 if (!num(D.contact.branchLine).includes(num(koBranch)[num(koBranch).length - 1])) fail(`지사 주소 번지가 다릅니다: ${D.contact.branchLine} ↔ ${koBranch}`);
 const intl = (n) => D.contact.phonePrefix + n.replace(/^0/, '');   // 061-682-5537 → +82-61-682-5537
+/* og:image 는 국문 홈과 같은 사진(35차: 영문 쪽에 og:image 가 없던 것을 보강) */
+const OG_IMAGE = (() => { const m = ko.index.match(/<meta property="og:image" content="[^"]*?(assets\/[^"]+)">\s*<meta property="og:image:width" content="(\d+)">\s*<meta property="og:image:height" content="(\d+)">/); if (!m) fail('국문 홈의 og:image 를 찾지 못했습니다'); return { src: m[1], w: m[2], h: m[3] }; })();
 const koYear = new Date().getFullYear();
 
 /* ---------- 공통 틀 ---------- */
@@ -72,6 +74,9 @@ function head(o) {
 <meta property="og:description" content="${esc(o.desc)}">
 <meta property="og:url" content="${SITE_URL}en/${o.file === 'index.html' ? '' : o.file}">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="${SITE_URL}${OG_IMAGE.src}">
+<meta property="og:image:width" content="${OG_IMAGE.w}">
+<meta property="og:image:height" content="${OG_IMAGE.h}">
 <link rel="icon" href="../assets/logo/shinjeong-symbol.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="../assets/logo/shinjeong-symbol.png">
 <link rel="preload" href="../assets/fonts/sub/PretendardVariable-0.woff2" as="font" type="font/woff2" crossorigin>
@@ -87,7 +92,7 @@ function header(page) {
   const nav = [['index.html', C.nav.home, 'index'], ['technology.html', C.nav.technology, 'technology'], ['contact.html', C.nav.contact, 'contact']];
   const a = (n, extra) => `<a href="${n[0]}"${n[2] === page ? ' aria-current="page"' : ''}>${esc(n[1])}${extra || ''}</a>`;
   return `<header class="hdr">
-  <a class="hdr__brand" href="index.html" aria-label="${esc(C.brand)} home">
+  <a class="hdr__brand" href="index.html">
     <img class="hdr__logo" src="../assets/logo/shinjeong-symbol.svg" width="36" height="44" alt="" aria-hidden="true">
     <span class="hdr__brandtext"><b>${esc(C.brand)}</b><span aria-hidden="true">${esc(C.brandCo)}</span></span>
   </a>
