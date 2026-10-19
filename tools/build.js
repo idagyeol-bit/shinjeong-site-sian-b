@@ -558,11 +558,47 @@ ${rows.map((r) => `            <tr>${r.map((v, i) => `<td${i ? ` data-label="${e
 }
 /* 무인 로봇 시스템 구역의 묶음 하나: 소제목 → 설명 → 표 (24차 .eqgroup 틀).
    fold: 다이어트판(시안B 3차)에서 표를 넣을 접기 단추 글자. 없으면 늘 펼침 */
-const rndGroup = (title, desc, table, fold, between) => `      <div class="eqgroup" data-reveal>
+const rndGroup = (title, desc, table, fold, between, extra) => `      <div class="eqgroup${extra ? ' ' + extra : ''}" data-reveal>
         <div class="eqgroup__head"><h3>${esc(title)}</h3></div>
-        <p class="eqgroup__desc">${esc(desc)}</p>
-${between ? between + '\n' : ''}        ${fold && techDiet() ? tecFold(fold, table) : table}
-      </div>`;
+${desc ? `        <p class="eqgroup__desc">${esc(desc)}</p>\n` : ''}${between ? between + '\n' : ''}        ${fold && techDiet() ? tecFold(fold, table) : table}
+      </div>`;   // 32차: desc 가 비면 부제 줄을 빼고, extra 로 묶음에 class 를 더한다
+
+/* 시안B 32차(설정 look.robotTiles): 자체 개발 로봇 구역 — ① 5세대 사양 위 핵심 타일 4개(문구는 아래 사양 표·작업 구성 표의 발췌, 생성 때 검사) + 표 머리행 배경·줄무늬,
+   ② 작업 구성 3열 표 → 설비 내부(남색)/설비 밖(흰색) 2분할 카드(글자는 표 그대로), ③ 적용 조건 → 2열 카드 그리드 + 소개 문장 일부 볼드.
+   사양 구역 부제 '5세대 무인 클리닝 로봇의 사양입니다.'는 제목과 중복이라 뺀다(32차 보고에 원문 기록). 설정을 지우면 26차 표 모습으로 */
+const robotTiles = () => !!(CFG.look && CFG.look.robotTiles);
+const SPEC_TILES_B = [   // { k: 키워드, d: 한 줄(사양 표·작업 구성 표 발췌), src: 출처(보고용), ico: 아이콘 }
+  { k: '방폭 대응', d: '방폭 카메라로 원격 감시 · 알루미늄 본체 · 비철(Non-steel) 스크류', src: '사양 표 방폭 대응 행', ico: 'shield' },
+  { k: '원격 조종', d: '작업자가 CCTV로 내부를 보며 로봇 조종', src: '작업 구성 표 제어 차량 행', ico: 'remote' },
+  { k: '유동체 위 주행', d: '스크류형·체인형 바퀴', src: '사양 표 주행 행', ico: 'wave' },
+  { k: 'Tank·Reactor', d: '내부의 액체·슬러지 제거', src: '사양 표 용도 행', ico: 'tank2' }
+];
+const TILE_ICON = {   // 간단한 선 아이콘(한자·이모지 금지)
+  shield: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z"/><path d="M9.5 12l2 2 3.5-4"/></svg>',
+  remote: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="9" width="10" height="12" rx="2"/><path d="M12 9V5M9 5.5a4 4 0 0 1 6 0"/><circle cx="12" cy="15" r="1.2"/></svg>',
+  wave: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 15c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M3 19c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><circle cx="9" cy="8" r="2.2"/><circle cx="15" cy="8" r="2.2"/><path d="M11.2 8h1.6"/></svg>',
+  tank2: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="3"/><path d="M5 9h14M5 15h14"/></svg>'
+};
+function specTiles() {
+  const pool = PROCESS.gen5.map((r) => r.join(' ')).concat(PROCESS.crew.map((r) => r.join(' '))).join('\n');
+  SPEC_TILES_B.forEach((t) => { if (!pool.includes(t.d)) configError(`5세대 사양 타일 '${t.k}'의 문구가 사양 표·작업 구성 표에 없습니다: ${t.d}`); });
+  return `        <ul class="tecB-spec__tiles" aria-label="5세대 무인 클리닝 로봇 핵심 사양">
+${SPEC_TILES_B.map((t) => `          <li><span class="tecB-spec__ico">${TILE_ICON[t.ico]}</span><b>${esc(t.k)}</b><span>${esc(t.d)}</span></li>`).join('\n')}
+        </ul>`;
+}
+function workSplit() {   // 작업 구성: 위치 칸이 '설비 내부'인 행은 남색 카드, '설비 밖'인 행은 흰 카드(글자는 PROCESS.crew 그대로)
+  const inside = PROCESS.crew.filter((r) => r[1] === '설비 내부'), outside = PROCESS.crew.filter((r) => r[1] !== '설비 내부');
+  return `        <div class="tecB-wc">
+          <div class="tecB-wc__in"><span class="tecB-wc__tag">${esc(inside[0][1])}</span>
+${inside.map((r) => `            <div class="tecB-wc__row"><b>${esc(r[0])}</b><p>${esc(r[2])}</p></div>`).join('\n')}
+          </div>
+          <div class="tecB-wc__out"><span class="tecB-wc__tag">${esc(outside[0][1])}</span>
+            <dl>
+${outside.map((r) => `              <div><dt>${esc(r[0])}</dt><dd>${esc(r[2])}</dd></div>`).join('\n')}
+            </dl>
+          </div>
+        </div>`;
+}
 
 /* 시안B 15차: 로봇 1→5세대 발전 이정표 5칸 — 모든 글자는 세대별 비교 표(PROCESS.generations)의 그 세대 행 값 그대로.
    작은 줄 = 적용 대상(쉼표 → ·) + 지시서가 세대마다 정한 열(3 = '수중 작업'+'가능', 4 = 구동+' 구동', 5 = 비고). 마지막 세대 칸은 남색(모양만).
@@ -1866,8 +1902,12 @@ ${(() => {
       </figure>
 `;
 })()}${rndGroup('무인 흡입 로봇(Vacuum) 세대별 비교', '탱크·Pond용 무인 흡입 로봇은 1세대부터 5세대까지 개발했습니다.', robotTable('무인 흡입 로봇(Vacuum) 세대별 비교', ['세대', '방식', '적용 대상', '수중 작업', '구동', '비고'], PROCESS.generations), '세대별 비교 펼쳐 보기', techDiet() ? genStrip() : '')}
-${rndGroup('5세대 무인 클리닝 로봇 주요 사양', '5세대 무인 클리닝 로봇의 사양입니다.', robotTable('5세대 무인 클리닝 로봇 주요 사양', ['항목', '내용'], PROCESS.gen5, ['9.5em', '']))}
-${rndGroup('기타 클리닝 로봇', '흡입 로봇 외에 토사·슬러지 작업과 고압 세척에 쓰는 로봇입니다.', robotTable('기타 클리닝 로봇', ['로봇', '대상', '조종', '구동', '수중 작업'], PROCESS.others), '기타 로봇 펼쳐 보기')}
+${robotTiles()
+  ? rndGroup('5세대 무인 클리닝 로봇 주요 사양', '', `<div class="tecB-tbl">${robotTable('5세대 무인 클리닝 로봇 주요 사양', ['항목', '내용'], PROCESS.gen5, ['9.5em', ''])}</div>`, null, specTiles(), 'tecB-spec')
+  : rndGroup('5세대 무인 클리닝 로봇 주요 사양', '5세대 무인 클리닝 로봇의 사양입니다.', robotTable('5세대 무인 클리닝 로봇 주요 사양', ['항목', '내용'], PROCESS.gen5, ['9.5em', '']))}
+${robotTiles()
+  ? rndGroup('기타 클리닝 로봇', '흡입 로봇 외에 토사·슬러지 작업과 고압 세척에 쓰는 로봇입니다.', `<div class="tecB-tbl">${robotTable('기타 클리닝 로봇', ['로봇', '대상', '조종', '구동', '수중 작업'], PROCESS.others)}</div>`, '기타 로봇 펼쳐 보기', null, 'tecB-spec')
+  : rndGroup('기타 클리닝 로봇', '흡입 로봇 외에 토사·슬러지 작업과 고압 세척에 쓰는 로봇입니다.', robotTable('기타 클리닝 로봇', ['로봇', '대상', '조종', '구동', '수중 작업'], PROCESS.others), '기타 로봇 펼쳐 보기')}
     </div>
   </section>
 
@@ -1877,11 +1917,13 @@ ${rndGroup('기타 클리닝 로봇', '흡입 로봇 외에 토사·슬러지 �
       <div class="head">
         <div data-reveal><h2>로봇 작업 구성과 적용 조건</h2></div>
       </div>
-${rndGroup('작업 구성', '로봇은 설비 안에서, 흡입차는 밖에서 호스로 연결해 작업합니다.', robotTable('작업 구성', ['구성', '위치', '역할'], PROCESS.crew, ['25%', '16.67%', '58.33%']))}
-      <div class="eqgroup" data-reveal>
+${robotTiles()
+  ? rndGroup('작업 구성', '로봇은 설비 안에서, 흡입차는 밖에서 호스로 연결해 작업합니다.', workSplit(), null, null, 'tecB-wcg')
+  : rndGroup('작업 구성', '로봇은 설비 안에서, 흡입차는 밖에서 호스로 연결해 작업합니다.', robotTable('작업 구성', ['구성', '위치', '역할'], PROCESS.crew, ['25%', '16.67%', '58.33%']))}
+      <div class="eqgroup${robotTiles() ? ' tecB-condg' : ''}" data-reveal>
         <div class="eqgroup__head"><h3>적용 조건</h3></div>
-        <p class="eqgroup__desc">로봇 투입 여부와 작업 방법은 아래 다섯 가지를 확인하고 사전 시험(Test)을 거쳐 정합니다.</p>
-        <ul class="numlist">
+        <p class="eqgroup__desc">${robotTiles() ? '로봇 투입 여부와 작업 방법은 아래 <strong>다섯 가지를 확인하고 사전 시험(Test)</strong>을 거쳐 정합니다.' : '로봇 투입 여부와 작업 방법은 아래 다섯 가지를 확인하고 사전 시험(Test)을 거쳐 정합니다.'}</p>
+        <ul class="numlist${robotTiles() ? ' tecB-cond' : ''}">
 ${TECH.conditions.map((c, i) => `          <li><em>0${i + 1}</em><b>${esc(c.label)}</b><p>${esc(c.text)}</p></li>`).join('\n')}
         </ul>
         <div class="mt-24"><a class="btn btn--line btn--sm" href="process.html">현장 진행 방식 자세히 보기 ${arrow(18)}</a></div>

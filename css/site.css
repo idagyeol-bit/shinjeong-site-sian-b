@@ -2191,3 +2191,60 @@ html.moB-shrunk body[data-page] .hdr.is-scrolled { background: #ffffffd9; border
 .svcB-gal__card b { font-size: var(--fs-body); font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
 .svcB-gal__card .svcB-gal__tag { display: inline-flex; align-items: center; min-height: 28px; margin: 0 0 10px; padding: 0 11px; border-radius: 100px; background: var(--brand-tint); color: var(--navy); font-size: 12.5px; font-weight: 700; letter-spacing: -0.01em; line-height: 1; }
 .svcB-gal__card .svcB-gal__role { display: block; margin-top: 6px; font-size: var(--fs-sm); line-height: 1.65; color: var(--muted); }
+
+/* ========== 시안B 32차: 자체 개발 로봇 구역 — 핵심 타일(tecB-spec) · 안/밖 2분할(tecB-wc) · 조건 그리드(tecB-cond) (설정 look.robotTiles) ========== */
+/* ① 핵심 타일 4개: 연파랑 카드, 남색 동그라미 아이콘 + 키워드 + 한 줄 */
+.tecB-spec__tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin: 0 0 18px; padding: 0; list-style: none; }
+.tecB-spec__tiles li { display: flex; flex-direction: column; gap: 0; min-height: 0; padding: 20px 20px 22px; border-radius: var(--radius-lg); background: var(--brand-tint); word-break: keep-all; }
+.tecB-spec__ico { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; margin-bottom: 14px; border-radius: 50%; background: var(--navy); color: #fff; }
+.tecB-spec__tiles li b { display: block; font-size: 17px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
+.tecB-spec__tiles li > span:last-child { display: block; margin-top: 6px; font-size: var(--fs-sm); line-height: 1.6; color: var(--text); }
+/* 사양·기타 로봇 표: 흰 둥근 틀, 머리행 옅은 배경, 항목 열 볼드(.eqtbl__name 기존), 행 줄무늬 */
+.tecB-tbl { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--white); }
+.tecB-tbl .eqtbl { border-top: 0; }
+.tecB-tbl .eqtbl th { padding: 12px 16px; background: var(--soft); border-bottom: 1px solid var(--line); }
+.tecB-tbl .eqtbl td { padding: 14px 16px; }
+.tecB-tbl .eqtbl tbody tr:nth-child(even) td { background: #fafbfc; }
+.tecB-tbl .eqtbl tbody tr:last-child td { border-bottom: 0; }
+.tecB-spec .tecB-fold { margin-top: 4px; }
+/* ② 작업 구성 2분할: 왼쪽 남색(설비 내부) · 오른쪽 흰색(설비 밖) */
+.tecB-wc { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 18px; align-items: stretch; }
+.tecB-wc__in, .tecB-wc__out { padding: clamp(22px, 2.6vw, 32px); border-radius: var(--radius-lg); }
+.tecB-wc__in { background: var(--navy); color: var(--on-navy-sub); }
+.tecB-wc__out { background: var(--white); border: 1px solid var(--line); }
+.tecB-wc__tag { display: inline-flex; align-items: center; min-height: 30px; margin-bottom: 18px; padding: 0 13px; border-radius: 100px; font-size: 13px; font-weight: 700; letter-spacing: -0.01em; }
+.tecB-wc__in .tecB-wc__tag { background: #ffffff24; color: #fff; }
+.tecB-wc__out .tecB-wc__tag { background: var(--brand-tint); color: var(--navy); }
+.tecB-wc__row b { display: block; font-size: clamp(20px, 1.8vw, 24px); font-weight: 700; letter-spacing: -0.02em; color: #fff; }
+.tecB-wc__row p { margin-top: 8px; font-size: var(--fs-body); line-height: 1.7; color: var(--on-navy-sub); }
+.tecB-wc__out dl { margin: 0; }
+.tecB-wc__out dl > div { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 6px 20px; padding: 14px 0; border-top: 1px solid var(--line); }
+.tecB-wc__out dl > div:first-child { border-top: 0; padding-top: 0; }
+.tecB-wc__out dl > div:last-child { padding-bottom: 0; }
+.tecB-wc__out dt { font-size: var(--fs-body); font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+.tecB-wc__out dd { margin: 0; font-size: var(--fs-body); line-height: 1.7; color: var(--text); }
+/* ③ 적용 조건: 2열 콤팩트 카드 — 번호(브랜드색) + 제목 + 한 줄 */
+.numlist.tecB-cond { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.numlist.tecB-cond li { grid-template-columns: 34px minmax(0, 1fr); gap: 2px 12px; align-items: start; padding: 16px 20px 18px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--white); }
+.numlist.tecB-cond li:last-child { border-bottom: 1px solid var(--line); }
+.numlist.tecB-cond em { padding-top: 3px; }
+.numlist.tecB-cond b { font-size: var(--fs-body); font-weight: 700; }
+.numlist.tecB-cond p { margin-top: 2px; }
+.tecB-condg .eqgroup__desc strong { font-weight: 700; color: var(--ink); }
+@media (max-width: 960px) {
+  .tecB-wc { grid-template-columns: minmax(0, 1fr); }
+  .tecB-wc__out dl > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}
+@media (max-width: 720px) {
+  .tecB-spec__tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .tecB-spec__tiles li { padding: 16px 16px 18px; }
+  .numlist.tecB-cond { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .numlist.tecB-cond li { padding: 14px 16px 16px; }
+}
+@media (max-width: 720px) {
+  /* 32차 표(흰 틀): 휴대폰에서는 행이 카드처럼 쌓이므로 칸 여백을 빼고 행에 여백·줄무늬를 준다 */
+  .tecB-tbl .eqtbl tr { padding: 12px 16px; }
+  .tecB-tbl .eqtbl td, .tecB-tbl .eqtbl tbody tr:nth-child(even) td { padding: 0; background: transparent; }
+  .tecB-tbl .eqtbl tbody tr:nth-child(even) { background: #fafbfc; }
+  .tecB-tbl .eqtbl tbody tr:last-child { border-bottom: 0; }
+}
