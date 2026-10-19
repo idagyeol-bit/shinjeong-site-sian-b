@@ -484,16 +484,39 @@ const tecFold = (label, body, extra, hash) => `<details class="fold tecB-fold${e
 
 /* 보유 장비 묶음 하나: 소제목(+이 업무 보기) → 설명 → 표 → (사진). 24차: 보유 칸·설명·업무 링크 추가.
    다이어트판(시안B 3차): 표만 '장비 목록 펼쳐 보기' 접기에 넣는다(소제목·설명·업무 링크·사진은 그대로 보임) */
-function eqGroup(g) {
+/* 시안B 29차(설정 look.equipCards): 보유 장비 묶음 6개를 각각 '번호 + 제목 + 설명 + 주요 장비 칩 + 접기/링크 + 소속 사진'이 한 틀에 든 카드로.
+   칩 낱말은 그 묶음의 설명(desc)이나 표의 장비명(rows[].[0])에 이미 있는 글자만 쓴다(새 단어 금지 — 생성 때 검사해 없으면 멈춘다). 지우면 24차 틀로 복귀 */
+const equipCards = () => !!(CFG.look && CFG.look.equipCards);
+const EQUIP_CHIPS_B = {   // 묶음 id → 주요 장비 칩 (출처: 설명 = desc, 표 = rows 장비명)
+  'eq-cleaning': ['진공흡입차', '고압 JET-CLEANER', '흡입 로봇', '제어 차량'],                 // 설명·표
+  'eq-catalyst': ['진공흡입차(건식)', 'AUTO SEPARATOR', '선별기', '집진기', '흡입 로봇'],       // 표·설명
+  'eq-chemical': ['화학세정용 내산장비'],                                                     // 표(장비가 1종뿐)
+  'eq-dredging': ['무인준설로봇', '무인로더', '스키드 로더', '데칸타', '소형 굴삭기'],           // 설명·표
+  'eq-inspection': ['CCTV 조사차량', '관로 CCTV 로봇', '탈취제거 SYSTEM', '스키드 로더'],       // 설명·표
+  'eq-common': ['카고크레인', '지게차', '고압 살수차', 'HYDRONIC PUMP']                        // 표
+};
+function eqGroup(g, gi) {
   const sv = g.svc ? svc(g.svc) : null;
-  const table = `<table class="eqtbl">
-          <caption class="sr-only">${esc(g.title)} 보유 장비</caption>
-          <colgroup><col class="eqtbl__c1"><col class="eqtbl__c2"><col class="eqtbl__c3"><col class="eqtbl__c4"></colgroup>
-          <thead><tr><th scope="col">장비명</th><th scope="col">규격</th><th scope="col">용도</th><th scope="col">보유</th></tr></thead>
-          <tbody>
-${g.rows.map(([name, spec, use, qty, rnd]) => `            <tr><td class="eqtbl__name">${esc(name)}</td><td class="eqtbl__spec${spec === '—' ? ' eqtbl__spec--none' : ''}">${esc(spec)}</td><td class="eqtbl__use">${esc(use)}${rnd ? `<a class="glance__more" href="#rnd">무인 로봇 보기 ${arrow(14)}</a>` : ''}</td><td class="eqtbl__qty${qty === '—' ? ' eqtbl__qty--none' : ''}">${esc(qty)}</td></tr>`).join('\n')}
-          </tbody>
-        </table>`;
+  if (equipCards()) {
+    const chips = EQUIP_CHIPS_B[g.id] || [];
+    chips.forEach((c) => { if (!(g.desc.includes(c) || g.rows.some((r) => r[0].includes(c)))) configError(`보유 장비 칩 '${c}'(${g.id})이 그 묶음의 설명·표에 없는 낱말입니다 (EQUIP_CHIPS_B)`); });
+    const n = g.photos.length;
+    const tbl = eqTable(g);
+    return `      <div class="eqgroup eqB-card${gi % 2 ? ' eqB-card--alt' : ''}${n ? ` eqgroup--photo eqB-card--photo eqB-card--photo${n}` : ''}" id="${g.id}" data-reveal>
+        <div class="eqgroup__head eqB-head"><span class="eqB-num" aria-hidden="true">${String(gi + 1).padStart(2, '0')}</span><h3>${esc(g.title)}</h3></div>
+        <div class="eqgroup__body eqB-body">
+        <div class="eqgroup__main">
+        <p class="eqgroup__desc">${esc(g.desc)}</p>
+${chips.length ? `        <ul class="eqB-chips" aria-label="${esc(g.title)} 주요 장비">${chips.map((c) => `<li>${esc(c)}</li>`).join('')}</ul>\n` : ''}        <div class="eqB-act">${techDiet() ? tecFold('장비 목록 펼쳐 보기', tbl, 'tecB-fold--eq') : tbl}${sv ? `
+        <a class="glance__more" href="${sv.file}">${esc(sv.title)} 소개 보기 ${arrow(14)}</a>` : ''}</div>
+        </div>
+${n ? `        <div class="eqgroup__photos eqB-photos">
+${pcards(g.photos, g.titles)}
+        </div>
+` : ''}        </div>
+      </div>`;
+  }
+  const table = eqTable(g);
   return `      <div class="eqgroup${g.photos.length ? ' eqgroup--photo' : ''}" id="${g.id}" data-reveal>
         <div class="eqgroup__head"><h3>${esc(g.title)}</h3></div>
         <p class="eqgroup__desc">${esc(g.desc)}</p>
@@ -507,6 +530,19 @@ ${pcards(g.photos, g.titles)}
         </div>
 ` : ''}        </div>
       </div>`;
+}
+/* 보유 장비 표 한 개(24차 그대로 — 29차에 카드판과 공유하려고 함수로 뺐다) */
+function eqTable(g) {
+  const sv = g.svc ? svc(g.svc) : null;
+  const table = `<table class="eqtbl">
+          <caption class="sr-only">${esc(g.title)} 보유 장비</caption>
+          <colgroup><col class="eqtbl__c1"><col class="eqtbl__c2"><col class="eqtbl__c3"><col class="eqtbl__c4"></colgroup>
+          <thead><tr><th scope="col">장비명</th><th scope="col">규격</th><th scope="col">용도</th><th scope="col">보유</th></tr></thead>
+          <tbody>
+${g.rows.map(([name, spec, use, qty, rnd]) => `            <tr><td class="eqtbl__name">${esc(name)}</td><td class="eqtbl__spec${spec === '—' ? ' eqtbl__spec--none' : ''}">${esc(spec)}</td><td class="eqtbl__use">${esc(use)}${rnd ? `<a class="glance__more" href="#rnd">무인 로봇 보기 ${arrow(14)}</a>` : ''}</td><td class="eqtbl__qty${qty === '—' ? ' eqtbl__qty--none' : ''}">${esc(qty)}</td></tr>`).join('\n')}
+          </tbody>
+        </table>`;
+  return table;
 }
 
 /* 무인 로봇 시스템 구역의 표 (24차, 25차에 칸 이름(data-label)과 칸 폭 추가).
@@ -1765,7 +1801,7 @@ pages['technology.html'] = () => head({
       <div class="head head--solo" data-reveal><div><h2>보유 장비</h2></div></div>
       <div class="filters eqtabs" role="group" aria-label="업무별 보유 장비" data-reveal><a href="#equipment" data-eq="equipment">전체</a>${EQUIP_GROUPS.map((g) => `<a href="#${g.id}" data-eq="${g.id}">${esc(g.nav || g.title)}</a>`).join('')}</div>
       <p class="note">보유 대수는 회사소개서(2024) 수록 기준이며, 현재 수량과 가동 상태는 문의 시 안내합니다.</p>
-${EQUIP_GROUPS.map(eqGroup).join('\n')}
+${EQUIP_GROUPS.map((g, i) => eqGroup(g, i)).join('\n')}
     </div>
   </section>
 

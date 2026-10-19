@@ -2105,3 +2105,33 @@ html.moB-shrunk body[data-page] .hdr.is-scrolled { background: #ffffffd9; border
   .procB-rk__no, .procB-rk__yes { white-space: normal; }
   .procB-eff .cmp .no, .procB-eff .cmp .yes { white-space: normal; }
 }
+
+/* ========== 시안B 29차: 보유 장비 카테고리 카드(eqB-) (설정 look.equipCards) ========== */
+/* 묶음 하나 = 테두리·둥근 모서리 카드. 흰색/연회색 교차(--alt). 기존 .eqgroup/.eqtbl/.fold 규칙은 그대로, 여기서는 틀·자리만 */
+.eqB-card { margin-top: 24px; padding: clamp(22px, 3vw, 40px) clamp(20px, 3vw, 40px) clamp(24px, 3vw, 40px); border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--white); }
+.eqB-card--alt { background: var(--soft); }
+.eqB-card + .eqB-card { margin-top: 24px; }
+.eqB-head { justify-content: flex-start; align-items: baseline; gap: 14px; margin-bottom: 14px; }
+.eqB-num { font-size: 13px; font-weight: 700; letter-spacing: 0.14em; line-height: 1; color: var(--brand); }   /* 24차 색판 번호(.bizB__num)와 같은 장식 */
+.eqB-card .eqgroup__desc { margin-bottom: 16px; }
+.eqB-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 20px; padding: 0; list-style: none; }
+.eqB-chips li { display: inline-flex; align-items: center; min-height: 32px; padding: 0 13px; border-radius: 100px; background: var(--brand-tint); color: var(--navy); font-size: 13px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; }
+.eqB-act { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
+.eqB-act > .tecB-fold--eq { margin-top: 0; flex: 0 0 auto; }
+.eqB-act > .tecB-fold--eq[open] { flex: 1 1 100%; }
+.eqB-card .eqgroup__main > .eqB-act > .glance__more, .eqB-act > .glance__more { margin: 0; }
+/* 본문: 글(왼쪽) · 사진(오른쪽). 사진 없는 묶음은 전폭 1열(빈 칸 없음) */
+.eqB-card--photo .eqgroup__body { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(24px, 3vw, 40px); align-items: start; }
+.eqB-card--photo1 .eqgroup__body { align-items: center; }   /* 사진 1장이면 사진 열을 세로 중앙에 */
+.eqB-card--photo2 .eqB-photos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.eqB-photos .pcard b { font-size: var(--fs-xs); font-weight: 500; color: var(--muted); }   /* 캡션: 사진 바로 아래 작은 글씨(글자 그대로) */
+@media (max-width: 960px) {
+  .eqB-card--photo .eqgroup__body { grid-template-columns: 1fr; gap: 20px; }
+  .eqB-card--photo2 .eqB-photos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 720px) {
+  .eqB-card { margin-top: 16px; }
+  .eqB-head { flex-direction: row; align-items: baseline; }
+  .eqB-card--photo2 .eqB-photos { grid-template-columns: 1fr; }
+  .eqB-act > .tecB-fold--eq { flex: 1 1 100%; }
+}
