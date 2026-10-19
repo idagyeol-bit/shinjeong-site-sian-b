@@ -2248,3 +2248,7 @@ html.moB-shrunk body[data-page] .hdr.is-scrolled { background: #ffffffd9; border
   .tecB-tbl .eqtbl tbody tr:nth-child(even) { background: #fafbfc; }
   .tecB-tbl .eqtbl tbody tr:last-child { border-bottom: 0; }
 }
+
+/* ========== 시안B 33차: 문의 페이지 슬림화 (설정 look.contactSlim) — 양식 한 열(최대 680px), 사이드·FAQ 없음 ========== */
+.ctB-form { max-width: 680px; }
+.ctB-form .form { margin-top: 24px; }

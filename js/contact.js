@@ -77,6 +77,7 @@
         return el.value.trim();
       };
 
+      var has = function (n) { return !!form.querySelector('[name="' + n + '"]'); };   // 시안B 33차: 양식에 없는 칸(문의 업무·대상 설비·현장 위치)은 메일 본문에서도 뺀다
       var service = get('service');
       var subject = '[현장 문의] ' + (service || '문의') + ' — ' + get('name');
 
@@ -84,16 +85,16 @@
         '■ 이름 / 회사명: ' + get('name'),
         '■ 회신 이메일: ' + get('email'),
         '■ 연락처: ' + (get('phone') || '-'),
-        '■ 문의 업무: ' + (service || '-'),
-        '■ 대상 설비: ' + (get('target') || '-'),
-        '■ 현장 위치: ' + (get('place') || '-'),
+        has('service') ? '■ 문의 업무: ' + (service || '-') : null,
+        has('target') ? '■ 대상 설비: ' + (get('target') || '-') : null,
+        has('place') ? '■ 현장 위치: ' + (get('place') || '-') : null,
         '■ 희망 일정: ' + (get('when') || '-'),
         '',
         '■ 문의 내용',
         get('body'),
         '',
         '— 신정개발 홈페이지 문의 양식에서 작성'
-      ];
+      ].filter(function (l) { return l !== null; });
 
       return { subject: subject, text: lines.join('\n') };
     }

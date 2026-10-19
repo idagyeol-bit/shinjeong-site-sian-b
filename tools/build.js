@@ -2347,6 +2347,10 @@ ${SRC_LINE}    </div>
 ` + cta() + MAIN_END + footer() + foot();
 
 /* ---------- 7. 현장 문의 ---------- */
+/* 시안B 33차(설정 look.contactSlim): 문의 페이지 슬림화 — 양식 필드 8 → 5(문의 업무·대상 설비·현장 위치 끔), 오른쪽 사이드 안내(적어 주시면 좋은 내용·문의 후 진행 순서) 끔,
+   자주 묻는 질문 구역 끔(FAQ 데이터·faqBlock 보존). 26차의 '문의 페이지 본문 유지' 결정과 초기 FAQ 도입을 이 설정으로 바꾼다(이다결 님 2026-10-19).
+   꺼지는 글은 모두 코드에 남는다(33차 보고에 목록). 설정을 지우면 32차 문의 페이지로 돌아간다 */
+const contactSlim = () => !!(CFG.look && CFG.look.contactSlim);
 pages['contact.html'] = () => head({
   file: 'contact.html', page: 'contact',
   title: `현장 문의 | ${C.brand}`,
@@ -2388,7 +2392,7 @@ pages['contact.html'] = () => head({
   <!-- 02 문의 양식 (32차: 대상 설비 칸 추가, 양식 옆 안내) -->
   <section class="section section--soft" id="inquiry">
     <div class="wrap">
-      <div class="split split--top split--wide">
+      <div class="${contactSlim() ? 'ctB-form' : 'split split--top split--wide'}">
 
         <div data-reveal>
           <h2>문의 양식</h2>
@@ -2418,7 +2422,7 @@ pages['contact.html'] = () => head({
               </div>
             </div>
 
-            <div class="form__row">
+${contactSlim() ? '' : `            <div class="form__row">
               <div class="field">
                 <label for="f-service">문의 업무</label>
                 <select id="f-service" name="service">
@@ -2437,7 +2441,7 @@ ${SERVICES.map((s) => `                  <option value="${s.id}">${esc(s.title)}
               <input type="text" id="f-place" name="place" placeholder="예: 전남 여수">
             </div>
 
-            <div class="field">
+`}            <div class="field">
               <label for="f-body">문의 내용 <em aria-hidden="true">*</em><span class="sr-only">(필수)</span></label>
               <textarea id="f-body" name="body" required placeholder="작업 목적과 현장 상태를 적어 주세요. 크기·구조·잔류물 정보를 알고 계시면 함께 적어 주세요."></textarea>
               <p class="field__err" hidden></p>
@@ -2458,7 +2462,7 @@ ${SERVICES.map((s) => `                  <option value="${s.id}">${esc(s.title)}
           </form>
         </div>
 
-        <div class="ct-guide" data-reveal data-delay="90">
+${contactSlim() ? '' : `        <div class="ct-guide" data-reveal data-delay="90">
           <h3>적어 주시면 좋은 내용</h3>
           <ul class="ct-guide__list">
             <li><b>대상 설비</b><p>탱크·반응기·관로 등 작업 대상</p></li>
@@ -2475,11 +2479,11 @@ ${SERVICES.map((s) => `                  <option value="${s.id}">${esc(s.title)}
           </ol>
           <div class="mt-18"><a class="tlink" href="process.html">현장 진행 방식 보기 ${arrow(14)}</a></div>
         </div>
-
+`}
       </div>
     </div>
   </section>
-
+${contactSlim() ? '' : `
   <!-- 03 자주 묻는 질문 -->
   <section class="section">
     <div class="wrap">
@@ -2489,7 +2493,7 @@ ${SERVICES.map((s) => `                  <option value="${s.id}">${esc(s.title)}
 ${faqBlock()}
     </div>
   </section>
-
+`}
 </main>
 
 ` + footer() + foot(['contact.js']);
