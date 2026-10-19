@@ -2135,3 +2135,49 @@ html.moB-shrunk body[data-page] .hdr.is-scrolled { background: #ffffffd9; border
   .eqB-card--photo2 .eqB-photos { grid-template-columns: 1fr; }
   .eqB-act > .tecB-fold--eq { flex: 1 1 100%; }
 }
+
+/* ========== 시안B 30차: 용도별 적용 범위와 유의점 — 의미색 3열 카드(procB-useB) (설정 look.useCards) ========== */
+/* 카드: 29차 보유 장비 카드와 같은 결(테두리·둥근 모서리·흰/연회색 교차). 머리 한 줄 = 번호 + 제목 + (오른쪽) 접기 단추. 본문 = 세 열 */
+.procB-uses { border-top: 0; }
+.procB-useB { position: relative; display: block; padding: 0; margin-top: 20px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--white); overflow: hidden; }
+.procB-useB--alt { background: var(--soft); }
+.procB-useB__head { display: flex; align-items: baseline; gap: 14px; min-height: 76px; padding: 22px clamp(240px, 22vw, 300px) 22px clamp(20px, 2.6vw, 32px); }
+.procB-useB__head h3 { margin: 0; font-size: var(--fs-h4); line-height: 1.4; }
+.procB-useB__num { font-size: 13px; font-weight: 700; letter-spacing: 0.14em; line-height: 1; color: var(--brand); }
+.procB-useB > .procB-fold--use { margin: 0; }
+.procB-useB > .procB-fold--use > summary { position: absolute; top: 16px; right: clamp(16px, 2.2vw, 28px); margin: 0; background: var(--white); }
+.procB-useB > .procB-fold--use[open] > summary { margin-bottom: 0; }
+/* 세 열: 사이 가는 구분선, 열마다 안쪽 여백. 유의점 열은 옅은 모래색 바탕 */
+.procB-useB .uses__body { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 1fr); gap: 0; margin: 0; border-top: 1px solid var(--line); background: var(--white); }
+.procB-useB--alt .uses__body { background: var(--soft); }
+.procB-useB .uses__body > div { padding: 22px clamp(18px, 2.4vw, 30px) 24px; }
+.procB-useB .uses__body > div + div { border-left: 1px solid var(--line); }
+.procB-useB .uses__body dt { display: flex; align-items: center; gap: 9px; margin-bottom: 14px; font-size: var(--fs-xs); font-weight: 700; letter-spacing: 0.06em; color: var(--muted); }
+.procB-useB .uses__body li { padding: 5px 0 5px 22px; }
+.procB-useB .uses__body li::before { top: 5px; width: auto; height: auto; border-radius: 0; background: none; font-size: 13px; font-weight: 800; line-height: 1.65; }
+/* 적용 범위: 중립 — 회색 점(머리에도 작은 점 동그라미) */
+.procB-useB__col--scope dt::before { content: ""; flex: 0 0 auto; width: 24px; height: 24px; border-radius: 50%; background: #e5e8ec; box-shadow: inset 0 0 0 9px #e5e8ec, inset 0 0 0 11px #9aa3ad; }
+.procB-useB .procB-useB__col--scope li::before { content: ""; top: 0.95em; width: 5px; height: 5px; border-radius: 50%; background: #9aa3ad; left: 4px; }   /* .procB-useB .uses__body li::before 보다 우선 */
+/* 장점: 남색 ✓ (28차 .procB-rk__ico--yes 재사용) */
+.procB-useB .procB-useB__col--pros dt { color: var(--navy); }   /* .procB-useB .uses__body dt 보다 우선 */
+.procB-useB__col--pros li::before { content: "\2713" / ""; color: var(--navy); }
+/* 유의점: 주의 — 모래색 바탕 + 갈색 ! */
+.procB-useB__col--cons { background: #faf5e9; }
+.procB-useB--alt .procB-useB__col--cons { background: #f6f0e1; }
+.procB-useB .procB-useB__col--cons dt { color: #7a5a17; }
+.procB-useB__ico--warn { background: #8a6a1f; color: #fff; }
+.procB-useB__col--cons li::before { content: "!" / ""; color: #8a6a1f; left: 4px; }
+.procB-useB__col--cons li { color: var(--ink); }
+@media (max-width: 960px) {
+  .procB-useB__head { padding-right: clamp(20px, 2.6vw, 32px); }
+  .procB-useB > .procB-fold--use > summary { position: static; margin: -6px 0 18px clamp(20px, 2.6vw, 32px); }
+  .procB-useB > .procB-fold--use[open] > summary { margin-bottom: 18px; }
+  .procB-useB .uses__body { grid-template-columns: minmax(0, 1fr); }   /* 적용 범위 → 장점 → 유의점 순서로 쌓임 */
+  .procB-useB .uses__body > div + div { border-left: 0; border-top: 1px solid var(--line); }
+}
+@media (max-width: 720px) {
+  .procB-useB { margin-top: 14px; }
+  .procB-useB__head { min-height: 0; padding: 18px 20px 12px; }
+  .procB-useB > .procB-fold--use > summary { margin-left: 20px; }
+  .procB-useB .uses__body > div { padding: 18px 20px 20px; }
+}

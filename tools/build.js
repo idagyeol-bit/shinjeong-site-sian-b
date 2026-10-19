@@ -2000,12 +2000,20 @@ ${cmpTable(PROCESS.eff, '주요 효율성', '제한', '가능')}
       <div class="head">
         <div data-reveal><h2>용도별 적용 범위와 유의점</h2><p class="lead">무인 장비를 적용하는 대표 용도 네 가지의 적용 범위와 장점, 유의점입니다.</p></div>
       </div>
-      <div class="uses">
+      <div class="uses${CFG.look && CFG.look.useCards ? ' procB-uses' : ''}">
 ${PROCESS.cases.map((c, i) => {
+  /* 시안B 30차(설정 look.useCards): 용도 4개를 '번호 + 제목 + 접기 단추' 머리와 의미색 3열(적용 범위 · / 장점 ✓ / 유의점 !) 본문의 카드로.
+     글자(제목·열 제목·항목·단추)는 그대로, 열마다 class 와 aria-hidden 아이콘만 더한다. 설정을 지우면 4차 모습으로 */
+  const cards = !!(CFG.look && CFG.look.useCards) && procDiet();
+  const COLS = [['적용 범위', c.scope, 'scope', ''], ['장점', c.pros, 'pros', '<i class="procB-rk__ico procB-rk__ico--yes" aria-hidden="true">✓</i>'], ['유의점', c.cons, 'cons', '<i class="procB-rk__ico procB-useB__ico--warn" aria-hidden="true">!</i>']];
   const body = `<dl class="uses__body">
-${[['적용 범위', c.scope], ['장점', c.pros], ['유의점', c.cons]].map(([k, xs]) => `            <div><dt>${k}</dt><dd><ul>${xs.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></dd></div>`).join('\n')}
+${COLS.map(([k, xs, col, ico]) => `            <div${cards ? ` class="procB-useB__col procB-useB__col--${col}"` : ''}><dt>${cards ? ico : ''}${k}</dt><dd><ul>${xs.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></dd></div>`).join('\n')}
           </dl>`;
   /* 다이어트판(시안B 4차): 묶음 이름은 늘 보이고, 적용 범위·장점·유의점은 묶음마다 접기 안에 그대로 */
+  if (cards) return `        <article class="uses__row procB-use procB-useB${i % 2 ? ' procB-useB--alt' : ''}" data-reveal${i ? ` data-delay="${i * 70}"` : ''}>
+          <div class="procB-useB__head"><span class="procB-useB__num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span><h3>${esc(c.t)}</h3></div>
+          ${tecFold('적용 범위와 유의점 펼쳐 보기', body, 'procB-fold--use')}
+        </article>`;
   return `        <article class="uses__row${procDiet() ? ' procB-use' : ''}" data-reveal${i ? ` data-delay="${i * 70}"` : ''}>
           <h3>${esc(c.t)}</h3>
           ${procDiet() ? tecFold('적용 범위와 유의점 펼쳐 보기', body, 'procB-fold--use') : body}
