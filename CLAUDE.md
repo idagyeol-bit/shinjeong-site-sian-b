@@ -106,3 +106,9 @@
 
 ## 도메인 확정 후 바꿀 것
 `tools/build.js` 맨 위 `SITE_URL`, 그리고 재생성되는 `robots.txt`·`sitemap.xml`·`og:url`·`og:image`. 그리고 `PREVIEW`를 `false`로 바꾼다(36차).
+
+## 세 홈페이지 따로 두기 (2026-10-23, 이다결 님 결정)
+- 원본 홈페이지 · 시안 B · 시안 C 는 앞으로 **각각 다른 홈페이지**로 만든다. 한쪽에서 고친 것을 다른 쪽에 옮기지 않는다(이다결 님이 분명히 말할 때만).
+- 파일도 각자 자기 폴더에만 저장한다. 원본 = `shinjeong-site`(갈래 `dev`/`main`) · 시안 B = `시안B`(갈래 `sian-b`) · 시안 C = `시안C`(갈래 `sian-c`). 다른 폴더의 파일을 고치거나 복사해 오지 않는다.
+- GitHub 도 각자 따로다. 원본 = `idagyeol-bit/shinjeong-site-b`(원격 `origin`) · 시안 B = `idagyeol-bit/shinjeong-site-sian-b`(원격 `sianb`) · 시안 C = `idagyeol-bit/shinjeong-site-sian-c`(원격 `sianc`). 각 폴더에서 `git push` 만 하면 자기 저장소로 간다(설정 고정: `branch.sian-b → sianb main`, `branch.sian-c → sianc main`). 다른 저장소로 올리지 않는다.
+- 작업을 시작할 때 `git branch --show-current` 로 폴더와 갈래가 맞는지 확인하고, 다르면 멈추고 알린다.
